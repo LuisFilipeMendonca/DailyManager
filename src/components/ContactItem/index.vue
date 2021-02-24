@@ -1,0 +1,58 @@
+<template>
+  <base-badge>
+    <li class="contacts-item">
+      <span class="contacts-item__icon">
+        <font-awesome-icon icon="user-circle" />
+      </span>
+      <div class="contacts-item__details">
+        <h2 class="contacts-item__name">{{ name }}</h2>
+        <p><span class="bold">Email:</span> {{ email }}</p>
+        <p><span class="bold">Phone:</span> {{ phone }}</p>
+        <template v-if="address">
+          <p><span class="bold">Address:</span> {{ address }}</p>
+        </template>
+        <button>Edit</button>
+        <button>Delete</button>
+      </div>
+    </li>
+  </base-badge>
+</template>
+
+<script>
+export default {
+  props: ["name", "email", "phone", "address"],
+};
+</script>
+
+<style scoped>
+.contacts-item {
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.contacts-item__icon {
+  font-size: 4rem;
+  padding: 0 32px;
+}
+
+.contacts-item__details {
+  padding: 0 16px;
+  border-left: 1px solid #d1d1d0;
+  width: 100%;
+  text-align: left;
+}
+
+.contacts-item__details > *:not(:last-child):not(:first-child) {
+  margin-bottom: 8px;
+}
+
+.contacts-item__name {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.bold {
+  font-weight: bold;
+}
+</style>
