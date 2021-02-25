@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import router from "./routes";
 
 import BaseBadge from "./components/BaseBadge";
+import BaseButton from "./components/BaseButton";
 
 const app = createApp(App);
 
@@ -26,5 +27,6 @@ app.use(router);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.component("base-badge", BaseBadge);
+app.component("base-button", BaseButton);
 
 app.mount("#app");

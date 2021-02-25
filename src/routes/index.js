@@ -6,6 +6,8 @@ import ExpensesPage from "../pages/Expenses.vue";
 import TasksPage from "../pages/Tasks.vue";
 import NotesPage from "../pages/Notes.vue";
 
+import FormContact from "../layout/FormContact.vue";
+
 const routes = [
   {
     path: "/",
@@ -16,6 +18,16 @@ const routes = [
     path: "/contacts",
     name: "Contacts",
     component: ContactsPage,
+    children: [
+      {
+        path: "add",
+        component: FormContact,
+      },
+      {
+        path: "edit/:id",
+        component: FormContact,
+      },
+    ],
   },
   {
     path: "/expenses",

@@ -25,6 +25,7 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  outline: none;
 }
 
 html,
@@ -45,17 +46,17 @@ a {
   text-decoration: none;
 }
 
+input {
+  border: none;
+  background: transparent;
+}
+
 #app {
   height: 100%;
 }
 
 .main {
-  min-height: calc(100% - 60px);
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
+  height: 100%;
+  padding: 60px 16px 16px;
 }
 </style>

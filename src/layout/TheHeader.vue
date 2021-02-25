@@ -19,6 +19,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px;
+  position: fixed;
+  width: 100%;
+  border-bottom: 1px solid #d1d1d0;
 }
 
 .nav__menu {

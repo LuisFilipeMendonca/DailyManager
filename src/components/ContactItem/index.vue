@@ -11,8 +11,12 @@
         <template v-if="address">
           <p><span class="bold">Address:</span> {{ address }}</p>
         </template>
-        <button>Edit</button>
-        <button>Delete</button>
+        <div class="btn-container">
+          <base-button mode="flatten" :isLink="true" :path="editLink"
+            >Edit</base-button
+          >
+          <base-button mode="unstyled">Delete</base-button>
+        </div>
       </div>
     </li>
   </base-badge>
@@ -20,7 +24,12 @@
 
 <script>
 export default {
-  props: ["name", "email", "phone", "address"],
+  props: ["id", "name", "email", "phone", "address"],
+  computed: {
+    editLink() {
+      return `/contacts/edit/${this.id}`;
+    },
+  },
 };
 </script>
 
@@ -54,5 +63,13 @@ export default {
 
 .bold {
   font-weight: bold;
+}
+
+.btn-container {
+  display: flex;
+}
+
+.btn-container > *:not(:last-child) {
+  margin-right: 16px;
 }
 </style>

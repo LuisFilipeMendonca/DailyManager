@@ -1,10 +1,12 @@
 <template>
-  <h1 class="main__title">Your life.. One App!</h1>
-  <h2 class="main__subtitle">
-    Trying to organize your life but seems impossible? Don't waste more time and
-    register in our app.
-  </h2>
-  <home-grid></home-grid>
+  <section class="section">
+    <h1 class="main__title">Your life.. One App!</h1>
+    <h2 class="main__subtitle">
+      Trying to organize your life but seems impossible? Don't waste more time
+      and register in our app.
+    </h2>
+    <home-grid></home-grid>
+  </section>
 </template>
 
 <script>
@@ -18,6 +20,14 @@ export default {
 </script>
 
 <style scoped>
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px 0;
+}
 .main__title {
   font-size: 2.5rem;
   padding: 8px;
@@ -28,5 +38,6 @@ export default {
 .main__subtitle {
   font-size: 1.5rem;
   line-height: 32px;
+  text-align: center;
 }
 </style>

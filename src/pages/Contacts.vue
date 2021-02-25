@@ -2,12 +2,16 @@
   <section class="contacts">
     <header class="contacts-header">
       <h1 class="contacts-header__title">Contacts</h1>
-      <p class="contacts-header__subtitle">Add a new contact here</p>
+      <base-button :isLink="true" mode="outline" path="/contacts/add"
+        >Add Contact</base-button
+      >
     </header>
+    <router-view></router-view>
     <ul class="contacts-menu">
       <contact-item
         v-for="contact in contacts"
         :key="contact.id"
+        :id="contact.id"
         :name="contact.name"
         :email="contact.email"
         :phone="contact.phone"
@@ -52,10 +56,16 @@ export default {
 <style scoped>
 .contacts {
   width: 100%;
+  padding: 24px 0;
+}
+
+.contacts-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .contacts-menu {
-  margin-top: 64px;
+  margin-top: 32px;
 }
 
 .contacts-menu > *:not(:last-child) {
