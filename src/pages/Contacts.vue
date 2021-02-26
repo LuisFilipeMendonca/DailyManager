@@ -1,4 +1,5 @@
 <template>
+  <router-view></router-view>
   <section class="contacts">
     <header class="contacts-header">
       <h1 class="contacts-header__title">Contacts</h1>
@@ -6,7 +7,6 @@
         >Add Contact</base-button
       >
     </header>
-    <router-view></router-view>
     <ul class="contacts-menu">
       <contact-item
         v-for="contact in contacts"

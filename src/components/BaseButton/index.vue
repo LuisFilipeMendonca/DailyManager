@@ -1,5 +1,5 @@
 <template>
-  <button v-if="!isLink" :class="['btn', mode]">
+  <button v-if="!isLink" :class="['btn', mode]" :type="type">
     <slot />
   </button>
   <router-link v-else :to="path" :class="['btn', mode]">
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ["mode", "isLink", "path"],
+  props: ["mode", "isLink", "path", "type"],
 };
 </script>
 

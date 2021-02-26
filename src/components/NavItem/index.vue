@@ -1,12 +1,12 @@
 <template>
-  <base-badge>
+  <base-card>
     <router-link :to="path" class="link">
       <div class="link__content">
         <span class="link__icon"><font-awesome-icon :icon="icon"/></span>
         <span class="link__description">{{ description }}</span>
       </div>
     </router-link>
-  </base-badge>
+  </base-card>
 </template>
 
 <script>

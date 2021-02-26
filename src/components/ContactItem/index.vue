@@ -1,5 +1,5 @@
 <template>
-  <base-badge>
+  <base-card>
     <li class="contacts-item">
       <span class="contacts-item__icon">
         <font-awesome-icon icon="user-circle" />
@@ -19,7 +19,7 @@
         </div>
       </div>
     </li>
-  </base-badge>
+  </base-card>
 </template>
 
 <script>
