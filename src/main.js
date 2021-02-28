@@ -12,11 +12,13 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import router from "./routes";
+import store from "./store";
 
 import BaseCard from "./components/BaseCard";
 import BaseButton from "./components/BaseButton";
 import BaseForm from "./components/BaseForm";
 import BaseInput from "./components/BaseInput";
+import BaseSpinner from "./components/BaseSpinner";
 
 const app = createApp(App);
 
@@ -28,11 +30,13 @@ library.add(faUserCircle);
 library.add(faPlusCircle);
 
 app.use(router);
+app.use(store);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.component("base-card", BaseCard);
 app.component("base-button", BaseButton);
 app.component("base-form", BaseForm);
 app.component("base-input", BaseInput);
+app.component("base-spinner", BaseSpinner);
 
 app.mount("#app");

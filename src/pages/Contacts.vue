@@ -7,15 +7,18 @@
         >Add Contact</base-button
       >
     </header>
-    <ul class="contacts-menu">
+    <base-spinner v-if="isLoading" />
+    <ul class="contacts-menu" v-else>
       <contact-item
-        v-for="contact in contacts"
+        v-for="contact in contactsList"
         :key="contact.id"
         :id="contact.id"
         :name="contact.name"
         :email="contact.email"
         :phone="contact.phone"
         :address="contact.address"
+        :photo="contact.photo"
+        :photoUrl="contact.photoUrl"
       ></contact-item>
     </ul>
   </section>
@@ -30,25 +33,27 @@ export default {
   },
   data() {
     return {
-      contacts: [
-        {
-          photo: null,
-          id: 1,
-          name: "Filipe",
-          email: "filipe@teste.com",
-          phone: "962068557",
-          address: "",
-        },
-        {
-          photo: null,
-          id: 2,
-          name: "Luis",
-          email: "luis@teste.com",
-          phone: "968151184",
-          address: "Caminho da Cancela nº 10",
-        },
-      ],
+      isLoading: false,
     };
+  },
+  computed: {
+    contactsList() {
+      return this.$store.getters["contacts/getContacts"];
+    },
+  },
+  methods: {
+    async fetchContacts() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch("contacts/getContacts");
+      } catch (e) {
+        console.log(e);
+      }
+      this.isLoading = false;
+    },
+  },
+  created() {
+    this.fetchContacts();
   },
 };
 </script>
