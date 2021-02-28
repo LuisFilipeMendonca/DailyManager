@@ -1,5 +1,10 @@
 <template>
-  <button v-if="!isLink" :class="['btn', mode]" :type="type">
+  <button
+    v-if="!isLink"
+    :class="['btn', mode]"
+    :type="type"
+    @click="clickHandler"
+  >
     <slot />
   </button>
   <router-link v-else :to="path" :class="['btn', mode]">
@@ -9,7 +14,7 @@
 
 <script>
 export default {
-  props: ["mode", "isLink", "path", "type"],
+  props: ["mode", "isLink", "path", "type", "clickHandler"],
 };
 </script>
 

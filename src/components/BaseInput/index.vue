@@ -8,12 +8,7 @@
       @change="fileChangeHandler"
     />
     <label class="input__label--file" :for="id">
-      <img
-        v-if="photoUrl"
-        :src="photoUrl"
-        alt="contact photo"
-        class="input__photo"
-      />
+      <img v-if="value" :src="value" alt="contact photo" class="input__photo" />
       <span class="input__icon">
         <font-awesome-icon icon="plus-circle" />
       </span>
@@ -36,17 +31,6 @@
 export default {
   props: ["id", "type", "placeholder", "value"],
   emits: ["file-change-handler"],
-  computed: {
-    photoUrl() {
-      let imgUrl = null;
-
-      if (this.value) {
-        imgUrl = URL.createObjectURL(this.value);
-      }
-
-      return imgUrl;
-    },
-  },
   methods: {
     fileChangeHandler(e) {
       this.$emit("file-change-handler", e.target);

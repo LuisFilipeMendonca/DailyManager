@@ -1,7 +1,10 @@
 <template>
-  <base-form :submitHandler="submitHandler" submitDescription="Add Contact">
+  <base-form
+    :submitHandler="submitHandler"
+    :submitDescription="isEditing ? 'Edit Contact' : 'Add Contact'"
+  >
     <template v-slot:form-header>
-      <h2>Add Contact</h2>
+      <h2>{{ isEditing ? "Edit" : "Add" }} Contact</h2>
     </template>
     <template v-slot:form-inputs>
       <base-input
@@ -10,7 +13,7 @@
         :id="name"
         :type="input.type"
         :placeholder="input.placeholder"
-        :value="input.value"
+        :value="input.type === 'file' ? input.showValue : input.value"
         @file-change-handler="fileChangeHandler"
       />
     </template>
@@ -23,12 +26,15 @@
 </template>
 
 <script>
+import Form from "../helpers/Form";
+
 export default {
   data() {
     return {
       inputs: {
         contactPhoto: {
           type: "file",
+          showValue: "",
           value: "",
           placeholder: "Contact name",
           isValid: true,
@@ -71,15 +77,43 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.params.id);
+    const contactId = +this.$route.params.id;
+
+    if (!contactId) return;
+
+    const contactData = this.$store.getters["contacts/getContact"](contactId);
+    this.addContactData(contactData);
+  },
+  computed: {
+    isEditing() {
+      return !!this.$route.params.id;
+    },
   },
   methods: {
     submitHandler() {
-      console.log(this.inputs);
+      const formData = new Form(this.inputs).buildFormData("isEditing");
+      this.$store.dispatch("contacts/storeUpdateContact", {
+        formData,
+        isEditing: this.isEditing,
+        contactId: +this.$route.params.id,
+      });
     },
     fileChangeHandler(target) {
-      this.inputs[target.id].value =
-        target.type === "file" ? target.files[0] : target.value;
+      if (target.type === "file") {
+        this.inputs[target.id].value = target.files[0];
+        this.inputs[target.id].showValue = URL.createObjectURL(target.files[0]);
+      } else {
+        this.inputs[target.id].value = target.value;
+      }
+    },
+    addContactData(data) {
+      Object.keys(this.inputs).forEach((input) => {
+        if (this.inputs[input].type === "file") {
+          this.inputs[input].showValue = data.photoUrl;
+        } else {
+          this.inputs[input].value = data[input];
+        }
+      });
     },
   },
 };

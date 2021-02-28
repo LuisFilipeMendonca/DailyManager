@@ -16,7 +16,9 @@
           <base-button mode="flatten" :isLink="true" :path="editLink"
             >Edit</base-button
           >
-          <base-button mode="unstyled">Delete</base-button>
+          <base-button mode="unstyled" :clickHandler="deleteContact"
+            >Delete</base-button
+          >
         </div>
       </div>
     </li>
@@ -29,6 +31,11 @@ export default {
   computed: {
     editLink() {
       return `/contacts/edit/${this.id}`;
+    },
+  },
+  methods: {
+    deleteContact() {
+      this.$store.dispatch("contacts/deleteContact", this.id);
     },
   },
 };
