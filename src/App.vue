@@ -21,6 +21,13 @@ export default {
 </script>
 
 <style>
+:root {
+  --bg: #3a4750;
+  --primary-dark: #303841;
+  --primary-light: #eee;
+  --secondary: #fbe384;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -34,8 +41,8 @@ body {
 }
 
 body {
-  background-color: #454544;
-  color: #d1d1d0;
+  background-color: var(--bg);
+  color: var(--primary-light);
 }
 
 ul {

@@ -6,8 +6,8 @@
 
 <style scoped>
 .badge {
-  background-color: #5c5c5b;
+  background-color: var(--primary-dark);
   border-radius: 3px;
-  box-shadow: 0 0 5px #d1d1d0;
+  box-shadow: 0 0 5px var(--secondary);
 }
 </style>

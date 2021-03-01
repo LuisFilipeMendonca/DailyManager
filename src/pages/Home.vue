@@ -31,7 +31,8 @@ export default {
 .main__title {
   font-size: 2.5rem;
   padding: 8px;
-  border-bottom: 1px solid #d1d1d0;
+  border-bottom: 1px solid var(--secondary);
+  color: var(--secondary);
   margin-bottom: 32px;
 }
 

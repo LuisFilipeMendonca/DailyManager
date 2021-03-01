@@ -1,12 +1,14 @@
 <template>
   <router-view></router-view>
   <section class="contacts">
-    <header class="contacts-header">
-      <h1 class="contacts-header__title">Contacts</h1>
-      <base-button :isLink="true" mode="outline" path="/contacts/add"
-        >Add Contact</base-button
-      >
-    </header>
+    <base-card>
+      <header class="contacts-header">
+        <h1 class="contacts-header__title">Contacts</h1>
+        <base-button :isLink="true" mode="outline" path="/contacts/add"
+          >Add Contact</base-button
+        >
+      </header>
+    </base-card>
     <base-spinner v-if="isLoading" />
     <ul class="contacts-menu" v-else>
       <contact-item
@@ -67,10 +69,11 @@ export default {
 .contacts-header {
   display: flex;
   justify-content: space-between;
+  padding: 16px;
 }
 
 .contacts-menu {
-  margin-top: 32px;
+  margin-top: 16px;
 }
 
 .contacts-menu > *:not(:last-child) {

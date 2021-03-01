@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <h1>Daily Manager</h1>
+    <h1 class="header__title">Daily Manager</h1>
     <nav>
       <ul class="nav__menu">
         <li class="nav__item"><a class="nav__link" href="/">Login</a></li>
@@ -21,7 +21,13 @@
   padding: 16px;
   position: fixed;
   width: 100%;
-  border-bottom: 1px solid #d1d1d0;
+  border-bottom: 1px solid var(--secondary);
+  background: var(--primary-dark);
+  z-index: 10;
+}
+
+.header__title {
+  color: var(--secondary);
 }
 
 .nav__menu {

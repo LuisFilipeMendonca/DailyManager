@@ -48,16 +48,16 @@ export default {
 .input__elem {
   display: block;
   width: 100%;
-  background-color: #454544;
+  background-color: var(--bg);
   padding: 8px 16px;
   border-radius: 3px;
-  color: #d1d1d0;
+  color: var(--primary-light);
   border: 1px solid transparent;
   z-index: 1;
 }
 
 .input__elem:focus {
-  border-color: #d1d1d0;
+  border-color: var(--secondary);
 }
 
 .input__label {
@@ -69,6 +69,7 @@ export default {
   transform: translateY(0);
   transition: 0.2s ease-in;
   transition-property: opacity, transform;
+  color: var(--secondary);
 }
 
 .input__elem:focus + .input__label,
@@ -85,10 +86,10 @@ export default {
   display: block;
   width: 125px;
   height: 125px;
-  border: 1px dashed #d1d1d0;
+  border: 1px dashed var(--secondary);
   border-radius: 50%;
   margin: 0 auto;
-  background-color: #454544;
+  background-color: var(--bg);
   position: relative;
 }
 
@@ -103,5 +104,6 @@ export default {
   position: absolute;
   bottom: 0;
   right: 20px;
+  color: var(--secondary);
 }
 </style>

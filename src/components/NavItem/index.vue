@@ -28,16 +28,18 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #d1d1d0;
+  color: var(--primary-light);
   position: relative;
 }
 
 .link__icon {
   font-size: 3rem;
-  transition: transform 0.3s linear;
+  transition: all 0.3s linear;
 }
 
-.link:hover .link__icon {
+.link:hover .link__icon,
+.link:focus .link__icon {
+  color: var(--secondary);
   transform: translateY(-16px);
 }
 
@@ -53,5 +55,6 @@ export default {
 .link:hover .link__description {
   transform: translate(-50%, 16px);
   opacity: 1;
+  color: var(--secondary);
 }
 </style>
