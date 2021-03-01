@@ -14,22 +14,22 @@
       </span>
     </label>
   </div>
-  <div v-else class="input">
+  <div v-else class="input" :class="classValue">
     <input
       class="input__elem"
       :type="type"
       :placeholder="placeholder"
       :id="id"
       :value="value"
-      @change="fileChangeHandler"
+      @input="fileChangeHandler"
     />
-    <label class="input__label" :for="id">{{ id }}</label>
+    <label v-if="!noLabel" class="input__label" :for="id">{{ id }}</label>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["id", "type", "placeholder", "value"],
+  props: ["id", "type", "placeholder", "value", "classValue", "noLabel"],
   emits: ["file-change-handler"],
   methods: {
     fileChangeHandler(e) {
@@ -105,5 +105,9 @@ export default {
   bottom: 0;
   right: 20px;
   color: var(--secondary);
+}
+
+.mb-none {
+  margin-bottom: 0;
 }
 </style>

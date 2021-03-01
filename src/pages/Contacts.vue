@@ -8,6 +8,17 @@
           >Add Contact</base-button
         >
       </header>
+      <div class="contacts__filter">
+        <base-input
+          id="filter"
+          :type="filter.type"
+          :placeholder="filter.placeholder"
+          :value="filter.value"
+          classValue="mb-none"
+          :noLabel="true"
+          @file-change-handler="fileChangeHandler"
+        />
+      </div>
     </base-card>
     <base-spinner v-if="isLoading" />
     <ul class="contacts-menu" v-else>
@@ -36,11 +47,23 @@ export default {
   data() {
     return {
       isLoading: false,
+      filter: {
+        type: "text",
+        value: "",
+        placeholder: "Find Contact",
+      },
     };
   },
   computed: {
     contactsList() {
-      return this.$store.getters["contacts/getContacts"];
+      const regex = new RegExp(`^${this.filter.value}`, "i");
+      let contacts = this.$store.getters["contacts/getContacts"];
+
+      if (this.filter.value) {
+        contacts = contacts.filter((contact) => regex.test(contact.name));
+      }
+
+      return contacts;
     },
   },
   methods: {
@@ -52,6 +75,9 @@ export default {
         console.log(e);
       }
       this.isLoading = false;
+    },
+    fileChangeHandler(target) {
+      this.filter.value = target.value;
     },
   },
   created() {
@@ -69,6 +95,10 @@ export default {
 .contacts-header {
   display: flex;
   justify-content: space-between;
+  padding: 16px;
+}
+
+.contacts__filter {
   padding: 16px;
 }
 
