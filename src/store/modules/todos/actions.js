@@ -1,6 +1,6 @@
-// import axios from '../../../util/axios';
-
 import axios from "../../../util/axios";
+
+import { timeWithoutSec } from "../../../util/dates";
 
 const actions = {
   async getTodos({ commit, rootGetters }, payload) {
@@ -8,11 +8,20 @@ const actions = {
       const userId = rootGetters["auth/getUserId"];
       const dateTimestamps = payload.getTime();
 
-      console.log(dateTimestamps);
-
       const response = await axios(`todos/${userId}/${dateTimestamps}`);
 
-      commit("addTodos", response.data);
+      const transformedData = [];
+
+      response.data.forEach((todo) => {
+        const newTodo = {
+          ...todo,
+          time: timeWithoutSec(todo.time),
+        };
+
+        transformedData.push(newTodo);
+      });
+
+      commit("addTodos", transformedData);
     } catch (e) {
       console.log(e);
     }

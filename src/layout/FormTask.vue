@@ -1,10 +1,10 @@
 <template>
   <base-form
     :submitHandler="submitHandler"
-    :submitDescription="isEditing ? 'Edit Contact' : 'Add Contact'"
+    :submitDescription="isEditing ? 'Edit Task' : 'Add Task'"
   >
     <template v-slot:form-header>
-      <h2>{{ isEditing ? "Edit" : "Add" }} Contact</h2>
+      <h2>{{ isEditing ? "Edit" : "Add" }} Task</h2>
     </template>
     <template v-slot:form-inputs>
       <base-input
@@ -18,7 +18,7 @@
       />
     </template>
     <template v-slot:form-aditional-action>
-      <base-button :isLink="true" path="/contacts" type="button" mode="unstyled"
+      <base-button :isLink="true" path="/tasks" type="button" mode="unstyled"
         >Cancel</base-button
       >
     </template>
@@ -32,46 +32,25 @@ export default {
   data() {
     return {
       inputs: {
-        contactPhoto: {
-          type: "file",
-          showValue: "",
-          value: "",
-          placeholder: "Contact name",
-          isValid: true,
-          isRequired: true,
-          errorMsg: "A contact name is required",
-        },
-        name: {
+        description: {
           type: "text",
           value: "",
-          placeholder: "Contact name",
+          placeholder: "Task description",
           isValid: true,
           isRequired: true,
-          errorMsg: "A contact name is required",
+          errorMsg: "A description is required",
         },
-        email: {
-          type: "email",
+        time: {
+          type: "time",
           value: "",
-          placeholder: "Contact email",
           isValid: true,
           isRequired: false,
-          errorMsg: "Invalid email address",
         },
-        phone: {
-          type: "tel",
+        date: {
+          type: "date",
           value: "",
-          placeholder: "Contact phone",
           isValid: true,
-          isRequired: false,
-          errorMsg: "Invalid phone number",
-        },
-        address: {
-          type: "text",
-          value: "",
-          placeholder: "Contact address",
-          isValid: true,
-          isRequired: false,
-          errorMsg: "Invalid address",
+          isRequired: true,
         },
       },
     };
@@ -91,20 +70,11 @@ export default {
   },
   methods: {
     submitHandler() {
-      const formData = new Form(this.inputs).buildFormData(this.isEditing);
-      this.$store.dispatch("contacts/storeUpdateContact", {
-        formData,
-        isEditing: this.isEditing,
-        contactId: +this.$route.params.id,
-      });
+      const formData = new Form(this.inputs).buildFormObj(this.isEditing);
+      console.log(formData);
     },
     fileChangeHandler(target) {
-      if (target.type === "file") {
-        this.inputs[target.id].value = target.files[0];
-        this.inputs[target.id].showValue = URL.createObjectURL(target.files[0]);
-      } else {
-        this.inputs[target.id].value = target.value;
-      }
+      this.inputs[target.id].value = target.value;
     },
     addContactData(data) {
       Object.keys(this.inputs).forEach((input) => {

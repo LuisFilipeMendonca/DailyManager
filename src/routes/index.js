@@ -7,6 +7,7 @@ import TasksPage from "../pages/Tasks.vue";
 import NotesPage from "../pages/Notes.vue";
 
 import FormContact from "../layout/FormContact.vue";
+import FormTask from "../layout/FormTask.vue";
 
 const routes = [
   {
@@ -38,6 +39,16 @@ const routes = [
     path: "/tasks",
     name: "Tasks",
     component: TasksPage,
+    children: [
+      {
+        path: "add",
+        component: FormTask,
+      },
+      {
+        path: "edit/:id",
+        component: FormTask,
+      },
+    ],
   },
   {
     path: "/notes",

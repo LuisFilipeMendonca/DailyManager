@@ -16,6 +16,18 @@ class Form {
 
     return formData;
   }
+
+  buildFormObj(isEditing) {
+    const data = {};
+
+    console.log(isEditing);
+
+    Object.keys(this.inputs).forEach((input) => {
+      data[input] = this.inputs[input].value;
+    });
+
+    return data;
+  }
 }
 
 export default Form;
