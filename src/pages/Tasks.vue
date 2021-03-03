@@ -18,6 +18,7 @@
         :key="task.id"
         :time="task.time"
         :description="task.description"
+        :id="task.id"
       />
     </ul>
   </section>

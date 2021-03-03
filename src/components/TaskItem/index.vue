@@ -5,8 +5,10 @@
         <p class="task__description">{{ description }}</p>
         <div class="task__actions">
           <base-button mode="flatten">Check</base-button>
-          <base-button mode="flatten">Edit</base-button>
-          <base-button mode="flatten">Delete</base-button>
+          <base-button :isLink="true" :path="editPath" mode="flatten"
+            >Edit</base-button
+          >
+          <base-button @click="deleteTask" mode="flatten">Delete</base-button>
         </div>
       </div>
       <span v-if="time" class="task__time">{{ time }}</span>
@@ -16,10 +18,18 @@
 
 <script>
 export default {
-  props: ["time", "description"],
+  props: ["time", "description", "id"],
   computed: {
     hasTime() {
       return !!this.time;
+    },
+    editPath() {
+      return `/tasks/edit/${this.id}`;
+    },
+  },
+  methods: {
+    deleteTask() {
+      this.$store.dispatch("todos/deleteTask", this.id);
     },
   },
 };

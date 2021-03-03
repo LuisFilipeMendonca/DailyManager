@@ -42,13 +42,13 @@ export default {
         },
         time: {
           type: "time",
-          value: "",
+          value: null,
           isValid: true,
           isRequired: false,
         },
         date: {
           type: "date",
-          value: "",
+          value: null,
           isValid: true,
           isRequired: true,
         },
@@ -56,12 +56,12 @@ export default {
     };
   },
   created() {
-    const contactId = +this.$route.params.id;
+    const taskId = +this.$route.params.id;
 
-    if (!contactId) return;
+    if (!taskId) return;
 
-    const contactData = this.$store.getters["contacts/getContact"](contactId);
-    this.addContactData(contactData);
+    const taskData = this.$store.getters["todos/getTask"](taskId);
+    this.addTaskData(taskData);
   },
   computed: {
     isEditing() {
@@ -71,18 +71,18 @@ export default {
   methods: {
     submitHandler() {
       const formData = new Form(this.inputs).buildFormObj(this.isEditing);
-      console.log(formData);
+      this.$store.dispatch("todos/storeUpdateTask", {
+        formData,
+        isEditing: this.isEditing,
+        taskId: +this.$route.params.id,
+      });
     },
     fileChangeHandler(target) {
       this.inputs[target.id].value = target.value;
     },
-    addContactData(data) {
+    addTaskData(data) {
       Object.keys(this.inputs).forEach((input) => {
-        if (this.inputs[input].type === "file") {
-          this.inputs[input].showValue = data.photoUrl;
-        } else {
-          this.inputs[input].value = data[input];
-        }
+        this.inputs[input].value = data[input];
       });
     },
   },

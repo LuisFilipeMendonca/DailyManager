@@ -1,12 +1,11 @@
-const objSort = (a, b, field) => {
-  if (a[field] > b[field]) return 1;
-  if (a[field] < b[field]) return -1;
-  return 0;
-};
+import { objSort } from "../../../util/generics.js";
 
 const getters = {
   getContacts: (state) => {
-    const sortedList = state.contactsList.sort((a, b) => objSort(a, b, "name"));
+    const sortedList = state.contactsList.sort(
+      ({ name: aName }, { name: bName }) => objSort(aName, bName)
+    );
+
     return sortedList;
   },
   getContact: (state) => (id) => {
