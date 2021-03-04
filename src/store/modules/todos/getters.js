@@ -1,9 +1,9 @@
 const getters = {
   getTodos(state) {
+    console.log(state.todosList);
     return state.todosList;
   },
   getTask: (state) => (id) => {
-    console.log(id);
     return state.todosList.find((task) => task.id === id);
   },
 };

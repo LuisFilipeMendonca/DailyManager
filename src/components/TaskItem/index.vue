@@ -1,10 +1,13 @@
 <template>
   <base-card>
     <li class="task">
+      <span class="task__checked" v-if="checked">
+        <font-awesome-icon icon="check" />
+      </span>
       <div class="task__details" :class="{ 'task__details--time': hasTime }">
         <p class="task__description">{{ description }}</p>
-        <div class="task__actions">
-          <base-button mode="flatten">Check</base-button>
+        <div class="task__actions" v-if="!checked">
+          <base-button mode="flatten" @click="checkHandler">Check</base-button>
           <base-button :isLink="true" :path="editPath" mode="flatten"
             >Edit</base-button
           >
@@ -18,7 +21,7 @@
 
 <script>
 export default {
-  props: ["time", "description", "id", "date"],
+  props: ["time", "description", "id", "date", "checked", "taskDate"],
   computed: {
     hasTime() {
       return !!this.time;
@@ -31,6 +34,14 @@ export default {
     deleteTask() {
       this.$store.dispatch("todos/deleteTask", this.id);
     },
+    checkHandler() {
+      this.$store.dispatch("todos/storeUpdateTask", {
+        formData: { checked: true, date: this.taskDate },
+        isEditing: true,
+        taskId: this.id,
+        atualDate: new Date(this.date).getTime(),
+      });
+    },
   },
 };
 </script>
@@ -40,6 +51,12 @@ export default {
   display: flex;
   padding: 16px;
   align-items: center;
+}
+
+.task__checked {
+  padding-right: 16px;
+  color: var(--secondary);
+  display: flex;
 }
 
 .task__time {
@@ -55,8 +72,8 @@ export default {
   border-right: 1px solid var(--secondary);
 }
 
-.task__description {
-  margin-bottom: 8px;
+.task__actions {
+  margin-top: 8px;
 }
 
 .task__actions > *:not(:last-child) {

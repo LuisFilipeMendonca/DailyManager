@@ -32,8 +32,6 @@ const actions = {
       let response;
       let taskDate = new Date(formData.date).getTime();
 
-      console.log(atualDate, taskDate);
-
       if (isEditing) {
         response = await axios.put(`todos/${taskId}`, formData);
         if (atualDate !== taskDate) commit("deleteTask", response.data.id);

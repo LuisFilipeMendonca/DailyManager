@@ -6,8 +6,8 @@ export default [
   },
   {
     path: "/notes",
-    icon: "sticky-note",
-    description: "Notes",
+    icon: "stopwatch",
+    description: "Task Chronometer",
   },
   {
     path: "/contacts",
@@ -17,6 +17,6 @@ export default [
   {
     path: "/expenses",
     icon: "coins",
-    description: "Coins",
+    description: "Account",
   },
 ];

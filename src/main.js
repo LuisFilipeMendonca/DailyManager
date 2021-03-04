@@ -3,11 +3,12 @@ import App from "./App.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faTasks,
-  faStickyNote,
+  faStopwatch,
   faAddressCard,
   faCoins,
   faUserCircle,
   faPlusCircle,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -23,11 +24,12 @@ import BaseSpinner from "./components/BaseSpinner";
 const app = createApp(App);
 
 library.add(faTasks);
-library.add(faStickyNote);
+library.add(faStopwatch);
 library.add(faAddressCard);
 library.add(faCoins);
 library.add(faUserCircle);
 library.add(faPlusCircle);
+library.add(faCheck);
 
 app.use(router);
 app.use(store);

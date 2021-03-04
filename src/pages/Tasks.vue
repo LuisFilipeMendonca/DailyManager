@@ -27,7 +27,9 @@
         :time="task.time"
         :description="task.description"
         :id="task.id"
-        :date="date"
+        :date="date.value"
+        :checked="task.checked"
+        :taskDate="task.date"
       />
     </ul>
   </section>

@@ -50,6 +50,7 @@ export default {
   transform: translate(-50%, 0);
   opacity: 0;
   transition: all 0.3s linear;
+  text-align: center;
 }
 
 .link:hover .link__description {
