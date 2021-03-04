@@ -4,7 +4,7 @@ import HomePage from "../pages/Home.vue";
 import ContactsPage from "../pages/Contacts.vue";
 import ExpensesPage from "../pages/Expenses.vue";
 import TasksPage from "../pages/Tasks.vue";
-import NotesPage from "../pages/Notes.vue";
+import ChronometerPage from "../pages/Chronometer.vue";
 
 import FormContact from "../layout/FormContact.vue";
 import FormTask from "../layout/FormTask.vue";
@@ -53,7 +53,7 @@ const routes = [
   {
     path: "/notes",
     name: "Notes",
-    component: NotesPage,
+    component: ChronometerPage,
   },
 ];
 

@@ -22,6 +22,7 @@
       :id="id"
       :value="value"
       :disabled="disabled"
+      :required="type === 'date' ? true : null"
       @input="fileChangeHandler"
     />
     <label v-if="!noLabel" class="input__label" :for="id">{{ id }}</label>
