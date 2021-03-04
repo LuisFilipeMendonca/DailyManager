@@ -75,6 +75,7 @@ export default {
         formData,
         isEditing: this.isEditing,
         taskId: +this.$route.params.id,
+        atualDate: +this.$route.query.date,
       });
     },
     fileChangeHandler(target) {

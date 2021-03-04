@@ -1,5 +1,4 @@
 import { objSort } from "../../../util/generics.js";
-import { timeWithoutSec } from "../../../util/dates";
 
 const mutations = {
   addTodos(state, payload) {
@@ -20,10 +19,7 @@ const mutations = {
   },
   updateTask(state, payload) {
     const taskIdx = state.todosList.findIndex((task) => task.id === payload.id);
-    state.todosList[taskIdx] = {
-      ...payload,
-      time: timeWithoutSec(payload.time),
-    };
+    state.todosList[taskIdx] = payload;
   },
   deleteTask(state, payload) {
     const taskIdx = state.todosList.findIndex((task) => task.id === payload);

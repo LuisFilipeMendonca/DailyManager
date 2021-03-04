@@ -28,17 +28,22 @@ const actions = {
   },
   async storeUpdateTask({ commit, rootGetters }, data) {
     try {
-      let { formData, isEditing, taskId } = data;
+      let { formData, isEditing, taskId, atualDate } = data;
       let response;
+      let taskDate = new Date(formData.date).getTime();
+
+      console.log(atualDate, taskDate);
 
       if (isEditing) {
         response = await axios.put(`todos/${taskId}`, formData);
-
-        commit("updateTask", response.data);
+        if (atualDate !== taskDate) commit("deleteTask", response.data.id);
+        else commit("updateTask", response.data);
       } else {
         const userId = rootGetters["auth/getUserId"];
         formData = { ...formData, userId };
         response = await axios.post("todos", formData);
+
+        if (atualDate !== taskDate) return;
 
         commit("addTask", response.data);
       }

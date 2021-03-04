@@ -18,13 +18,13 @@
 
 <script>
 export default {
-  props: ["time", "description", "id"],
+  props: ["time", "description", "id", "date"],
   computed: {
     hasTime() {
       return !!this.time;
     },
     editPath() {
-      return `/tasks/edit/${this.id}`;
+      return `/tasks/edit/${this.id}?date=${new Date(this.date).getTime()}`;
     },
   },
   methods: {

@@ -2,8 +2,8 @@ import { objSort } from "../../../util/generics.js";
 
 const getters = {
   getContacts: (state) => {
-    const sortedList = state.contactsList.sort(
-      ({ name: aName }, { name: bName }) => objSort(aName, bName)
+    const sortedList = state.contactsList.sort(({ name: a }, { name: b }) =>
+      objSort(a, b)
     );
 
     return sortedList;

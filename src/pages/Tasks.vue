@@ -5,7 +5,7 @@
       <header class="tasks__header">
         <h1 class="header__title">{{ formatedDate }}</h1>
         <div class="header__actions">
-          <base-button :isLink="true" path="/tasks/add" mode="outline"
+          <base-button :isLink="true" :path="addTaskUrl" mode="outline"
             >Add Task</base-button
           >
           <base-button mode="flatten">Calendar</base-button>
@@ -19,6 +19,7 @@
         :time="task.time"
         :description="task.description"
         :id="task.id"
+        :date="date"
       />
     </ul>
   </section>
@@ -52,6 +53,9 @@ export default {
     },
     formatedDate() {
       return dateFormated(this.date);
+    },
+    addTaskUrl() {
+      return `/tasks/add?date=${this.date.getTime()}`;
     },
   },
   created() {
