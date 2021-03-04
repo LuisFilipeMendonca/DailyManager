@@ -8,7 +8,15 @@
           <base-button :isLink="true" :path="addTaskUrl" mode="outline"
             >Add Task</base-button
           >
-          <base-button mode="flatten">Calendar</base-button>
+          <base-input
+            id="filter"
+            :type="date.type"
+            :value="inputDateFormat"
+            classValue="mb-none"
+            :noLabel="true"
+            :disabled="date.isDisabled"
+            @file-change-handler="fileChangeHandler"
+          />
         </div>
       </header>
     </base-card>
@@ -35,16 +43,24 @@ export default {
   },
   data() {
     return {
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      ),
+      another: "true",
+      date: {
+        type: "date",
+        value: new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate()
+        ),
+        isDisabled: false,
+      },
     };
   },
   methods: {
     async fetchTodos() {
-      this.$store.dispatch("todos/getTodos", this.date);
+      this.$store.dispatch("todos/getTodos", this.date.value);
+    },
+    fileChangeHandler(target) {
+      this.date.value = new Date(target.value);
     },
   },
   computed: {
@@ -52,10 +68,25 @@ export default {
       return this.$store.getters["todos/getTodos"];
     },
     formatedDate() {
-      return dateFormated(this.date);
+      return dateFormated(this.date.value);
     },
     addTaskUrl() {
-      return `/tasks/add?date=${this.date.getTime()}`;
+      return `/tasks/add?date=${this.date.value.getTime()}`;
+    },
+    inputDateFormat() {
+      return dateFormated(this.date.value, true);
+    },
+  },
+  watch: {
+    "date.value": function() {
+      this.fetchTodos();
+    },
+    $route(newValue) {
+      if (newValue.fullPath !== "/tasks") {
+        this.date.isDisabled = true;
+      } else {
+        this.date.isDisabled = false;
+      }
     },
   },
   created() {
@@ -85,6 +116,7 @@ export default {
 .header__actions {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .header__actions > *:not(:last-child) {

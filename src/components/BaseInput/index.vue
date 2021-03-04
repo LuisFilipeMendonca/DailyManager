@@ -21,6 +21,7 @@
       :placeholder="placeholder"
       :id="id"
       :value="value"
+      :disabled="disabled"
       @input="fileChangeHandler"
     />
     <label v-if="!noLabel" class="input__label" :for="id">{{ id }}</label>
@@ -29,7 +30,15 @@
 
 <script>
 export default {
-  props: ["id", "type", "placeholder", "value", "classValue", "noLabel"],
+  props: [
+    "id",
+    "type",
+    "placeholder",
+    "value",
+    "classValue",
+    "noLabel",
+    "disabled",
+  ],
   emits: ["file-change-handler"],
   methods: {
     fileChangeHandler(e) {
