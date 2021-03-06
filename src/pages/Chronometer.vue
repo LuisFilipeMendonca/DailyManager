@@ -5,7 +5,8 @@
         <span class="chronometer__time">{{ formatChronometer }}</span>
         <div class="chronometer__actions">
           <button @click="startChronometer">Start</button>
-          <button>Stop</button>
+          <button @click="pauseChronometer">Pause</button>
+          <button @click="stopChronometer">Stop</button>
         </div>
       </div>
     </base-card>
@@ -18,6 +19,7 @@ export default {
     return {
       secs: 0,
       timer: null,
+      status: "pause",
     };
   },
   methods: {
@@ -25,6 +27,13 @@ export default {
       this.timer = setInterval(() => {
         this.secs++;
       }, 1000);
+    },
+    pauseChronometer() {
+      clearInterval(this.timer);
+    },
+    stopChronometer() {
+      clearInterval(this.timer);
+      this.secs = 0;
     },
     addZero(val) {
       return val > 9 ? val : `0${val}`;
