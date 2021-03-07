@@ -1,4 +1,27 @@
 <template>
+  <base-dialog :isOpen="isDialogOpen" @close="toggleDialog">
+    <base-form submitDescription="Add">
+      <template v-slot:form-header>
+        <h2>Add timer description</h2>
+      </template>
+      <template v-slot:form-inputs>
+        <base-input
+          v-for="(input, name) in inputs"
+          :key="name"
+          :id="name"
+          :type="input.type"
+          :placeholder="input.placeholder"
+          :value="input.type === 'file' ? input.showValue : input.value"
+          @file-change-handler="fileChangeHandler"
+        />
+      </template>
+      <template v-slot:form-aditional-action>
+        <base-button @click="toggleDialog" type="button" mode="unstyled"
+          >Cancel</base-button
+        >
+      </template>
+    </base-form>
+  </base-dialog>
   <section class="chronometer">
     <base-card>
       <div class="chronometer__container">
@@ -19,17 +42,31 @@ export default {
     return {
       secs: 0,
       timer: null,
-      status: "pause",
+      status: "paused",
+      isDialogOpen: false,
+      inputs: {
+        description: {
+          type: "text",
+          value: "",
+          placeholder: "Timer description",
+          isValid: true,
+        },
+      },
     };
   },
   methods: {
     startChronometer() {
+      if (this.status === "started") return;
+
+      this.status = "started";
       this.timer = setInterval(() => {
         this.secs++;
       }, 1000);
     },
     pauseChronometer() {
+      this.status = "paused";
       clearInterval(this.timer);
+      this.toggleDialog();
     },
     stopChronometer() {
       clearInterval(this.timer);
@@ -37,6 +74,12 @@ export default {
     },
     addZero(val) {
       return val > 9 ? val : `0${val}`;
+    },
+    toggleDialog() {
+      this.isDialogOpen = !this.isDialogOpen;
+    },
+    fileChangeHandler(target) {
+      this.inputs.description.value = target.value;
     },
   },
   computed: {

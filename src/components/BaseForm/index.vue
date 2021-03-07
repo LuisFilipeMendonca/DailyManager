@@ -27,6 +27,7 @@ export default {
 .form__header {
   padding: 16px;
   text-align: center;
+  color: var(--primary-light);
 }
 
 .form {
