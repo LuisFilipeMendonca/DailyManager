@@ -45,7 +45,6 @@ export default {
   },
   data() {
     return {
-      another: "true",
       date: {
         type: "date",
         value: new Date(
