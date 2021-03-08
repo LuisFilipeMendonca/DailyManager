@@ -1,6 +1,6 @@
 <template>
   <router-view></router-view>
-  <section class="contacts">
+  <section class="section">
     <base-card>
       <header class="contacts-header">
         <h1 class="contacts-header__title">Contacts</h1>
@@ -87,19 +87,14 @@ export default {
 </script>
 
 <style scoped>
-.contacts {
-  width: 100%;
-  padding: 24px 0;
+.badge {
+  padding: 16px;
 }
 
 .contacts-header {
   display: flex;
   justify-content: space-between;
-  padding: 16px;
-}
-
-.contacts__filter {
-  padding: 16px;
+  margin-bottom: 16px;
 }
 
 .contacts-menu {
@@ -108,5 +103,11 @@ export default {
 
 .contacts-menu > *:not(:last-child) {
   margin-bottom: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .contacts-menu {
+    margin-top: 24px;
+  }
 }
 </style>

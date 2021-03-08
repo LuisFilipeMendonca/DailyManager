@@ -64,6 +64,22 @@ input {
 
 .main {
   height: 100%;
-  padding: 60px 16px 16px;
+  padding: 60px 8px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section {
+  padding: 8px 0;
+}
+
+@media screen and (min-width: 576px) {
+  .main {
+    padding: 60px 16px 0;
+  }
+
+  .section {
+    padding: 16px 0;
+  }
 }
 </style>

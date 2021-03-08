@@ -1,6 +1,6 @@
 <template>
   <router-view></router-view>
-  <section class="tasks">
+  <section class="section">
     <base-card>
       <header class="tasks__header">
         <h1 class="header__title">{{ formatedDate }}</h1>
@@ -97,11 +97,6 @@ export default {
 </script>
 
 <style scoped>
-.tasks {
-  width: 100%;
-  padding: 24px 0;
-}
-
 .tasks__header {
   display: flex;
   justify-content: space-between;
@@ -130,5 +125,20 @@ export default {
 
 .tasks__menu > *:not(:last-child) {
   margin-bottom: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .header__actions {
+    flex-direction: row;
+  }
+
+  .header__actions > *:not(:last-child) {
+    margin-bottom: 0;
+    margin-right: 16px;
+  }
+
+  .tasks__menu {
+    margin-top: 24px;
+  }
 }
 </style>

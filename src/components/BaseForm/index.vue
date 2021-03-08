@@ -1,5 +1,5 @@
 <template>
-  <section class="section-form">
+  <section class="section">
     <base-card>
       <header class="form__header">
         <slot name="form-header" />
@@ -41,5 +41,23 @@ export default {
 
 .form__actions > *:not(:last-child) {
   margin-right: 16px;
+}
+
+@media screen and (min-width: 576px) {
+  .form {
+    padding: 16px 32px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .form {
+    padding: 16px 64px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .form {
+    padding: 16px 128px;
+  }
 }
 </style>

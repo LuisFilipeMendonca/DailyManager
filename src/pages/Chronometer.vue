@@ -22,7 +22,7 @@
       </template>
     </base-form>
   </base-dialog>
-  <section class="chronometer">
+  <section class="section">
     <base-card>
       <div class="chronometer__container">
         <h2 v-if="inputs.description.value">{{ inputs.description.value }}</h2>
@@ -41,6 +41,7 @@
         :id="chronometer.id"
         :time="convertChronometerFormat(chronometer.time)"
         :description="chronometer.description"
+        :selectedId="selectedChronometer"
         @selectChronometer="selectChronometer"
       >
       </chronometer-item>
@@ -185,5 +186,21 @@ export default {
 
 .chronometer__menu > *:not(:last-child) {
   margin-bottom: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .chronometer__menu {
+    margin-top: 24px;
+    gap: 24px;
+    display: flex;
+  }
+
+  .chronometer__menu > *:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .chronometer__menu > * {
+    width: 50%;
+  }
 }
 </style>
