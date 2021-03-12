@@ -182,6 +182,7 @@ export default {
 
 .chronometer__menu {
   margin-top: 16px;
+  display: grid;
 }
 
 .chronometer__menu > *:not(:last-child) {
@@ -191,16 +192,12 @@ export default {
 @media screen and (min-width: 768px) {
   .chronometer__menu {
     margin-top: 24px;
-    gap: 24px;
-    display: flex;
+    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .chronometer__menu > *:not(:last-child) {
     margin-bottom: 0;
-  }
-
-  .chronometer__menu > * {
-    width: 50%;
   }
 }
 </style>
