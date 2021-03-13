@@ -6,9 +6,7 @@ const accountsModule = {
   namespaced: true,
   state() {
     return {
-      account: {
-        currentMonthTransactions: [],
-      },
+      account: {},
     };
   },
   getters,
