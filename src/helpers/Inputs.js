@@ -1,10 +1,10 @@
 class Inputs {
   constructor(inputs) {
-    this.inputs = inputs;
+    this._inputs = inputs;
   }
 
-  get _inputs() {
-    return this.inputs;
+  get inputs() {
+    return this._inputs;
   }
 
   changeHandler(target) {
@@ -12,8 +12,18 @@ class Inputs {
     this.inputs[inputIdx].value = target.value;
   }
 
+  focusHandler(target) {
+    const inputIdx = this.inputs.findIndex((input) => input.id === target.id);
+    this.inputs[inputIdx].isValid = true;
+  }
+
   isInvalidHandler(target) {
-    console.log(target);
+    const inputIdx = this.inputs.findIndex((input) => input.id === target.id);
+    this.inputs[inputIdx].isValid = false;
+  }
+
+  clearValues() {
+    this._inputs = this.inputs.map((input) => ({ ...input, value: "" }));
   }
 }
 

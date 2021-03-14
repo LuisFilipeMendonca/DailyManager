@@ -17,25 +17,28 @@ class Form {
     return formData;
   }
 
-  buildFormObj(isEditing) {
+  buildFormObj() {
     const data = {};
-
-    console.log(isEditing);
-
     Object.keys(this.inputs).forEach((input) => {
       data[input] = this.inputs[input].value;
     });
-
     return data;
   }
 
   isValid() {
     const inputs = this.inputs._inputs;
+    let isFormValid = true;
 
     inputs.forEach((input) => {
-      console.log(input);
-      this.inputs.isInvalidHandler(input);
+      const isInputValid = input.validator(input);
+
+      if (!isInputValid) {
+        this.inputs.isInvalidHandler(input);
+        isFormValid = false;
+      }
     });
+
+    return isFormValid;
   }
 }
 

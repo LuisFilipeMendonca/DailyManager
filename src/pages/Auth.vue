@@ -15,7 +15,9 @@
         :type="input.type"
         :placeholder="input.placeholder"
         :value="input.type === 'file' ? input.showValue : input.value"
+        :isValid="input.isValid"
         @file-change-handler="fileChangeHandler"
+        @focus-handler="focusHandler"
       />
     </template>
     <template v-slot:form-aditional-action>
@@ -53,17 +55,25 @@ export default {
       } else {
         this.inputsData = registerInputs;
       }
+      this.inputsData.clearValues();
     },
     submitHandler() {
-      new Form(this.inputsData).isValid();
+      const form = new Form(this.inputsData);
+
+      if (!form.isValid()) return;
+
+      console.log("is valid");
     },
     fileChangeHandler(target) {
       this.inputsData.changeHandler(target);
     },
+    focusHandler(target) {
+      this.inputsData.focusHandler(target);
+    },
   },
   computed: {
     inputs() {
-      return this.inputsData._inputs;
+      return this.inputsData.inputs;
     },
   },
 };

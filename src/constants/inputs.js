@@ -1,3 +1,5 @@
+import Validator from "../helpers/Validator";
+
 export const loginInputs = [
   {
     id: "email",
@@ -8,6 +10,7 @@ export const loginInputs = [
     isValid: true,
     isRequired: true,
     errorMsg: "Your email is invalid",
+    validator: Validator.isEmail,
   },
   {
     id: "password",
@@ -18,6 +21,8 @@ export const loginInputs = [
     isRequired: true,
     isValid: true,
     errorMsg: "Your password is invalid",
+    minLength: 8,
+    validator: Validator.hasLength,
   },
 ];
 
@@ -31,6 +36,7 @@ export const registerInputs = [
     isRequired: true,
     isValid: true,
     errorMsg: "First name is required",
+    validator: Validator.hasValue,
   },
   {
     id: "lastName",
@@ -41,5 +47,6 @@ export const registerInputs = [
     isRequired: true,
     isValid: true,
     errorMsg: "Last name is required",
+    validator: Validator.hasValue,
   },
 ];

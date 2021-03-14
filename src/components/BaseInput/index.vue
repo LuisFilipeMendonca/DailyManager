@@ -17,6 +17,7 @@
   <div v-else class="input" :class="classValue">
     <input
       class="input__elem"
+      :class="{ 'input__elem--invalid': !isValid }"
       :type="type"
       :placeholder="placeholder"
       :id="id"
@@ -24,6 +25,7 @@
       :disabled="disabled"
       :required="type === 'date' ? true : null"
       @input="fileChangeHandler"
+      @focus="focusHandler"
     />
     <label v-if="!noLabel" class="input__label" :for="id">{{ label }}</label>
   </div>
@@ -40,11 +42,15 @@ export default {
     "classValue",
     "noLabel",
     "disabled",
+    "isValid",
   ],
-  emits: ["file-change-handler"],
+  emits: ["file-change-handler", "focus-handler"],
   methods: {
     fileChangeHandler(e) {
       this.$emit("file-change-handler", e.target);
+    },
+    focusHandler(e) {
+      this.$emit("focus-handler", e.target);
     },
   },
 };
@@ -69,6 +75,10 @@ export default {
 
 .input__elem:focus {
   border-color: var(--secondary);
+}
+
+.input__elem--invalid {
+  border-color: red;
 }
 
 .input__label {
