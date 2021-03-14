@@ -16,6 +16,11 @@ class Validator {
     const { value, minLength, maxLength = Infinity } = target;
     return value.trim().length >= minLength && value.trim().length <= maxLength;
   }
+
+  static isFileValid(target) {
+    const { value, validExtensions } = target;
+    return validExtensions.some((extension) => extension === value.type);
+  }
 }
 
 export default Validator;

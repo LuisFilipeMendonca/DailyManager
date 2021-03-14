@@ -1,6 +1,6 @@
 class Form {
   constructor(inputs) {
-    this.inputs = inputs;
+    this.formInputs = inputs;
   }
 
   buildFormData(isEditing) {
@@ -18,23 +18,26 @@ class Form {
   }
 
   buildFormObj() {
+    const inputs = this.formInputs.inputs;
     const data = {};
-    Object.keys(this.inputs).forEach((input) => {
-      data[input] = this.inputs[input].value;
+    inputs.forEach((input) => {
+      data[input.id] = input.value;
     });
     return data;
   }
 
   isValid() {
-    const inputs = this.inputs._inputs;
+    const inputs = this.formInputs.inputs;
     let isFormValid = true;
 
     inputs.forEach((input) => {
-      const isInputValid = input.validator(input);
+      if ((input.value.length !== 0 && !input.isRequired) || input.isRequired) {
+        const isInputValid = input.validator(input);
 
-      if (!isInputValid) {
-        this.inputs.isInvalidHandler(input);
-        isFormValid = false;
+        if (!isInputValid) {
+          this.formInputs.isInvalidHandler(input);
+          isFormValid = false;
+        }
       }
     });
 

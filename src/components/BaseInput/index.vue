@@ -5,10 +5,19 @@
       :type="type"
       :placeholder="placeholder"
       :id="id"
-      @change="fileChangeHandler"
+      @change="changeHandler"
     />
-    <label class="input__label--file" :for="id">
-      <img v-if="value" :src="value" alt="contact photo" class="input__photo" />
+    <label
+      class="input__label--file"
+      :class="{ 'input__label--invalid': !isValid }"
+      :for="id"
+    >
+      <img
+        v-if="value"
+        :src="filePreview"
+        alt="contact photo"
+        class="input__photo"
+      />
       <span class="input__icon">
         <font-awesome-icon icon="plus-circle" />
       </span>
@@ -24,7 +33,7 @@
       :value="value"
       :disabled="disabled"
       :required="type === 'date' ? true : null"
-      @input="fileChangeHandler"
+      @input="changeHandler"
       @focus="focusHandler"
     />
     <label v-if="!noLabel" class="input__label" :for="id">{{ label }}</label>
@@ -44,13 +53,20 @@ export default {
     "disabled",
     "isValid",
   ],
-  emits: ["file-change-handler", "focus-handler"],
+  emits: ["change-handler", "focus-handler"],
   methods: {
-    fileChangeHandler(e) {
-      this.$emit("file-change-handler", e.target);
+    changeHandler(e) {
+      console.log("ola");
+      this.$emit("change-handler", e.target);
     },
     focusHandler(e) {
       this.$emit("focus-handler", e.target);
+    },
+  },
+  computed: {
+    filePreview() {
+      console.log(URL.createObjectURL(this.value));
+      return URL.createObjectURL(this.value);
     },
   },
 };
@@ -112,6 +128,10 @@ export default {
   margin: 0 auto;
   background-color: var(--bg);
   position: relative;
+}
+
+.input__label--invalid {
+  border-color: red;
 }
 
 .input__photo {

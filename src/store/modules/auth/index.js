@@ -6,8 +6,8 @@ const authModule = {
   namespaced: true,
   state() {
     return {
-      userId: 1,
-      isLoggedIn: false,
+      userId: 2,
+      isLoggedIn: true,
     };
   },
   getters,

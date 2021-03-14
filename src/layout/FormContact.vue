@@ -8,13 +8,16 @@
     </template>
     <template v-slot:form-inputs>
       <base-input
-        v-for="(input, name) in inputs"
-        :key="name"
-        :id="name"
+        v-for="input in inputs"
+        :key="input.id"
+        :id="input.id"
+        :label="input.label"
         :type="input.type"
         :placeholder="input.placeholder"
-        :value="input.type === 'file' ? input.showValue : input.value"
-        @file-change-handler="fileChangeHandler"
+        :value="input.value"
+        :isValid="input.isValid"
+        @change-handler="changeHandler"
+        @focus-handler="focusHandler"
       />
     </template>
     <template v-slot:form-aditional-action>
@@ -27,53 +30,13 @@
 
 <script>
 import Form from "../helpers/Form";
+import Inputs from "../helpers/Inputs";
+import { contactsInputs } from "../constants/inputs";
 
 export default {
   data() {
     return {
-      inputs: {
-        contactPhoto: {
-          type: "file",
-          showValue: "",
-          value: "",
-          placeholder: "Contact name",
-          isValid: true,
-          isRequired: true,
-          errorMsg: "A contact name is required",
-        },
-        name: {
-          type: "text",
-          value: "",
-          placeholder: "Contact name",
-          isValid: true,
-          isRequired: true,
-          errorMsg: "A contact name is required",
-        },
-        email: {
-          type: "email",
-          value: "",
-          placeholder: "Contact email",
-          isValid: true,
-          isRequired: false,
-          errorMsg: "Invalid email address",
-        },
-        phone: {
-          type: "tel",
-          value: "",
-          placeholder: "Contact phone",
-          isValid: true,
-          isRequired: false,
-          errorMsg: "Invalid phone number",
-        },
-        address: {
-          type: "text",
-          value: "",
-          placeholder: "Contact address",
-          isValid: true,
-          isRequired: false,
-          errorMsg: "Invalid address",
-        },
-      },
+      inputsData: new Inputs(contactsInputs),
     };
   },
   created() {
@@ -88,23 +51,26 @@ export default {
     isEditing() {
       return !!this.$route.params.id;
     },
+    inputs() {
+      return this.inputsData.inputs;
+    },
   },
   methods: {
     submitHandler() {
-      const formData = new Form(this.inputs).buildFormData(this.isEditing);
-      this.$store.dispatch("contacts/storeUpdateContact", {
-        formData,
-        isEditing: this.isEditing,
-        contactId: +this.$route.params.id,
-      });
+      const form = new Form(this.inputsData);
+
+      if (!form.isValid()) return;
+      // this.$store.dispatch("contacts/storeUpdateContact", {
+      //   formData,
+      //   isEditing: this.isEditing,
+      //   contactId: +this.$route.params.id,
+      // });
     },
-    fileChangeHandler(target) {
-      if (target.type === "file") {
-        this.inputs[target.id].value = target.files[0];
-        this.inputs[target.id].showValue = URL.createObjectURL(target.files[0]);
-      } else {
-        this.inputs[target.id].value = target.value;
-      }
+    changeHandler(target) {
+      this.inputsData.changeHandler(target);
+    },
+    focusHandler(target) {
+      this.inputsData.focusHandler(target);
     },
     addContactData(data) {
       Object.keys(this.inputs).forEach((input) => {
