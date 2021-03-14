@@ -65,7 +65,7 @@ export default {
       if (!transactions) return null;
 
       const transactionsChartData = this.buildChartDataset(
-        "Month Balance",
+        "Current Month Balance",
         transactions
       );
 

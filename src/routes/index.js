@@ -5,6 +5,7 @@ import ContactsPage from "../pages/Contacts.vue";
 import ExpensesPage from "../pages/Expenses.vue";
 import TasksPage from "../pages/Tasks.vue";
 import ChronometerPage from "../pages/Chronometer.vue";
+import AuthPage from "../pages/Auth.vue";
 
 import FormContact from "../layout/FormContact.vue";
 import FormTask from "../layout/FormTask.vue";
@@ -54,6 +55,11 @@ const routes = [
     path: "/notes",
     name: "Notes",
     component: ChronometerPage,
+  },
+  {
+    path: "/authentication",
+    name: "Authentication",
+    component: AuthPage,
   },
 ];
 

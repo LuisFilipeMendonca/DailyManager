@@ -25,7 +25,7 @@
       :required="type === 'date' ? true : null"
       @input="fileChangeHandler"
     />
-    <label v-if="!noLabel" class="input__label" :for="id">{{ id }}</label>
+    <label v-if="!noLabel" class="input__label" :for="id">{{ label }}</label>
   </div>
 </template>
 
@@ -34,6 +34,7 @@ export default {
   props: [
     "id",
     "type",
+    "label",
     "placeholder",
     "value",
     "classValue",

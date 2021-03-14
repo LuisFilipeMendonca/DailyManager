@@ -3,9 +3,8 @@
     <h1 class="header__title">Daily Manager</h1>
     <nav>
       <ul class="nav__menu">
-        <li class="nav__item"><a class="nav__link" href="/">Login</a></li>
         <li class="nav__item">
-          <a class="nav__link nav__link--register" href="/">Register</a>
+          <router-link to="/authentication">Authenticate</router-link>
         </li>
       </ul>
     </nav>
@@ -28,24 +27,5 @@
 
 .header__title {
   color: var(--secondary);
-}
-
-.nav__menu {
-  display: flex;
-}
-
-.nav__item:not(:last-of-type) {
-  margin-right: 16px;
-}
-
-.nav__link {
-  color: #d1d1d0;
-  padding: 4px 16px;
-}
-
-.nav__link--register {
-  background-color: #d1d1d0;
-  color: #454544;
-  border-radius: 3px;
 }
 </style>

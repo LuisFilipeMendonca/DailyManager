@@ -28,6 +28,15 @@ class Form {
 
     return data;
   }
+
+  isValid() {
+    const inputs = this.inputs._inputs;
+
+    inputs.forEach((input) => {
+      console.log(input);
+      this.inputs.isInvalidHandler(input);
+    });
+  }
 }
 
 export default Form;

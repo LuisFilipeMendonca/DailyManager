@@ -7,6 +7,7 @@ const authModule = {
   state() {
     return {
       userId: 1,
+      isLoggedIn: false,
     };
   },
   getters,

@@ -32,6 +32,5 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 32px;
-  margin-top: 64px;
 }
 </style>

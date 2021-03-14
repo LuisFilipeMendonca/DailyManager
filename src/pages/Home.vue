@@ -5,7 +5,7 @@
       Trying to organize your life but seems impossible? Don't waste more time
       and register in our app.
     </h2>
-    <home-grid></home-grid>
+    <home-grid v-if="isLoggedIn"></home-grid>
   </section>
 </template>
 
@@ -15,6 +15,11 @@ import HomeGrid from "../layout/HomeGrid";
 export default {
   components: {
     "home-grid": HomeGrid,
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters["auth/isLoggedIn"];
+    },
   },
 };
 </script>
@@ -40,5 +45,6 @@ export default {
   font-size: 1.5rem;
   line-height: 32px;
   text-align: center;
+  margin-bottom: 64px;
 }
 </style>
