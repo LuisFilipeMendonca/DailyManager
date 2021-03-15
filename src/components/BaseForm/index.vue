@@ -1,20 +1,18 @@
 <template>
-  <section class="section">
-    <base-card>
-      <header class="form__header">
-        <slot name="form-header" />
-      </header>
-      <form class="form" @submit.prevent="submitHandler">
-        <slot name="form-inputs" />
-        <div class="form__actions">
-          <base-button mode="flatten" type="submit">{{
-            submitDescription
-          }}</base-button>
-          <slot name="form-aditional-action" />
-        </div>
-      </form>
-    </base-card>
-  </section>
+  <base-card>
+    <header class="form__header">
+      <slot name="form-header" />
+    </header>
+    <form class="form" @submit.prevent="submitHandler">
+      <slot name="form-inputs" />
+      <div class="form__actions">
+        <base-button mode="flatten" type="submit">{{
+          submitDescription
+        }}</base-button>
+        <slot name="form-aditional-action" />
+      </div>
+    </form>
+  </base-card>
 </template>
 
 <script>

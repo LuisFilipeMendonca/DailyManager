@@ -34,6 +34,16 @@ class Inputs {
   clearValues() {
     this._inputs = this.inputs.map((input) => ({ ...input, value: "" }));
   }
+
+  setInputsData(data) {
+    this._inputs.forEach((input) => {
+      if (input.type === "file" && data["photo"]) {
+        input.value = data["photoUrl"];
+      } else {
+        input.value = data[input.id];
+      }
+    });
+  }
 }
 
 export default Inputs;

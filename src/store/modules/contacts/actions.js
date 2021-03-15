@@ -1,9 +1,10 @@
 import axios from "../../../util/axios";
 
 const actions = {
-  async getContacts({ commit }) {
+  async getContacts({ commit, rootGetters }) {
     try {
-      const response = await axios("contacts/1");
+      const userId = rootGetters["auth/getUserId"];
+      const response = await axios(`contacts/${userId}`);
 
       commit("addContacts", response.data);
     } catch (e) {
@@ -14,6 +15,8 @@ const actions = {
     try {
       const { formData, isEditing, contactId } = data;
       let response;
+
+      console.log(isEditing);
 
       if (isEditing) {
         response = await axios.put(`contacts/${contactId}`, formData, {

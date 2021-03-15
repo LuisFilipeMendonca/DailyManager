@@ -1,76 +1,77 @@
 <template>
-  <base-form
-    :submitHandler="submitHandler"
-    :submitDescription="isEditing ? 'Edit Task' : 'Add Task'"
-  >
-    <template v-slot:form-header>
-      <h2>{{ isEditing ? "Edit" : "Add" }} Task</h2>
-    </template>
-    <template v-slot:form-inputs>
-      <base-input
-        v-for="(input, name) in inputs"
-        :key="name"
-        :id="name"
-        :type="input.type"
-        :placeholder="input.placeholder"
-        :value="input.type === 'file' ? input.showValue : input.value"
-        @file-change-handler="fileChangeHandler"
-      />
-    </template>
-    <template v-slot:form-aditional-action>
-      <base-button :isLink="true" path="/tasks" type="button" mode="unstyled"
-        >Cancel</base-button
-      >
-    </template>
-  </base-form>
+  <section class="section">
+    <base-form
+      :submitHandler="submitHandler"
+      :submitDescription="isEditing ? 'Edit Task' : 'Add Task'"
+    >
+      <template v-slot:form-header>
+        <h2>{{ isEditing ? "Edit" : "Add" }} Task</h2>
+      </template>
+      <template v-slot:form-inputs>
+        <base-input
+          v-for="input in inputs"
+          :key="input.id"
+          :id="input.id"
+          :type="input.type"
+          :label="input.label"
+          :placeholder="input.placeholder"
+          :value="input.value"
+          :isValid="input.isValid"
+          @change-handler="changeHandler"
+          @focus-handler="focusHandler"
+        />
+      </template>
+      <template v-slot:form-aditional-action>
+        <base-button :isLink="true" path="/tasks" type="button" mode="unstyled"
+          >Cancel</base-button
+        >
+      </template>
+    </base-form>
+  </section>
 </template>
 
 <script>
 import Form from "../helpers/Form";
+import Inputs from "../helpers/Inputs";
+import { taskInputs } from "../constants/inputs";
 
 export default {
   data() {
     return {
-      inputs: {
-        description: {
-          type: "text",
-          value: "",
-          placeholder: "Task description",
-          isValid: true,
-          isRequired: true,
-          errorMsg: "A description is required",
-        },
-        time: {
-          type: "time",
-          value: null,
-          isValid: true,
-          isRequired: false,
-        },
-        date: {
-          type: "date",
-          value: null,
-          isValid: true,
-          isRequired: true,
-        },
-      },
+      inputsData: new Inputs(taskInputs),
     };
   },
   created() {
-    const taskId = +this.$route.params.id;
+    this.inputsData.clearValues();
 
-    if (!taskId) return;
-
-    const taskData = this.$store.getters["todos/getTask"](taskId);
-    this.addTaskData(taskData);
+    this.getTask();
   },
   computed: {
     isEditing() {
       return !!this.$route.params.id;
     },
+    inputs() {
+      return this.inputsData.inputs;
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (from.params.id && !to.params.id) {
+        this.inputsData.clearValues();
+        return;
+      }
+
+      this.getTask();
+    },
   },
   methods: {
     submitHandler() {
-      const formData = new Form(this.inputs).buildFormObj(this.isEditing);
+      const form = new Form(this.inputsData);
+
+      if (!form.isValid()) return;
+
+      const formData = form.buildFormObj();
+
       this.$store.dispatch("todos/storeUpdateTask", {
         formData,
         isEditing: this.isEditing,
@@ -78,13 +79,18 @@ export default {
         atualDate: +this.$route.query.date,
       });
     },
-    fileChangeHandler(target) {
-      this.inputs[target.id].value = target.value;
+    changeHandler(target) {
+      this.inputsData.changeHandler(target);
     },
-    addTaskData(data) {
-      Object.keys(this.inputs).forEach((input) => {
-        this.inputs[input].value = data[input];
-      });
+    focusHandler(target) {
+      this.inputsData.focusHandler(target);
+    },
+    getTask() {
+      const taskId = +this.$route.params.id;
+
+      if (!taskId) return;
+      const taskData = this.$store.getters["todos/getTask"](taskId);
+      this.inputsData.setInputsData(taskData);
     },
   },
 };

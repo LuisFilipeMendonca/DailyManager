@@ -38,8 +38,8 @@ const actions = {
         else commit("updateTask", response.data);
       } else {
         const userId = rootGetters["auth/getUserId"];
-        formData = { ...formData, userId };
-        response = await axios.post("todos", formData);
+
+        response = await axios.post("todos", { ...formData, userId });
 
         if (atualDate !== taskDate) return;
 

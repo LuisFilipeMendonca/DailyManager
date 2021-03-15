@@ -32,7 +32,6 @@
       :id="id"
       :value="value"
       :disabled="disabled"
-      :required="type === 'date' ? true : null"
       @input="changeHandler"
       @focus="focusHandler"
     />
@@ -56,7 +55,6 @@ export default {
   emits: ["change-handler", "focus-handler"],
   methods: {
     changeHandler(e) {
-      console.log("ola");
       this.$emit("change-handler", e.target);
     },
     focusHandler(e) {
@@ -65,7 +63,9 @@ export default {
   },
   computed: {
     filePreview() {
-      console.log(URL.createObjectURL(this.value));
+      if (typeof this.value === "string") {
+        return this.value;
+      }
       return URL.createObjectURL(this.value);
     },
   },

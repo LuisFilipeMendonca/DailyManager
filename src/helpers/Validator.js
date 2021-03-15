@@ -19,7 +19,29 @@ class Validator {
 
   static isFileValid(target) {
     const { value, validExtensions } = target;
+
+    if (typeof value === "string") return true;
+
     return validExtensions.some((extension) => extension === value.type);
+  }
+
+  static isTimeValid(target) {
+    const { value } = target;
+    const hours = +value.slice(0, 2);
+    const mins = +value.slice(-2);
+    return hours < 24 && mins < 59 && !isNaN(hours) && !isNaN(hours);
+  }
+
+  static isDateValid(target) {
+    const { value } = target;
+    const atualDate = new Date();
+    const atualDateWithoutTime = new Date(
+      atualDate.getFullYear(),
+      atualDate.getMonth(),
+      atualDate.getDate()
+    ).getTime();
+    const inputDate = new Date(value).getTime();
+    return atualDateWithoutTime <= inputDate;
   }
 }
 

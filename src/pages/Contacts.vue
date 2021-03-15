@@ -16,7 +16,8 @@
           :value="filter.value"
           classValue="mb-none"
           :noLabel="true"
-          @file-change-handler="fileChangeHandler"
+          :isValid="true"
+          @change-handler="changeHandler"
         />
       </div>
     </base-card>
@@ -76,7 +77,7 @@ export default {
       }
       this.isLoading = false;
     },
-    fileChangeHandler(target) {
+    changeHandler(target) {
       this.filter.value = target.value;
     },
   },

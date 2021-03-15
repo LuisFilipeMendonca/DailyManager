@@ -56,7 +56,6 @@ export const contactsInputs = [
     id: "contactPhoto",
     label: "Contact Photo",
     type: "file",
-    showValue: "",
     value: "",
     placeholder: "Contact name",
     isValid: true,
@@ -96,6 +95,7 @@ export const contactsInputs = [
     isValid: true,
     isRequired: false,
     errorMsg: "Invalid phone number",
+    validator: Validator.hasValue,
   },
   {
     id: "address",
@@ -106,5 +106,40 @@ export const contactsInputs = [
     isValid: true,
     isRequired: false,
     errorMsg: "Invalid address",
+    validator: Validator.hasValue,
+  },
+];
+
+export const taskInputs = [
+  {
+    id: "description",
+    label: "Description",
+    type: "text",
+    placeholder: "Task description...",
+    value: "",
+    isRequired: true,
+    isValid: true,
+    errorMsg: "A description is required",
+    validator: Validator.hasValue,
+  },
+  {
+    id: "time",
+    label: "Time",
+    type: "time",
+    value: "",
+    isRequired: false,
+    isValid: true,
+    errorMsg: "Last name is required",
+    validator: Validator.isTimeValid,
+  },
+  {
+    id: "date",
+    label: "Date",
+    type: "date",
+    value: "",
+    isRequired: true,
+    isValid: true,
+    errorMsg: "Last name is required",
+    validator: Validator.isDateValid,
   },
 ];

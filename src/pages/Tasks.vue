@@ -15,7 +15,8 @@
             classValue="mb-none"
             :noLabel="true"
             :disabled="date.isDisabled"
-            @file-change-handler="fileChangeHandler"
+            :isValid="true"
+            @change-handler="changeHandler"
           />
         </div>
       </header>
@@ -60,7 +61,8 @@ export default {
     async fetchTodos() {
       this.$store.dispatch("todos/getTodos", this.date.value);
     },
-    fileChangeHandler(target) {
+    changeHandler(target) {
+      if (target.value.length <= 0) return;
       this.date.value = new Date(target.value);
     },
   },

@@ -1,31 +1,33 @@
 <template>
-  <base-form
-    :submitHandler="submitHandler"
-    :submitDescription="isLogging ? 'Login' : 'Register'"
-  >
-    <template v-slot:form-header>
-      <h2>{{ isLogging ? "Login" : "Register" }}</h2>
-    </template>
-    <template v-slot:form-inputs>
-      <base-input
-        v-for="input in inputs"
-        :key="input.id"
-        :id="input.id"
-        :label="input.label"
-        :type="input.type"
-        :placeholder="input.placeholder"
-        :value="input.value"
-        :isValid="input.isValid"
-        @change-handler="changeHandler"
-        @focus-handler="focusHandler"
-      />
-    </template>
-    <template v-slot:form-aditional-action>
-      <base-button type="button" mode="unstyled" @click="toggleFormHandler"
-        >Change to {{ isLogging ? "Register" : "Login" }}</base-button
-      >
-    </template>
-  </base-form>
+  <section class="section">
+    <base-form
+      :submitHandler="submitHandler"
+      :submitDescription="isLogging ? 'Login' : 'Register'"
+    >
+      <template v-slot:form-header>
+        <h2>{{ isLogging ? "Login" : "Register" }}</h2>
+      </template>
+      <template v-slot:form-inputs>
+        <base-input
+          v-for="input in inputs"
+          :key="input.id"
+          :id="input.id"
+          :label="input.label"
+          :type="input.type"
+          :placeholder="input.placeholder"
+          :value="input.value"
+          :isValid="input.isValid"
+          @change-handler="changeHandler"
+          @focus-handler="focusHandler"
+        />
+      </template>
+      <template v-slot:form-aditional-action>
+        <base-button type="button" mode="unstyled" @click="toggleFormHandler"
+          >Change to {{ isLogging ? "Register" : "Login" }}</base-button
+        >
+      </template>
+    </base-form>
+  </section>
 </template>
 
 <script>
