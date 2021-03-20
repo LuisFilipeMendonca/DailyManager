@@ -1,10 +1,11 @@
 <template>
   <section class="section">
     <h1 class="main__title">Your life.. One App!</h1>
-    <h2 class="main__subtitle">
+    <h2 class="main__subtitle" v-if="!getUserName">
       Trying to organize your life but seems impossible? Don't waste more time
       and register in our app.
     </h2>
+    <h2 class="main__subtitle" v-else>Welcome, {{ getUserName }}</h2>
     <home-grid v-if="isLoggedIn"></home-grid>
   </section>
 </template>
@@ -19,6 +20,10 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
+    },
+    getUserName() {
+      console.log(this.$store.getters["auth/getUserName"]);
+      return this.$store.getters["auth/getUserName"];
     },
   },
 };

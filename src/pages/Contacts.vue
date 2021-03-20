@@ -21,7 +21,12 @@
         />
       </div>
     </base-card>
-    <base-spinner v-if="isLoading" />
+    <div class="spinner" v-if="isLoading">
+      <base-spinner />
+    </div>
+    <p class="contacts__empty" v-else-if="!isLoading && !hasContacts">
+      You have no contacts yet, start adding them.
+    </p>
     <ul class="contacts-menu" v-else>
       <contact-item
         v-for="contact in contactsList"
@@ -66,6 +71,9 @@ export default {
 
       return contacts;
     },
+    hasContacts() {
+      return this.$store.getters["contacts/hasContacts"];
+    },
   },
   methods: {
     async fetchContacts() {
@@ -82,6 +90,7 @@ export default {
     },
   },
   created() {
+    if (this.hasContacts) return;
     this.fetchContacts();
   },
 };
@@ -92,14 +101,23 @@ export default {
   padding: 16px;
 }
 
+.section > *:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+}
+
 .contacts-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
 }
 
-.contacts-menu {
-  margin-top: 16px;
+.contacts__empty {
+  text-align: center;
 }
 
 .contacts-menu > *:not(:last-child) {
@@ -107,8 +125,8 @@ export default {
 }
 
 @media screen and (min-width: 768px) {
-  .contacts-menu {
-    margin-top: 24px;
+  .section > *:not(:last-child) {
+    margin-bottom: 24px;
   }
 }
 </style>

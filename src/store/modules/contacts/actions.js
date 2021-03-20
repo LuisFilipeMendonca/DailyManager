@@ -11,12 +11,10 @@ const actions = {
       console.log(e);
     }
   },
-  async storeUpdateContact({ commit }, data) {
+  async storeUpdateContact({ commit, rootGetters }, data) {
     try {
-      const { formData, isEditing, contactId } = data;
+      let { formData, isEditing, contactId } = data;
       let response;
-
-      console.log(isEditing);
 
       if (isEditing) {
         response = await axios.put(`contacts/${contactId}`, formData, {
@@ -27,6 +25,9 @@ const actions = {
 
         commit("updateContact", response.data);
       } else {
+        const userId = rootGetters["auth/getUserId"];
+        formData.append("userId", userId);
+
         response = await axios.post("contacts", formData, {
           headers: {
             "Content-Type": "multipart/form-data",

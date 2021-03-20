@@ -59,14 +59,24 @@ export default {
       }
       this.inputsData.clearValues();
     },
-    submitHandler() {
-      const form = new Form(this.inputsData);
+    async submitHandler() {
+      try {
+        const form = new Form(this.inputsData);
 
-      if (!form.isValid()) return;
+        if (!form.isValid()) return;
 
-      const formData = form.buildFormObj();
+        const formData = form.buildFormObj();
 
-      this.$store.dispatch("auth/register", formData);
+        if (this.isLogging) {
+          await this.$store.dispatch("auth/login", formData);
+          this.$router.replace("/");
+        } else {
+          await this.$store.dispatch("auth/register", formData);
+          this.toggleFormHandler();
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     changeHandler(target) {
       this.inputsData.changeHandler(target);

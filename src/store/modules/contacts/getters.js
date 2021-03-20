@@ -11,6 +11,9 @@ const getters = {
   getContact: (state) => (id) => {
     return state.contactsList.find((contact) => contact.id === id);
   },
+  hasContacts: (state) => {
+    return state.contactsList.length > 0;
+  },
 };
 
 export default getters;

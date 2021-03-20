@@ -5,6 +5,9 @@ const getters = {
   isLoggedIn(state) {
     return state.isLoggedIn;
   },
+  getUserName(state) {
+    return state.userName;
+  },
 };
 
 export default getters;

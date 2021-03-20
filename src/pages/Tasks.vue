@@ -21,7 +21,13 @@
         </div>
       </header>
     </base-card>
-    <ul class="tasks__menu">
+    <div class="spinner" v-if="isLoading">
+      <base-spinner />
+    </div>
+    <p class="tasks__empty" v-else-if="!isLoading && !hasTasks">
+      You have no tasks for today.
+    </p>
+    <ul class="tasks__menu" v-else>
       <task-item
         v-for="task in tasksList"
         :key="task.id"
@@ -46,6 +52,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       date: {
         type: "date",
         value: new Date(
@@ -59,7 +66,13 @@ export default {
   },
   methods: {
     async fetchTodos() {
-      this.$store.dispatch("todos/getTodos", this.date.value);
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch("todos/getTodos", this.date.value);
+      } catch (e) {
+        console.log(e);
+      }
+      this.isLoading = false;
     },
     changeHandler(target) {
       if (target.value.length <= 0) return;
@@ -79,6 +92,9 @@ export default {
     inputDateFormat() {
       return dateFormated(this.date.value, true);
     },
+    hasTasks() {
+      return this.$store.getters["todos/hasTasks"](this.date.value);
+    },
   },
   watch: {
     "date.value": function() {
@@ -93,6 +109,7 @@ export default {
     },
   },
   created() {
+    if (this.hasTasks) return;
     this.fetchTodos();
   },
 };
@@ -106,9 +123,17 @@ export default {
   padding: 16px;
 }
 
+.section > *:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+}
+
 .header__title {
   flex: 1;
-  margin-right: 16px;
 }
 
 .header__actions {
@@ -121,8 +146,8 @@ export default {
   margin-bottom: 8px;
 }
 
-.tasks__menu {
-  margin-top: 16px;
+.tasks__empty {
+  text-align: center;
 }
 
 .tasks__menu > *:not(:last-child) {
@@ -139,8 +164,8 @@ export default {
     margin-right: 16px;
   }
 
-  .tasks__menu {
-    margin-top: 24px;
+  .section > *:not(:last-child) {
+    margin-bottom: 24px;
   }
 }
 </style>

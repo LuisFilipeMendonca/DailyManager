@@ -6,13 +6,14 @@
       </template>
       <template v-slot:form-inputs>
         <base-input
-          v-for="(input, name) in inputs"
-          :key="name"
-          :id="name"
+          v-for="input in inputs"
+          :key="input.id"
+          :id="input.id"
           :type="input.type"
           :placeholder="input.placeholder"
-          :value="input.type === 'file' ? input.showValue : input.value"
-          @file-change-handler="fileChangeHandler"
+          :value="input.value"
+          :isValid="input.isValid"
+          @change-handler="changeHandler"
         />
       </template>
       <template v-slot:form-aditional-action>
@@ -25,7 +26,7 @@
   <section class="section">
     <base-card>
       <div class="chronometer__container">
-        <h2 v-if="inputs.description.value">{{ inputs.description.value }}</h2>
+        <h3 v-if="getInputValue">{{ getInputValue }}</h3>
         <span class="chronometer__time">{{ formatChronometer }}</span>
         <div class="chronometer__actions">
           <button @click="startChronometer">Start</button>
@@ -42,7 +43,8 @@
         :time="convertChronometerFormat(chronometer.time)"
         :description="chronometer.description"
         :selectedId="selectedChronometer"
-        @selectChronometer="selectChronometer"
+        @select-chronometer="selectChronometer"
+        @stop-chronometer="stopChronometer"
       >
       </chronometer-item>
     </ul>
@@ -51,6 +53,8 @@
 
 <script>
 import ChronometerItem from "../components/ChronometerItem";
+import Inputs from "../helpers/Inputs";
+import { chronometerInputs } from "../constants/inputs";
 
 export default {
   components: {
@@ -64,14 +68,7 @@ export default {
       status: "paused",
       isDialogOpen: false,
       isUpdating: false,
-      inputs: {
-        description: {
-          type: "text",
-          value: "",
-          placeholder: "Timer description",
-          isValid: true,
-        },
-      },
+      inputsData: new Inputs(chronometerInputs),
     };
   },
   methods: {
@@ -94,9 +91,10 @@ export default {
     },
     stopChronometer() {
       clearInterval(this.timer);
+      this.status = "paused";
       this.secs = 0;
       this.selectedChronometer = null;
-      this.inputs.description.value = "";
+      this.inputsData.clearValues();
       this.isUpdating = false;
     },
     addZero(val) {
@@ -105,8 +103,8 @@ export default {
     toggleDialog() {
       this.isDialogOpen = !this.isDialogOpen;
     },
-    fileChangeHandler(target) {
-      this.inputs.description.value = target.value;
+    changeHandler(target) {
+      this.inputsData.changeHandler(target);
     },
     fetchChronometers() {
       this.$store.dispatch("chronometers/getChronometers");
@@ -121,19 +119,19 @@ export default {
       )}`;
     },
     selectChronometer(id) {
-      const chronometer = this.$store.getters["chronometers/getChronometer"](
-        id
-      );
+      const chronometerData = this.$store.getters[
+        "chronometers/getChronometer"
+      ](id);
 
       this.selectedChronometer = id;
-      this.secs = chronometer.time;
-      this.inputs.description.value = chronometer.description;
+      this.secs = chronometerData.time;
+      this.inputsData.setInputsData(chronometerData);
       this.isUpdating = true;
     },
     addChronometer() {
       const chronometerData = {
         time: this.secs,
-        description: this.inputs.description.value,
+        description: this.inputsData.getInputValue("description"),
       };
 
       this.$store.dispatch("chronometers/storeUpdateChronometer", {
@@ -151,6 +149,12 @@ export default {
     chronometerList() {
       const chronometers = this.$store.getters["chronometers/getChronometers"];
       return chronometers;
+    },
+    inputs() {
+      return this.inputsData.inputs;
+    },
+    getInputValue() {
+      return this.inputsData.getInputValue("description");
     },
   },
   created() {

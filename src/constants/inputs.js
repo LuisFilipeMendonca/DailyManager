@@ -143,3 +143,14 @@ export const taskInputs = [
     validator: Validator.isDateValid,
   },
 ];
+
+export const chronometerInputs = [
+  {
+    id: "description",
+    label: "Description",
+    type: "text",
+    placeholder: "Timer description",
+    value: "",
+    isValid: true,
+  },
+];

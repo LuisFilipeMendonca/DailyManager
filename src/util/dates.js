@@ -2,6 +2,7 @@ import { days, months } from "../constants/dates";
 
 export const timeWithoutSec = (time) => {
   if (!time) return null;
+  if (time.length <= 5) return time;
   return time.slice(0, time.length - 3);
 };
 

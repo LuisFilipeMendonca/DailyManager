@@ -1,8 +1,23 @@
 <template>
   <section class="section section--charts">
-    <chart id="month-balance" type="line" :data="chartTransactions" />
-    <chart id="monthly-profit" type="line" :data="chartMonthtlyProfits" />
-    <chart id="monthly-expenses" type="line" :data="chartMonthlyExpenses" />
+    <chart
+      v-if="chartTransactions"
+      id="month-balance"
+      type="line"
+      :data="chartTransactions"
+    />
+    <chart
+      v-if="chartTransactions"
+      id="monthly-profit"
+      type="line"
+      :data="chartMonthtlyProfits"
+    />
+    <chart
+      v-if="chartTransactions"
+      id="monthly-expenses"
+      type="line"
+      :data="chartMonthlyExpenses"
+    />
   </section>
 </template>
 

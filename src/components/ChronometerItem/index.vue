@@ -17,12 +17,13 @@
 <script>
 export default {
   props: ["id", "description", "time", "selectedId"],
-  emits: ["selectChronometer"],
+  emits: ["select-chronometer", "stop-chronometer"],
   methods: {
     selectChronometerHandler() {
-      this.$emit("selectChronometer", this.id);
+      this.$emit("select-chronometer", this.id);
     },
     deleteChronometerHandler() {
+      this.$emit("stop-chronometer");
       this.$store.dispatch("chronometers/deleteChronometer", this.id);
     },
   },

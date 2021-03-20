@@ -9,6 +9,15 @@ const actions = {
       console.log(e);
     }
   },
+  async login({ commit }, data) {
+    try {
+      const response = await axios.post("/token", data);
+
+      commit("login", response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  },
 };
 
 export default actions;

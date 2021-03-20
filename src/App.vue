@@ -12,10 +12,8 @@ export default {
   components: {
     "the-header": TheHeader,
   },
-  data() {
-    return {
-      isLogged: false,
-    };
+  beforeCreate() {
+    this.$store.commit("auth/getUserData");
   },
 };
 </script>

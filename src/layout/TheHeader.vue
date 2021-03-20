@@ -2,7 +2,7 @@
   <header class="header">
     <h1 class="header__title">Daily Manager</h1>
     <nav>
-      <ul class="nav__menu">
+      <ul class="nav__menu" v-if="!isLogged">
         <li class="nav__item">
           <router-link to="/authentication">Authenticate</router-link>
         </li>
@@ -10,6 +10,16 @@
     </nav>
   </header>
 </template>
+
+<script>
+export default {
+  computed: {
+    isLogged() {
+      return this.$store.getters["auth/isLoggedIn"];
+    },
+  },
+};
+</script>
 
 <style scoped>
 .header {

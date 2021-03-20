@@ -7,6 +7,11 @@ class Inputs {
     return this._inputs;
   }
 
+  getInputValue(id) {
+    const inputIdx = this.getInputIdx(id);
+    return this._inputs[inputIdx].value;
+  }
+
   getInputIdx(id) {
     return this.inputs.findIndex((input) => input.id === id);
   }

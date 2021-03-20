@@ -65,19 +65,25 @@ export default {
     },
   },
   methods: {
-    submitHandler() {
-      const form = new Form(this.inputsData);
+    async submitHandler() {
+      try {
+        const form = new Form(this.inputsData);
 
-      if (!form.isValid()) return;
+        if (!form.isValid()) return;
 
-      const formData = form.buildFormObj();
+        const formData = form.buildFormObj();
 
-      this.$store.dispatch("todos/storeUpdateTask", {
-        formData,
-        isEditing: this.isEditing,
-        taskId: +this.$route.params.id,
-        atualDate: +this.$route.query.date,
-      });
+        await this.$store.dispatch("todos/storeUpdateTask", {
+          formData,
+          isEditing: this.isEditing,
+          taskId: +this.$route.params.id,
+          atualDate: +this.$route.query.date,
+        });
+
+        this.$router.replace("/tasks");
+      } catch (e) {
+        console.log(e);
+      }
     },
     changeHandler(target) {
       this.inputsData.changeHandler(target);
@@ -90,6 +96,12 @@ export default {
 
       if (!taskId) return;
       const taskData = this.$store.getters["todos/getTask"](taskId);
+
+      if (!taskData) {
+        this.$router.replace("/tasks");
+        return;
+      }
+
       this.inputsData.setInputsData(taskData);
     },
   },

@@ -16,6 +16,7 @@ const mutations = {
     const contactIdx = state.contactsList.findIndex(
       (contact) => contact.id === payload.id
     );
+
     state.contactsList[contactIdx] = payload;
   },
 };

@@ -68,18 +68,24 @@ export default {
     },
   },
   methods: {
-    submitHandler() {
-      const form = new Form(this.inputsData);
+    async submitHandler() {
+      try {
+        const form = new Form(this.inputsData);
 
-      if (!form.isValid()) return;
+        if (!form.isValid()) return;
 
-      const formData = form.buildFormData(this.isEditing);
+        const formData = form.buildFormData(this.isEditing);
 
-      this.$store.dispatch("contacts/storeUpdateContact", {
-        formData,
-        isEditing: this.isEditing,
-        contactId: +this.$route.params.id,
-      });
+        await this.$store.dispatch("contacts/storeUpdateContact", {
+          formData,
+          isEditing: this.isEditing,
+          contactId: +this.$route.params.id,
+        });
+
+        this.$router.replace("/contacts");
+      } catch (e) {
+        console.log(e);
+      }
     },
     changeHandler(target) {
       this.inputsData.changeHandler(target);
@@ -108,6 +114,12 @@ export default {
       if (!contactId) return;
 
       const contactData = this.$store.getters["contacts/getContact"](contactId);
+
+      if (!contactData) {
+        this.$router.replace("/contacts");
+        return;
+      }
+
       this.inputsData.setInputsData(contactData);
     },
   },
