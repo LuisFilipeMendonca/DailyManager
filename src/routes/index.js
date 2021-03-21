@@ -10,6 +10,8 @@ import AuthPage from "../pages/Auth.vue";
 import FormContact from "../layout/FormContact.vue";
 import FormTask from "../layout/FormTask.vue";
 
+import store from "../store";
+
 const routes = [
   {
     path: "/",
@@ -20,6 +22,9 @@ const routes = [
     path: "/contacts",
     name: "Contacts",
     component: ContactsPage,
+    meta: {
+      isLoginRequired: true,
+    },
     children: [
       {
         path: "add",
@@ -35,11 +40,17 @@ const routes = [
     path: "/expenses",
     name: "Expenses",
     component: ExpensesPage,
+    meta: {
+      isLoginRequired: true,
+    },
   },
   {
     path: "/tasks",
     name: "Tasks",
     component: TasksPage,
+    meta: {
+      isLoginRequired: true,
+    },
     children: [
       {
         path: "add",
@@ -55,6 +66,9 @@ const routes = [
     path: "/notes",
     name: "Notes",
     component: ChronometerPage,
+    meta: {
+      isLoginRequired: true,
+    },
   },
   {
     path: "/authentication",
@@ -66,6 +80,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, _, next) => {
+  const isLoggedIn = store.getters["auth/isLoggedIn"];
+  const isLoginRequired = to.meta.isLoginRequired;
+
+  if (isLoginRequired && !isLoggedIn) {
+    next("/authentication");
+  } else {
+    next();
+  }
 });
 
 export default router;
