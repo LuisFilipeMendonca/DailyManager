@@ -13,6 +13,8 @@ export const dateFormated = (date, isInput) => {
   let month = newDate.getMonth();
   const year = newDate.getFullYear();
 
+  console.log(months);
+
   if (isInput) {
     month++;
     return `${year}-${month > 9 ? month : "0" + month}-${
@@ -20,5 +22,24 @@ export const dateFormated = (date, isInput) => {
     }`;
   }
 
-  return `${days[weekDay]}, ${day} ${months[month]}, ${year}`;
+  return `${days[weekDay]}, ${day} ${months[month].value}, ${year}`;
+};
+
+export const isLeapYear = () => {
+  const year = new Date().getFullYear();
+
+  return new Date(year, 1, 29).getDate() === 29;
+};
+
+export const updatedMonths = () => {
+  const updatedMonths = months;
+  if (isLeapYear()) {
+    updatedMonths[1].days = 29;
+  }
+
+  return updatedMonths;
+};
+
+export const monthlyChartLabels = () => {
+  return months.map((month) => month.value.slice(0, 3));
 };

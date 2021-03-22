@@ -1,11 +1,9 @@
 import axios from "../../../util/axios";
 
 const actions = {
-  async getChronometers({ commit, rootGetters }) {
+  async getChronometers({ commit }) {
     try {
-      const userId = rootGetters["auth/getUserId"];
-
-      const response = await axios(`/chronometers/${userId}`);
+      const response = await axios("/chronometers");
 
       commit("addChronometers", response.data);
     } catch (e) {
@@ -13,13 +11,10 @@ const actions = {
     }
   },
 
-  async storeUpdateChronometer({ commit, rootGetters }, data) {
+  async storeUpdateChronometer({ commit }, data) {
     try {
-      const userId = rootGetters["auth/getUserId"];
-      let { chronometerData, isUpdating, id } = data;
+      const { chronometerData, isUpdating, id } = data;
       let response;
-
-      chronometerData = { ...chronometerData, userId };
 
       if (isUpdating) {
         response = await axios.put(`/chronometers/${id}`, chronometerData);

@@ -2,9 +2,12 @@
   <header class="header">
     <h1 class="header__title">Daily Manager</h1>
     <nav>
-      <ul class="nav__menu" v-if="!isLogged">
-        <li class="nav__item">
+      <ul class="nav__menu">
+        <li class="nav__item" v-if="!isLogged">
           <router-link to="/authentication">Authenticate</router-link>
+        </li>
+        <li class="nav__item" v-if="isLogged">
+          <base-button @click="logout">Logout</base-button>
         </li>
       </ul>
     </nav>
@@ -16,6 +19,11 @@ export default {
   computed: {
     isLogged() {
       return this.$store.getters["auth/isLoggedIn"];
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.commit("auth/logout");
     },
   },
 };

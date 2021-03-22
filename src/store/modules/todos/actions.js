@@ -1,21 +1,20 @@
 import axios from "../../../util/axios";
 
 const actions = {
-  async getTodos({ commit, rootGetters }, payload) {
+  async getTodos({ commit }, payload) {
     try {
-      const userId = rootGetters["auth/getUserId"];
       const dateTimestamps = payload.getTime();
 
-      const response = await axios(`todos/${userId}/${dateTimestamps}`);
+      const response = await axios(`todos/${dateTimestamps}`);
 
       commit("addTodos", response.data);
     } catch (e) {
       console.log(e);
     }
   },
-  async storeUpdateTask({ commit, rootGetters }, data) {
+  async storeUpdateTask({ commit }, data) {
     try {
-      let { formData, isEditing, taskId, atualDate } = data;
+      const { formData, isEditing, taskId, atualDate } = data;
       let response;
       let taskDate = new Date(formData.date).getTime();
 
@@ -24,9 +23,7 @@ const actions = {
         if (atualDate !== taskDate) commit("deleteTask", response.data.id);
         else commit("updateTask", response.data);
       } else {
-        const userId = rootGetters["auth/getUserId"];
-
-        response = await axios.post("todos", { ...formData, userId });
+        response = await axios.post("todos", formData);
 
         if (atualDate !== taskDate) return;
 

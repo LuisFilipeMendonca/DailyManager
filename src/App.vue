@@ -19,10 +19,7 @@ export default {
   },
   async beforeCreate() {
     try {
-      const token = localStorage.getItem("daily-manager");
-      if (token) {
-        await this.$store.dispatch("auth/getUser", token);
-      }
+      await this.$store.commit("auth/getUser");
     } catch (e) {
       console.log(e);
     }

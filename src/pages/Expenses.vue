@@ -1,12 +1,7 @@
 <template>
   <section class="section section--charts">
-    <chart
-      v-if="chartTransactions"
-      id="month-balance"
-      type="line"
-      :data="chartTransactions"
-    />
-    <chart
+    <chart id="month-balance" type="line" :data="chartTransactions" />
+    <!-- <chart
       v-if="chartTransactions"
       id="monthly-profit"
       type="line"
@@ -17,13 +12,14 @@
       id="monthly-expenses"
       type="line"
       :data="chartMonthlyExpenses"
-    />
+    /> -->
   </section>
 </template>
 
 <script>
 import Chart from "../components/Chart";
 import { dataset, chartData } from "./chart-data";
+import { monthlyChartLabels } from "../util/dates";
 
 export default {
   components: {
@@ -33,13 +29,13 @@ export default {
     fetchAccountData() {
       this.$store.dispatch("account/getAccountData");
     },
-    buildChartDataset(label, values) {
+    buildChartDataset(label, isMonthly) {
       return {
-        tooltips: values.map((value) => value.tooltips),
-        labels: values.map((value) => value.date),
+        tooltips: [],
+        labels: isMonthly ? monthlyChartLabels() : [],
         dataset: {
           ...dataset,
-          data: values.map((value) => value.amount),
+          data: [1, 2, 2, 1],
           label,
         },
       };
@@ -58,14 +54,14 @@ export default {
           ...chartData.options,
           tooltips: {
             enabled: true,
-            callbacks: {
-              label: function(tooltipItems, data) {
-                const tooltips = data.tooltips[tooltipItems.index].map(
-                  (tooltip) => `${tooltip.description} : ${tooltip.amount}€`
-                );
-                return tooltips;
-              },
-            },
+            // callbacks: {
+            //   label: function(tooltipItems, data) {
+            //     const tooltips = data.tooltips[tooltipItems.index].map(
+            //       (tooltip) => `${tooltip.description} : ${tooltip.amount}€`
+            //     );
+            //     return tooltips;
+            //   },
+            // },
           },
         },
       };
@@ -73,15 +69,11 @@ export default {
   },
   computed: {
     chartTransactions() {
-      const transactions = this.$store.getters[
-        "account/getTransactionsChartData"
-      ];
-
-      if (!transactions) return null;
-
+      const profits = this.$store.getters["account/getMonthlyProfits"];
+      console.log(profits);
       const transactionsChartData = this.buildChartDataset(
         "Current Month Balance",
-        transactions
+        true
       );
 
       const chartData = this.buildChartData(

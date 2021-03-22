@@ -38,17 +38,21 @@ const getters = {
     }));
   },
   getMonthlyProfits(state) {
-    const monthlyProfits = state.account.monthlyProfits;
+    let monthProfits = [];
 
-    if (!monthlyProfits) return;
+    if (!state.account.AccountMonths) return null;
 
-    const transformedData = monthlyProfits.map((profit) => ({
-      date: months[profit.month].slice(0, 3),
-      amount: profit.value,
-      tooltips: [{ description: months[profit.month], amount: profit.value }],
-    }));
+    state.account.AccountMonths.forEach((month) => {
+      monthProfits[month.month] = month.profit;
+    });
 
-    return transformedData;
+    for (let index of monthProfits.keys()) {
+      console.log(index);
+    }
+
+    console.log(monthProfits);
+
+    return null;
   },
   getMonthlyExpenses(state) {
     const monthlyExpenses = state.account.monthlyExpenses;
