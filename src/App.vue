@@ -12,8 +12,21 @@ export default {
   components: {
     "the-header": TheHeader,
   },
-  beforeCreate() {
-    this.$store.commit("auth/getUserData");
+  data() {
+    return {
+      isLoading: true,
+    };
+  },
+  async beforeCreate() {
+    try {
+      const token = localStorage.getItem("daily-manager");
+      if (token) {
+        await this.$store.dispatch("auth/getUser", token);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    this.isLoading = false;
   },
 };
 </script>

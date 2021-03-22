@@ -22,7 +22,6 @@ export default {
       return this.$store.getters["auth/isLoggedIn"];
     },
     getUserName() {
-      console.log(this.$store.getters["auth/getUserName"]);
       return this.$store.getters["auth/getUserName"];
     },
   },

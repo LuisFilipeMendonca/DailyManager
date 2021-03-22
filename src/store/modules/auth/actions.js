@@ -13,7 +13,20 @@ const actions = {
     try {
       const response = await axios.post("/token", data);
 
-      commit("login", response.data);
+      axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+
+      commit("login", { ...response.data, isLogging: true });
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  async getUser({ commit }, token) {
+    try {
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+
+      const response = await axios.get("/users");
+
+      commit("login", { ...response.data, token });
     } catch (e) {
       console.log(e);
     }

@@ -4,20 +4,10 @@ const mutations = {
     state.userToken = payload.token;
     state.userEmail = payload.email;
     state.userName = payload.name;
-    state.isLoggedIn = payload.isLoggedIn || true;
+    state.isLoggedIn = true;
 
-    if (!payload.isLoggedIn) {
-      localStorage.setItem(
-        "daily-manager",
-        JSON.stringify({ ...payload, isLoggedIn: true })
-      );
-    }
-  },
-  getUserData() {
-    const userData = JSON.parse(localStorage.getItem("daily-manager"));
-
-    if (userData) {
-      this.commit("auth/login", userData);
+    if (payload.isLogging) {
+      localStorage.setItem("daily-manager", payload.token);
     }
   },
 };
