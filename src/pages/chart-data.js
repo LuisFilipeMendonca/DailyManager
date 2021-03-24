@@ -12,19 +12,20 @@ export const chartData = {
     datasets: [],
   },
   options: {
+    maintainAspectRatio: false,
     responsive: true,
-    lineTension: 1,
     tooltips: {},
     scales: {
       yAxes: [
         {
+          stacked: true,
           ticks: {
             beginAtZero: true,
             fontColor: "#eee",
           },
           gridLines: {
             zeroLineColor: "#eee",
-            color: "#eee",
+            color: "rgba(238,238,238,0.2)",
           },
         },
       ],
@@ -32,7 +33,7 @@ export const chartData = {
         {
           gridLines: {
             zeroLineColor: "#eee",
-            color: "#eee",
+            color: "transparent",
           },
           ticks: {
             fontColor: "#eee",

@@ -1,13 +1,22 @@
 <template>
   <section class="section section--charts">
-    <chart id="month-balance" type="line" :data="chartTransactions" />
-    <!-- <chart
-      v-if="chartTransactions"
-      id="monthly-profit"
+    <chart
+      id="month-balance"
       type="line"
-      :data="chartMonthtlyProfits"
+      v-if="chartMonthtlyProfits"
+      :data="chartMonthtlyProfits.chartData"
+      :noValue="!chartMonthtlyProfits.hasValue"
+      errorMsg="No data available. Try adding some transactions."
     />
     <chart
+      v-if="chartMonthtlyExpenses"
+      id="monthly-profit"
+      type="line"
+      :data="chartMonthtlyExpenses.chartData"
+      :noValue="!chartMonthtlyProfits.hasValue"
+      errorMsg="No data available. Try adding some transactions."
+    />
+    <!-- <chart
       v-if="chartTransactions"
       id="monthly-expenses"
       type="line"
@@ -29,18 +38,17 @@ export default {
     fetchAccountData() {
       this.$store.dispatch("account/getAccountData");
     },
-    buildChartDataset(label, isMonthly) {
+    buildChartDataset(label, data, isMonthly) {
       return {
-        tooltips: [],
         labels: isMonthly ? monthlyChartLabels() : [],
         dataset: {
           ...dataset,
-          data: [1, 2, 2, 1],
+          data,
           label,
         },
       };
     },
-    buildChartData(type, labels, datasets, tooltips) {
+    buildChartData(type, labels, datasets) {
       return {
         ...chartData,
         type,
@@ -48,80 +56,62 @@ export default {
           ...chartData.data,
           labels,
           datasets,
-          tooltips,
         },
         options: {
           ...chartData.options,
-          tooltips: {
-            enabled: true,
-            // callbacks: {
-            //   label: function(tooltipItems, data) {
-            //     const tooltips = data.tooltips[tooltipItems.index].map(
-            //       (tooltip) => `${tooltip.description} : ${tooltip.amount}€`
-            //     );
-            //     return tooltips;
-            //   },
-            // },
-          },
+          // tooltips: {
+          //   enabled: true,
+          //   callbacks: {
+          //     label: function(tooltipItems, data) {
+          //       const tooltips = data.tooltips[tooltipItems.index].map(
+          //         (tooltip) => `${tooltip.description} : ${tooltip.amount}€`
+          //       );
+          //       return tooltips;
+          //     },
+          //   },
+          // },
         },
       };
     },
   },
   computed: {
-    chartTransactions() {
+    chartMonthtlyProfits() {
       const profits = this.$store.getters["account/getMonthlyProfits"];
-      console.log(profits);
+
+      if (!profits) return null;
+
       const transactionsChartData = this.buildChartDataset(
-        "Current Month Balance",
+        "Monthly Profit",
+        profits,
         true
       );
 
       const chartData = this.buildChartData(
         "line",
         transactionsChartData.labels,
-        [transactionsChartData.dataset],
-        transactionsChartData.tooltips
+        [transactionsChartData.dataset]
       );
 
-      return chartData;
+      return { chartData, hasValue: profits.length > 0 };
     },
-    chartMonthtlyProfits() {
-      const profits = this.$store.getters["account/getMonthlyProfits"];
+    chartMonthtlyExpenses() {
+      const expenses = this.$store.getters["account/getMonthlyExpenses"];
 
-      if (!profits) return null;
+      if (!expenses) return null;
 
       const montlyProfitChartData = this.buildChartDataset(
-        "Monthly Profit",
-        profits
+        "Monthly Expenses",
+        expenses,
+        true
       );
 
       const chartData = this.buildChartData(
         "line",
         montlyProfitChartData.labels,
-        [montlyProfitChartData.dataset],
-        montlyProfitChartData.tooltips
+        [montlyProfitChartData.dataset]
       );
 
-      return chartData;
-    },
-    chartMonthlyExpenses() {
-      const expenses = this.$store.getters["account/getMonthlyExpenses"];
-
-      if (!expenses) return null;
-
-      const monthlyExpensesChartData = this.buildChartDataset(
-        "Monthly Expenses",
-        expenses
-      );
-
-      const chartData = this.buildChartData(
-        "line",
-        monthlyExpensesChartData.labels,
-        [monthlyExpensesChartData.dataset],
-        monthlyExpensesChartData.tooltips
-      );
-
-      return chartData;
+      return { chartData, hasValue: expenses.length > 0 };
     },
   },
   created() {

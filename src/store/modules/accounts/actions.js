@@ -8,6 +8,8 @@ const actions = {
 
       const response = await axios(`/accounts/${timestamps}`);
 
+      console.log(response.data);
+
       commit("getAccountData", response.data);
     } catch (e) {
       if (e.response.status === 401) {

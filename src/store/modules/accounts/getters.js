@@ -1,4 +1,4 @@
-import { months } from "../../../constants/dates";
+// import { months } from "../../../constants/dates";
 
 const getters = {
   getTransactionsChartData(state) {
@@ -47,30 +47,29 @@ const getters = {
     });
 
     for (let index of monthProfits.keys()) {
-      console.log(index);
+      if (!monthProfits[index]) {
+        monthProfits[index] = monthProfits[index - 1] || 0;
+      }
     }
 
-    console.log(monthProfits);
-
-    return null;
+    return monthProfits;
   },
   getMonthlyExpenses(state) {
-    const monthlyExpenses = state.account.monthlyExpenses;
+    let monthExpenses = [];
 
-    if (!monthlyExpenses) return;
+    if (!state.account.AccountMonths) return null;
 
-    const transformedData = monthlyExpenses.map((expense) => ({
-      date: months[expense.month].slice(0, 3),
-      amount: expense.value,
-      tooltips: [
-        {
-          description: months[expense.month],
-          amount: expense.value,
-        },
-      ],
-    }));
+    state.account.AccountMonths.forEach((month) => {
+      monthExpenses[month.month] = month.expenses;
+    });
 
-    return transformedData;
+    for (let index of monthExpenses.keys()) {
+      if (!monthExpenses[index]) {
+        monthExpenses[index] = monthExpenses[index - 1] || 0;
+      }
+    }
+
+    return monthExpenses;
   },
 };
 
