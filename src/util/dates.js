@@ -13,8 +13,6 @@ export const dateFormated = (date, isInput) => {
   let month = newDate.getMonth();
   const year = newDate.getFullYear();
 
-  console.log(months);
-
   if (isInput) {
     month++;
     return `${year}-${month > 9 ? month : "0" + month}-${
@@ -42,4 +40,22 @@ export const updatedMonths = () => {
 
 export const monthlyChartLabels = () => {
   return months.map((month) => month.value.slice(0, 3));
+};
+
+export const dailyChartLabels = () => {
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  const labels = [];
+  const correctMonth = month + 1;
+
+  for (let i = 1; i <= months[month].days; i++) {
+    labels.push(
+      `${year}-${correctMonth > 9 ? correctMonth : "0" + correctMonth}-${
+        i > 9 ? i : "0" + i
+      }`
+    );
+  }
+
+  return labels;
 };

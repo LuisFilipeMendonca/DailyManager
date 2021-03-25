@@ -20,9 +20,6 @@ export default {
   methods: {
     createChart() {
       const ctx = document.getElementById(this.id);
-
-      console.log(this.data);
-
       new Chart(ctx, this.data);
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <section class="section section--charts">
     <chart
-      id="month-balance"
+      id="monthly-profits"
       type="line"
       v-if="chartMonthtlyProfits"
       :data="chartMonthtlyProfits.chartData"
@@ -10,25 +10,35 @@
     />
     <chart
       v-if="chartMonthtlyExpenses"
-      id="monthly-profit"
+      id="monthly-expenses"
       type="line"
       :data="chartMonthtlyExpenses.chartData"
       :noValue="!chartMonthtlyProfits.hasValue"
       errorMsg="No data available. Try adding some transactions."
     />
-    <!-- <chart
-      v-if="chartTransactions"
-      id="monthly-expenses"
+    <chart
+      v-if="chartTransactionsProfits"
+      id="transactions-profits"
       type="line"
-      :data="chartMonthlyExpenses"
-    /> -->
+      :data="chartTransactionsProfits.chartData"
+      :noValue="!chartTransactionsProfits.hasValue"
+      errorMsg="No profits for the current month"
+    />
+    <chart
+      v-if="chartTransactionsExpenses"
+      id="transactions-expenses"
+      type="line"
+      :data="chartTransactionsExpenses.chartData"
+      :noValue="!chartTransactionsExpenses.hasValue"
+      errorMsg="No expenses for the current month"
+    />
   </section>
 </template>
 
 <script>
 import Chart from "../components/Chart";
 import { dataset, chartData } from "./chart-data";
-import { monthlyChartLabels } from "../util/dates";
+import { monthlyChartLabels, dailyChartLabels } from "../util/dates";
 
 export default {
   components: {
@@ -40,7 +50,7 @@ export default {
     },
     buildChartDataset(label, data, isMonthly) {
       return {
-        labels: isMonthly ? monthlyChartLabels() : [],
+        labels: isMonthly ? monthlyChartLabels() : dailyChartLabels(),
         dataset: {
           ...dataset,
           data,
@@ -48,28 +58,50 @@ export default {
         },
       };
     },
+    getMaxValue(arr) {
+      let max = 0;
+
+      arr.forEach((item) => (max = Math.max(max, item)));
+
+      return max;
+    },
+    getNextIntDivisor(value, divisor) {
+      return value + divisor - ((value + divisor) % 5);
+    },
     buildChartData(type, labels, datasets) {
+      const maxDataValue = this.getMaxValue(datasets.data);
+      const yAxesMax = this.getNextIntDivisor(maxDataValue, 5);
       return {
         ...chartData,
         type,
         data: {
           ...chartData.data,
           labels,
-          datasets,
+          datasets: [datasets],
         },
         options: {
           ...chartData.options,
-          // tooltips: {
-          //   enabled: true,
-          //   callbacks: {
-          //     label: function(tooltipItems, data) {
-          //       const tooltips = data.tooltips[tooltipItems.index].map(
-          //         (tooltip) => `${tooltip.description} : ${tooltip.amount}€`
-          //       );
-          //       return tooltips;
-          //     },
-          //   },
-          // },
+          tooltips: {
+            enabled: true,
+            callbacks: {
+              label: function(tooltipItems) {
+                return `${datasets.data[tooltipItems.index].toFixed(2)}€`;
+              },
+            },
+          },
+          scales: {
+            ...chartData.options.scales,
+            yAxes: [
+              {
+                ...chartData.options.scales.yAxes[0],
+                ticks: {
+                  ...chartData.options.scales.yAxes[0].ticks,
+                  max: yAxesMax,
+                  stepSize: yAxesMax / 5,
+                },
+              },
+            ],
+          },
         },
       };
     },
@@ -89,7 +121,7 @@ export default {
       const chartData = this.buildChartData(
         "line",
         transactionsChartData.labels,
-        [transactionsChartData.dataset]
+        transactionsChartData.dataset
       );
 
       return { chartData, hasValue: profits.length > 0 };
@@ -108,10 +140,46 @@ export default {
       const chartData = this.buildChartData(
         "line",
         montlyProfitChartData.labels,
-        [montlyProfitChartData.dataset]
+        montlyProfitChartData.dataset
       );
 
       return { chartData, hasValue: expenses.length > 0 };
+    },
+    chartTransactionsExpenses() {
+      const expenses = this.$store.getters["account/getTransactionsExpenses"];
+
+      if (!expenses) return null;
+
+      const montlyTransactionsChartData = this.buildChartDataset(
+        "Daily Expenses",
+        expenses
+      );
+
+      const chartData = this.buildChartData(
+        "line",
+        montlyTransactionsChartData.labels,
+        montlyTransactionsChartData.dataset
+      );
+
+      return { chartData, hasValue: expenses.length > 0 };
+    },
+    chartTransactionsProfits() {
+      const profits = this.$store.getters["account/getTransactionsProfits"];
+
+      if (!profits) return null;
+
+      const montlyTransactionsChartData = this.buildChartDataset(
+        "Daily Profits",
+        profits
+      );
+
+      const chartData = this.buildChartData(
+        "line",
+        montlyTransactionsChartData.labels,
+        montlyTransactionsChartData.dataset
+      );
+
+      return { chartData, hasValue: profits.length > 0 };
     },
   },
   created() {

@@ -1,41 +1,57 @@
 // import { months } from "../../../constants/dates";
 
 const getters = {
-  getTransactionsChartData(state) {
-    const transactions = state.account.currentMonthTransactions;
+  getTransactionsExpenses(state) {
+    if (!state.account.AccountMonths) return null;
 
-    if (!transactions) return;
+    const { AccountTransactions } = state.account.AccountMonths.find(
+      (accountMonth) => accountMonth.AccountTransactions.length !== 0
+    );
 
-    const groupedTransactions = {};
-    let prevValue = 0;
+    let transactionsExpenses = [];
 
-    transactions.forEach((transaction) => {
-      if (!groupedTransactions[transaction.createdAt]) {
-        groupedTransactions[transaction.createdAt] = {
-          amount: 0,
-          tooltips: [],
-        };
+    AccountTransactions.forEach((transaction) => {
+      if (transaction.type === "outcome") {
+        const day =
+          +transaction.createdAt.slice(transaction.createdAt.length - 2) - 1;
+        transactionsExpenses[day] =
+          (transactionsExpenses[day] || 0) + transaction.amount;
       }
-      groupedTransactions[transaction.createdAt].amount =
-        transaction.type === "income"
-          ? prevValue + transaction.amount
-          : prevValue - transaction.amount;
-
-      groupedTransactions[transaction.createdAt].tooltips.push({
-        description: transaction.description,
-        amount:
-          transaction.type === "income"
-            ? transaction.amount
-            : -transaction.amount,
-      });
-      prevValue = groupedTransactions[transaction.createdAt].amount;
     });
 
-    return Object.keys(groupedTransactions).map((transaction) => ({
-      date: transaction,
-      amount: groupedTransactions[transaction].amount,
-      tooltips: groupedTransactions[transaction].tooltips,
-    }));
+    for (let index of transactionsExpenses.keys()) {
+      if (!transactionsExpenses[index]) {
+        transactionsExpenses[index] = 0;
+      }
+    }
+
+    return transactionsExpenses;
+  },
+  getTransactionsProfits(state) {
+    if (!state.account.AccountMonths) return null;
+
+    const { AccountTransactions } = state.account.AccountMonths.find(
+      (accountMonth) => accountMonth.AccountTransactions.length !== 0
+    );
+
+    let transactionsProfits = [];
+
+    AccountTransactions.forEach((transaction) => {
+      if (transaction.type === "income") {
+        const day = transaction.createdAt.slice(
+          transaction.createdAt.length - 2
+        );
+        transactionsProfits[+day - 1] = transaction.amount;
+      }
+    });
+
+    for (let index of transactionsProfits.keys()) {
+      if (!transactionsProfits[index]) {
+        transactionsProfits[index] = 0;
+      }
+    }
+
+    return transactionsProfits;
   },
   getMonthlyProfits(state) {
     let monthProfits = [];
