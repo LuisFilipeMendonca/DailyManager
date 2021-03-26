@@ -1,37 +1,67 @@
 <template>
-  <section class="section section--charts">
-    <chart
-      id="monthly-profits"
-      type="line"
-      v-if="chartMonthtlyProfits"
-      :data="chartMonthtlyProfits.chartData"
-      :noValue="!chartMonthtlyProfits.hasValue"
-      errorMsg="No data available. Try adding some transactions."
-    />
-    <chart
-      v-if="chartMonthtlyExpenses"
-      id="monthly-expenses"
-      type="line"
-      :data="chartMonthtlyExpenses.chartData"
-      :noValue="!chartMonthtlyProfits.hasValue"
-      errorMsg="No data available. Try adding some transactions."
-    />
-    <chart
-      v-if="chartTransactionsProfits"
-      id="transactions-profits"
-      type="line"
-      :data="chartTransactionsProfits.chartData"
-      :noValue="!chartTransactionsProfits.hasValue"
-      errorMsg="No profits for the current month"
-    />
-    <chart
-      v-if="chartTransactionsExpenses"
-      id="transactions-expenses"
-      type="line"
-      :data="chartTransactionsExpenses.chartData"
-      :noValue="!chartTransactionsExpenses.hasValue"
-      errorMsg="No expenses for the current month"
-    />
+  <router-view></router-view>
+  <section class="section">
+    <div class="balances">
+      <base-card>
+        <div class="balances__annual">
+          <div class="balances__description">
+            <h2>Total Balance</h2>
+            <span>{{ totalBalance }} €</span>
+          </div>
+          <base-button :isLink="true" mode="outline" path="/expenses/add"
+            >Add Transaction</base-button
+          >
+        </div>
+      </base-card>
+      <div class="balances__monthly">
+        <base-card>
+          <div class="balances__month">
+            <h2>Current Month Profit</h2>
+            <span>{{ monthProfitExpenses.profit }} €</span>
+          </div>
+        </base-card>
+        <base-card>
+          <div class="balances__month">
+            <h2>Current Month Expenses</h2>
+            <span>{{ monthProfitExpenses.expenses }} €</span>
+          </div>
+        </base-card>
+      </div>
+    </div>
+    <div class="charts">
+      <chart
+        id="monthly-profits"
+        type="line"
+        v-if="chartMonthtlyProfits"
+        :data="chartMonthtlyProfits.chartData"
+        :noValue="!chartMonthtlyProfits.hasValue"
+        errorMsg="No data available. Try adding some transactions."
+      />
+      <chart
+        v-if="chartMonthtlyExpenses"
+        id="monthly-expenses"
+        type="line"
+        :data="chartMonthtlyExpenses.chartData"
+        :noValue="!chartMonthtlyExpenses.hasValue"
+        errorMsg="No data available. Try adding some transactions."
+      />
+      <chart
+        v-if="chartTransactionsProfits"
+        id="transactions-profits"
+        type="line"
+        :data="chartTransactionsProfits.chartData"
+        :noValue="!chartTransactionsProfits.hasValue"
+        errorMsg="No profits for the current month"
+      />
+      <chart
+        v-if="chartTransactionsExpenses"
+        id="transactions-expenses"
+        type="line"
+        :data="chartTransactionsExpenses.chartData"
+        :noValue="!chartTransactionsExpenses.hasValue"
+        errorMsg="No expenses for the current month"
+      />
+    </div>
   </section>
 </template>
 
@@ -181,6 +211,16 @@ export default {
 
       return { chartData, hasValue: profits.length > 0 };
     },
+    totalBalance() {
+      const totalBalance = this.$store.getters["account/getTotalBalance"];
+      return totalBalance;
+    },
+    monthProfitExpenses() {
+      const monthProfitExpenses = this.$store.getters[
+        "account/getMonthProfitExpenses"
+      ];
+      return monthProfitExpenses;
+    },
   },
   created() {
     this.fetchAccountData();
@@ -189,18 +229,56 @@ export default {
 </script>
 
 <style scoped>
-.section--charts > *:not(:last-child) {
+.section > *:not(:last-child) {
   margin-bottom: 16px;
 }
 
-@media screen and (min-width: 992px) {
-  .section--charts {
-    display: grid;
+.balances__annual {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.balances > *:not(:last-child),
+.balances__description > *:not(:last-child),
+.balances__month > *:not(:last-child),
+.balances__monthly > *:not(:last-child),
+.charts > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.balances__month {
+  padding: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .balances__monthly {
+    display: flex;
     gap: 16px;
-    grid-template-columns: repeat(2, 1fr);
   }
 
-  .section--charts > *:not(:last-child) {
+  .balances__monthly > *:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .balances__monthly > * {
+    width: 50%;
+  }
+
+  .balances__annual {
+    margin-bottom: 16px;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .charts > *:not(:last-child) {
     margin-bottom: 0;
   }
 }

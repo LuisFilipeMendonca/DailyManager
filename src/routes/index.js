@@ -9,6 +9,7 @@ import AuthPage from "../pages/Auth.vue";
 
 import FormContact from "../layout/FormContact.vue";
 import FormTask from "../layout/FormTask.vue";
+import FormTransactions from "../layout/FormTransactions.vue";
 
 import store from "../store";
 
@@ -43,6 +44,12 @@ const routes = [
     meta: {
       isLoginRequired: true,
     },
+    children: [
+      {
+        path: "add",
+        component: FormTransactions,
+      },
+    ],
   },
   {
     path: "/tasks",

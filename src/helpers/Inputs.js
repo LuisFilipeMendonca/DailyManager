@@ -17,7 +17,8 @@ class Inputs {
   }
 
   changeHandler(target) {
-    const inputIdx = this.getInputIdx(target.id);
+    const targetId = target.type === "radio" ? target.name : target.id;
+    const inputIdx = this.getInputIdx(targetId);
 
     if (target.type === "file") {
       this.inputs[inputIdx].value = target.files[0];

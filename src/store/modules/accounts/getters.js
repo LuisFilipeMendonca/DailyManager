@@ -2,13 +2,14 @@
 
 const getters = {
   getTransactionsExpenses(state) {
-    if (!state.account.AccountMonths) return null;
+    const transactionsExpenses = [];
+
+    if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
+      return transactionsExpenses;
 
     const { AccountTransactions } = state.account.AccountMonths.find(
       (accountMonth) => accountMonth.AccountTransactions.length !== 0
     );
-
-    let transactionsExpenses = [];
 
     AccountTransactions.forEach((transaction) => {
       if (transaction.type === "outcome") {
@@ -28,13 +29,14 @@ const getters = {
     return transactionsExpenses;
   },
   getTransactionsProfits(state) {
-    if (!state.account.AccountMonths) return null;
+    const transactionsProfits = [];
+
+    if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
+      return transactionsProfits;
 
     const { AccountTransactions } = state.account.AccountMonths.find(
       (accountMonth) => accountMonth.AccountTransactions.length !== 0
     );
-
-    let transactionsProfits = [];
 
     AccountTransactions.forEach((transaction) => {
       if (transaction.type === "income") {
@@ -54,9 +56,9 @@ const getters = {
     return transactionsProfits;
   },
   getMonthlyProfits(state) {
-    let monthProfits = [];
+    const monthProfits = [];
 
-    if (!state.account.AccountMonths) return null;
+    if (!state.account.AccountMonths) return monthProfits;
 
     state.account.AccountMonths.forEach((month) => {
       monthProfits[month.month] = month.profit;
@@ -71,9 +73,9 @@ const getters = {
     return monthProfits;
   },
   getMonthlyExpenses(state) {
-    let monthExpenses = [];
+    const monthExpenses = [];
 
-    if (!state.account.AccountMonths) return null;
+    if (!state.account.AccountMonths) return monthExpenses;
 
     state.account.AccountMonths.forEach((month) => {
       monthExpenses[month.month] = month.expenses;
@@ -86,6 +88,20 @@ const getters = {
     }
 
     return monthExpenses;
+  },
+  getTotalBalance(state) {
+    return state.account.balance;
+  },
+  getMonthProfitExpenses(state) {
+    if (!state.account.AccountMonths) return 0;
+
+    const month = new Date().getMonth();
+
+    const { profit, expenses } = state.account.AccountMonths.find(
+      (accountMonth) => accountMonth.month === month
+    );
+
+    return { profit: profit.toFixed(2), expenses: expenses.toFixed(2) };
   },
 };
 

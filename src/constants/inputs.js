@@ -154,3 +154,51 @@ export const chronometerInputs = [
     isValid: true,
   },
 ];
+
+export const transactionInputs = [
+  {
+    id: "description",
+    label: "Description",
+    type: "text",
+    placeholder: "Transaction Description",
+    value: "",
+    isValid: true,
+    isRequired: true,
+    errorMsg: "A description is required",
+    validator: Validator.hasValue,
+  },
+  {
+    id: "amount",
+    label: "Amount",
+    type: "number",
+    placeholder: "Transaction Amount",
+    value: "",
+    isValid: true,
+    isRequired: true,
+    errorMsg: "A positive amount is required",
+    validator: Validator.isPositiveNumber,
+  },
+  {
+    id: "type",
+    label: "Type",
+    type: "radio",
+    value: "income",
+    options: [
+      { value: "income", description: "Income Transaction", checked: true },
+      { value: "outcome", description: "Outcome Transaction", checked: false },
+    ],
+    isValid: true,
+    isRequired: true,
+    validator: Validator.hasValue,
+  },
+  {
+    id: "transactionDate",
+    label: "Date",
+    type: "date",
+    value: "",
+    isValid: true,
+    isRequired: true,
+    errorMsg: "A date is required",
+    validator: Validator.isDateBeforeTomorrow,
+  },
+];

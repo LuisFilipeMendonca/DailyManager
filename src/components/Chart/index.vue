@@ -36,7 +36,7 @@ export default {
 
 .chart {
   border-radius: 3px;
-  height: 220px;
+  height: 200px;
 }
 
 .chart__msg {

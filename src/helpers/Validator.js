@@ -43,6 +43,23 @@ class Validator {
     const inputDate = new Date(value).getTime();
     return atualDateWithoutTime <= inputDate;
   }
+
+  static isDateBeforeTomorrow(target) {
+    const date = new Date(target.value).getTime();
+    const atualDate = new Date();
+    const atualDateWithoutTime = new Date(
+      atualDate.getFullYear(),
+      atualDate.getMonth(),
+      atualDate.getDate()
+    ).getTime();
+
+    return atualDateWithoutTime >= date;
+  }
+
+  static isPositiveNumber(target) {
+    const value = parseInt(target.value);
+    return !isNaN(value) && value >= 0;
+  }
 }
 
 export default Validator;
