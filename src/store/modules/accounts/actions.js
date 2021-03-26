@@ -15,6 +15,17 @@ const actions = {
       }
     }
   },
+  async storeTransaction({ commit }, data) {
+    try {
+      console.log(data);
+      const response = await axios.post("/accounts", data);
+
+      console.log(response.data);
+      console.log(commit);
+    } catch (e) {
+      console.log(e);
+    }
+  },
 };
 
 export default actions;

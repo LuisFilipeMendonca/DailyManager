@@ -23,7 +23,7 @@
       </span>
     </label>
   </div>
-  <div class="input" v-else-if="type === 'radio'">
+  <div class="input input--radio" v-else-if="type === 'radio'">
     <span class="radio__label">{{ label }}</span>
     <div class="radio__container">
       <label
@@ -100,6 +100,10 @@ export default {
 .input {
   position: relative;
   margin-bottom: 40px;
+}
+
+.input--radio {
+  margin-top: -20px;
 }
 
 .input__elem {

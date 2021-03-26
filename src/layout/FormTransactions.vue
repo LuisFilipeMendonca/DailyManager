@@ -47,18 +47,7 @@ export default {
       return !!this.$route.params.id;
     },
     inputs() {
-      console.log(this.inputsData.inputs);
       return this.inputsData.inputs;
-    },
-  },
-  watch: {
-    $route(to, from) {
-      if (from.params.id && !to.params.id) {
-        this.inputsData.clearValues();
-        return;
-      }
-
-      this.getTask();
     },
   },
   methods: {
@@ -70,14 +59,9 @@ export default {
 
         const formData = form.buildFormObj();
 
-        await this.$store.dispatch("todos/storeUpdateTask", {
-          formData,
-          isEditing: this.isEditing,
-          taskId: +this.$route.params.id,
-          atualDate: +this.$route.query.date,
-        });
+        await this.$store.dispatch("account/storeTransaction", formData);
 
-        this.$router.replace("/tasks");
+        // this.$router.replace("/tasks");
       } catch (e) {
         console.log(e);
       }
