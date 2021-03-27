@@ -6,7 +6,7 @@
     <form class="form" @submit.prevent="submitHandler">
       <slot name="form-inputs" />
       <div class="form__actions">
-        <base-button mode="flatten" type="submit">{{
+        <base-button mode="flatten" type="submit" :isLoading="isBtnLoading">{{
           submitDescription
         }}</base-button>
         <slot name="form-aditional-action" />
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  props: ["submitDescription", "submitHandler"],
+  props: ["submitDescription", "submitHandler", "isBtnLoading"],
 };
 </script>
 

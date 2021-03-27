@@ -117,6 +117,14 @@ export default {
   z-index: 1;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  filter: none;
+  background-color: var(--bg) !important;
+}
+
 .input__elem:focus {
   border-color: var(--secondary);
 }

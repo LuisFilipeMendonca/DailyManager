@@ -2,7 +2,8 @@
 
 const getters = {
   getTransactionsExpenses(state) {
-    const transactionsExpenses = [];
+    const currentDay = new Date().getDate();
+    const transactionsExpenses = Array(currentDay);
 
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
       return transactionsExpenses;
@@ -14,7 +15,9 @@ const getters = {
     AccountTransactions.forEach((transaction) => {
       if (transaction.type === "outcome") {
         const day =
-          +transaction.createdAt.slice(transaction.createdAt.length - 2) - 1;
+          +transaction.transactionDate.slice(
+            transaction.transactionDate.length - 2
+          ) - 1;
         transactionsExpenses[day] =
           (transactionsExpenses[day] || 0) + transaction.amount;
       }
@@ -29,7 +32,8 @@ const getters = {
     return transactionsExpenses;
   },
   getTransactionsProfits(state) {
-    const transactionsProfits = [];
+    const currentDay = new Date().getDate();
+    const transactionsProfits = Array(currentDay);
 
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
       return transactionsProfits;
@@ -40,8 +44,8 @@ const getters = {
 
     AccountTransactions.forEach((transaction) => {
       if (transaction.type === "income") {
-        const day = transaction.createdAt.slice(
-          transaction.createdAt.length - 2
+        const day = transaction.transactionDate.slice(
+          transaction.transactionDate.length - 2
         );
         transactionsProfits[+day - 1] = transaction.amount;
       }
@@ -58,7 +62,8 @@ const getters = {
   getMonthlyProfits(state) {
     const monthProfits = [];
 
-    if (!state.account.AccountMonths) return monthProfits;
+    if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
+      return monthProfits;
 
     state.account.AccountMonths.forEach((month) => {
       monthProfits[month.month] = month.profit;
@@ -73,9 +78,11 @@ const getters = {
     return monthProfits;
   },
   getMonthlyExpenses(state) {
+    console.log(state.account);
     const monthExpenses = [];
 
-    if (!state.account.AccountMonths) return monthExpenses;
+    if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
+      return monthExpenses;
 
     state.account.AccountMonths.forEach((month) => {
       monthExpenses[month.month] = month.expenses;
@@ -93,7 +100,8 @@ const getters = {
     return state.account.balance;
   },
   getMonthProfitExpenses(state) {
-    if (!state.account.AccountMonths) return 0;
+    if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
+      return { profit: 0, expenses: 0 };
 
     const month = new Date().getMonth();
 

@@ -191,7 +191,10 @@ export default {
         montlyTransactionsChartData.dataset
       );
 
-      return { chartData, hasValue: expenses.length > 0 };
+      return {
+        chartData,
+        hasValue: expenses.some((expense) => expense.value > 0),
+      };
     },
     chartTransactionsProfits() {
       const profits = this.$store.getters["account/getTransactionsProfits"];
@@ -209,7 +212,10 @@ export default {
         montlyTransactionsChartData.dataset
       );
 
-      return { chartData, hasValue: profits.length > 0 };
+      return {
+        chartData,
+        hasValue: profits.some((profit) => profit.value > 0),
+      };
     },
     totalBalance() {
       const totalBalance = this.$store.getters["account/getTotalBalance"];

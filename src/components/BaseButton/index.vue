@@ -1,11 +1,12 @@
 <template>
   <button
     v-if="!isLink"
-    :class="['btn', mode]"
+    :class="['btn', mode, btnLoading]"
     :type="type"
     @click="clickHandler"
   >
-    <slot />
+    <p class="btn__description"><slot /></p>
+    <base-loader :show="!!btnLoading" />
   </button>
   <router-link v-else :to="path" :class="['btn', mode]">
     <slot />
@@ -14,17 +15,32 @@
 
 <script>
 export default {
-  props: ["mode", "isLink", "path", "type", "clickHandler"],
+  props: ["mode", "isLink", "path", "type", "clickHandler", "isLoading"],
+  computed: {
+    btnLoading() {
+      return this.isLoading ? "loading" : null;
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style>
 .btn {
   padding: 8px 16px;
   border-radius: 3px;
-  transition: all 0.2s ease-in;
+  transition: all 0.3s ease-in;
   cursor: pointer;
   font-size: 0.8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn.loading .btn__description {
+  transform: translate(0, -200%);
+}
+
+.loader__item {
+  background-color: var(--primary-dark);
 }
 
 .outline {
@@ -40,27 +56,28 @@ export default {
 }
 
 .unstyled {
-  color: #d1d1d0;
-  background-color: #454544;
-  border: 1px solid #454544;
+  color: var(--primary-light);
+  background-color: transparent;
+  border: 1px solid var(--primary-light);
 }
 
 .unstyled:hover,
 .unstyled:focus,
 .unstyled:active {
-  background-color: transparent;
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
 }
 
 .flatten {
-  color: #454544;
-  background-color: #d1d1d0;
-  border: 1px solid #d1d1d0;
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
+  background-color: transparent;
 }
 
 .flatten:hover,
 .flatten:focus,
 .flatten:active {
-  color: #d1d1d0;
-  background-color: transparent;
+  color: var(--primary-dark);
+  background-color: var(--secondary);
 }
 </style>

@@ -3,6 +3,7 @@
     <base-form
       :submitHandler="submitHandler"
       :submitDescription="isEditing ? 'Edit Task' : 'Add Transaction'"
+      :isBtnLoading="isLoading"
     >
       <template v-slot:form-header>
         <h2>{{ isEditing ? "Edit" : "Add" }} Transaction</h2>
@@ -40,6 +41,7 @@ export default {
   data() {
     return {
       inputsData: new Inputs(transactionInputs),
+      isLoading: false,
     };
   },
   computed: {
@@ -52,17 +54,19 @@ export default {
   },
   methods: {
     async submitHandler() {
+      const form = new Form(this.inputsData);
+
+      if (!form.isValid()) return;
+      this.isLoading = true;
       try {
-        const form = new Form(this.inputsData);
-
-        if (!form.isValid()) return;
-
         const formData = form.buildFormObj();
 
         await this.$store.dispatch("account/storeTransaction", formData);
 
-        // this.$router.replace("/tasks");
+        this.isLoading = false;
+        this.$router.replace("/expenses");
       } catch (e) {
+        this.isLoading = false;
         console.log(e);
       }
     },

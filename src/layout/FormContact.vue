@@ -3,6 +3,7 @@
     <base-form
       :submitHandler="submitHandler"
       :submitDescription="isEditing ? 'Edit Contact' : 'Add Contact'"
+      :isBtnLoading="isLoading"
     >
       <template v-slot:form-header>
         <h2>{{ isEditing ? "Edit" : "Add" }} Contact</h2>
@@ -43,6 +44,7 @@ export default {
   data() {
     return {
       inputsData: new Inputs(contactsInputs),
+      isLoading: false,
     };
   },
   created() {
@@ -69,11 +71,11 @@ export default {
   },
   methods: {
     async submitHandler() {
+      const form = new Form(this.inputsData);
+
+      if (!form.isValid()) return;
+      this.isLoading = true;
       try {
-        const form = new Form(this.inputsData);
-
-        if (!form.isValid()) return;
-
         const formData = form.buildFormData(this.isEditing);
 
         await this.$store.dispatch("contacts/storeUpdateContact", {
@@ -82,8 +84,10 @@ export default {
           contactId: +this.$route.params.id,
         });
 
+        this.isLoading = false;
         this.$router.replace("/contacts");
       } catch (e) {
+        this.isLoading = false;
         console.log(e);
       }
     },

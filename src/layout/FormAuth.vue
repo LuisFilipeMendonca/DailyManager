@@ -3,6 +3,7 @@
     <base-form
       :submitHandler="submitHandler"
       :submitDescription="isLogging ? 'Login' : 'Register'"
+      :isBtnLoading="isLoading"
     >
       <template v-slot:form-header>
         <h2>{{ isLogging ? "Login" : "Register" }}</h2>
@@ -46,6 +47,7 @@ export default {
     return {
       isLogging: true,
       inputsData: loginInputs,
+      isLoading: false,
     };
   },
   methods: {
@@ -60,21 +62,24 @@ export default {
       this.inputsData.clearValues();
     },
     async submitHandler() {
+      const form = new Form(this.inputsData);
+
+      if (!form.isValid()) return;
+      this.isLoading = true;
       try {
-        const form = new Form(this.inputsData);
-
-        if (!form.isValid()) return;
-
         const formData = form.buildFormObj();
 
         if (this.isLogging) {
           await this.$store.dispatch("auth/login", formData);
+          this.isLoading = false;
           this.$router.replace("/");
         } else {
           await this.$store.dispatch("auth/register", formData);
+          this.isLoading = false;
           this.toggleFormHandler();
         }
       } catch (e) {
+        this.isLoading = false;
         console.log(e);
       }
     },

@@ -21,6 +21,7 @@ import BaseForm from "./components/BaseForm";
 import BaseInput from "./components/BaseInput";
 import BaseSpinner from "./components/BaseSpinner";
 import BaseDialog from "./components/BaseDialog";
+import BaseLoader from "./components/BaseLoader";
 
 const app = createApp(App);
 
@@ -42,5 +43,6 @@ app.component("base-form", BaseForm);
 app.component("base-input", BaseInput);
 app.component("base-spinner", BaseSpinner);
 app.component("base-dialog", BaseDialog);
+app.component("base-loader", BaseLoader);
 
 app.mount("#app");

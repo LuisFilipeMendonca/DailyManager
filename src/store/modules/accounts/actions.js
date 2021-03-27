@@ -17,11 +17,12 @@ const actions = {
   },
   async storeTransaction({ commit }, data) {
     try {
-      console.log(data);
+      const currentYear = new Date().getFullYear();
       const response = await axios.post("/accounts", data);
 
-      console.log(response.data);
-      console.log(commit);
+      if (currentYear === +data.transactionDate.slice(0, 4)) {
+        commit("addTransaction", response.data);
+      }
     } catch (e) {
       console.log(e);
     }
