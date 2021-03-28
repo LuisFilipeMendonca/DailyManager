@@ -78,7 +78,6 @@ const getters = {
     return monthProfits;
   },
   getMonthlyExpenses(state) {
-    console.log(state.account);
     const monthExpenses = [];
 
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)

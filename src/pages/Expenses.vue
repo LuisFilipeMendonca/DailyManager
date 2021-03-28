@@ -176,9 +176,15 @@ export default {
       return { chartData, hasValue: expenses.length > 0 };
     },
     chartTransactionsExpenses() {
-      const expenses = this.$store.getters["account/getTransactionsExpenses"];
+      let expenses = this.$store.getters["account/getTransactionsExpenses"];
 
       if (!expenses) return null;
+
+      const hasValue = expenses.some((expense) => expense > 0);
+
+      if (!hasValue) {
+        expenses = [];
+      }
 
       const montlyTransactionsChartData = this.buildChartDataset(
         "Daily Expenses",
@@ -193,13 +199,19 @@ export default {
 
       return {
         chartData,
-        hasValue: expenses.some((expense) => expense.value > 0),
+        hasValue,
       };
     },
     chartTransactionsProfits() {
-      const profits = this.$store.getters["account/getTransactionsProfits"];
+      let profits = this.$store.getters["account/getTransactionsProfits"];
 
       if (!profits) return null;
+
+      const hasValue = profits.some((profit) => profit > 0);
+
+      if (!hasValue) {
+        profits = [];
+      }
 
       const montlyTransactionsChartData = this.buildChartDataset(
         "Daily Profits",
@@ -214,7 +226,7 @@ export default {
 
       return {
         chartData,
-        hasValue: profits.some((profit) => profit.value > 0),
+        hasValue,
       };
     },
     totalBalance() {

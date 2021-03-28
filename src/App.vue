@@ -1,4 +1,5 @@
 <template>
+  <the-toaster />
   <the-header />
   <main class="main">
     <router-view />
@@ -7,10 +8,12 @@
 
 <script>
 import TheHeader from "./layout/TheHeader";
+import TheToaster from "./layout/TheToaster";
 
 export default {
   components: {
     "the-header": TheHeader,
+    "the-toaster": TheToaster,
   },
   data() {
     return {

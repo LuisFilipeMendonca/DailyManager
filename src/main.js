@@ -9,6 +9,7 @@ import {
   faUserCircle,
   faPlusCircle,
   faCheck,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -32,6 +33,7 @@ library.add(faCoins);
 library.add(faUserCircle);
 library.add(faPlusCircle);
 library.add(faCheck);
+library.add(faTimes);
 
 app.use(router);
 app.use(store);

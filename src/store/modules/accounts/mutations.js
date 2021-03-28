@@ -3,31 +3,33 @@ const mutations = {
     state.account = payload;
   },
   addTransaction(state, payload) {
-    const { type, amount, transactionDate } = payload;
+    const accountMonth = payload.accountMonth[0];
+    const accountTransaction = payload.accountTransaction;
 
-    const transactionMonth = new Date(transactionDate).getMonth();
-    const currentMonth = new Date().getMonth();
-
-    state.account.balance =
-      type === "income"
-        ? state.account.balance + amount
-        : state.account.balance - amount;
-
-    const transactionMonthIdx = state.account.AccountMonths.findIndex(
-      (accountMonth) => accountMonth.month === transactionMonth
+    const monthIdx = state.account.AccountMonths.findIndex(
+      (month) => month.id === accountMonth.id
     );
 
-    if (currentMonth === transactionMonth) {
-      state.account.AccountMonths[transactionMonthIdx].AccountTransactions.push(
-        payload
-      );
+    if (monthIdx !== -1) {
+      state.account.AccountMonths[monthIdx] = {
+        ...state.account.AccountMonths[monthIdx],
+        ...accountMonth,
+        AccountTransactions: [
+          ...state.account.AccountMonths[monthIdx].AccountTransactions,
+          accountTransaction,
+        ],
+      };
+    } else {
+      state.account.AccountMonths.push({
+        ...accountMonth,
+        AccountTransactions: [accountTransaction],
+      });
     }
 
-    if (type === "income") {
-      state.account.AccountMonths[transactionMonthIdx].profit += amount;
-    } else {
-      state.account.AccountMonths[transactionMonthIdx].expenses += amount;
-    }
+    state.account.balance =
+      accountTransaction.type === "income"
+        ? state.account.balance + accountTransaction.amount
+        : state.account.balance - accountTransaction.amount;
   },
 };
 
