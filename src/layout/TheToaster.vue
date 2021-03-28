@@ -1,11 +1,15 @@
 <template>
   <div class="toast">
-    <toast-item
-      v-for="toast in toasts"
-      :key="toast.id"
-      :description="toast.description"
-      :type="toast.type"
-    />
+    <transition-group name="toast-anim">
+      <toast-item
+        v-for="toast in toasts"
+        :key="toast.id"
+        :id="toast.id"
+        :description="toast.description"
+        :type="toast.type"
+        @delete-toast="deleteToast"
+      />
+    </transition-group>
   </div>
 </template>
 
@@ -16,17 +20,22 @@ export default {
   components: {
     "toast-item": ToastItem,
   },
-  data() {
-    return {
-      toasts: [
-        {
-          id: 1,
-          description: "Something went wrong. Try again later.",
-          type: "error",
-        },
-        { id: 2, description: "Added successfully", type: "success" },
-      ],
-    };
+  computed: {
+    toasts() {
+      const toasts = this.$store.getters["toasts/getToasts"];
+      return toasts;
+    },
+  },
+  methods: {
+    deleteToast(id) {
+      this.$store.commit("toasts/deleteToast", id);
+    },
+  },
+  created() {
+    this.$store.commit("toasts/addToast", {
+      description: "Added successfully",
+      type: "success",
+    });
   },
 };
 </script>
@@ -45,4 +54,57 @@ export default {
   flex-direction: column;
   align-items: flex-end;
 }
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-30px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-30px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(30px);
+    opacity: 1;
+  }
+}
+
+.toast-anim-enter-active {
+  animation: slideIn 0.5s ease;
+}
+
+.toast-anim-leave-active {
+  animation: slideOut 0.5s ease;
+}
+
+.toast-anim-enter {
+  transform: translateX(-30px);
+}
+
+.toast-anim-enter-to {
+  transform: translateX(0);
+}
+
+/* .toast-anim-leave {
+  transform: translateX(0);
+} */
+
+/* .toast-anim-leave-to {
+  transform: translateX(-30px);
+} */
 </style>

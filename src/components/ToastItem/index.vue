@@ -15,11 +15,12 @@
 <script>
 export default {
   props: ["id", "description", "type"],
+  emits: ["delete-toast"],
   data() {
     return {
       timer: null,
       width: 100,
-      duration: 10000,
+      duration: 5000,
     };
   },
   computed: {
@@ -38,6 +39,7 @@ export default {
       console.log(this.width);
       if (this.width === 0) {
         clearInterval(this.timer);
+        this.$emit("delete-toast", this.id);
       }
     }, this.toastDuration);
   },
