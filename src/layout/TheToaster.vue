@@ -31,12 +31,6 @@ export default {
       this.$store.commit("toasts/deleteToast", id);
     },
   },
-  created() {
-    this.$store.commit("toasts/addToast", {
-      description: "Added successfully",
-      type: "success",
-    });
-  },
 };
 </script>
 
@@ -53,6 +47,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  overflow: hidden;
 }
 
 @keyframes slideOut {
@@ -79,7 +74,7 @@ export default {
     opacity: 1;
   }
   100% {
-    transform: translateX(30px);
+    transform: translateX(0);
     opacity: 1;
   }
 }

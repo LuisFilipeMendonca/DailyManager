@@ -7,7 +7,7 @@ const actions = {
 
       commit("addContacts", response.data);
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
   async storeUpdateContact({ commit }, data) {

@@ -83,8 +83,12 @@ export default {
           atualDate: +this.$route.query.date,
         });
 
-        this.$router.replace("/tasks");
         this.isLoading = false;
+        this.$router.replace("/tasks");
+        this.$store.commit("toasts/addToast", {
+          description: "Your task was successfully added",
+          type: "success",
+        });
       } catch (e) {
         this.isLoading = false;
         console.log(e);

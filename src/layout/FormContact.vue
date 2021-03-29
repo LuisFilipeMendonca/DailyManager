@@ -86,6 +86,10 @@ export default {
 
         this.isLoading = false;
         this.$router.replace("/contacts");
+        this.$store.commit("toasts/addToast", {
+          description: "Your contact was successfully added",
+          type: "success",
+        });
       } catch (e) {
         this.isLoading = false;
         console.log(e);

@@ -2,10 +2,11 @@ import { timeWithoutSec } from "../../../util/dates";
 
 const getters = {
   getTodos(state) {
-    return state.todosList.map((task) => ({
+    const todos = state.todosList.map((task) => ({
       ...task,
       time: timeWithoutSec(task.time),
     }));
+    return todos;
   },
   getTask: (state) => (id) => {
     const task = state.todosList.find((task) => task.id === id);
@@ -13,7 +14,12 @@ const getters = {
   },
   hasTasks: (state) => (date) => {
     return state.todosList.some(
-      (task) => new Date(task.date).getTime() === date.getTime()
+      (task) =>
+        new Date(
+          new Date(task.date).getFullYear(),
+          new Date(task.date).getMonth(),
+          new Date(task.date).getDate()
+        ).getTime() === date.getTime()
     );
   },
 };

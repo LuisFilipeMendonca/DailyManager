@@ -2,6 +2,7 @@ import { objSort } from "../../../util/generics.js";
 
 const mutations = {
   addTodos(state, payload) {
+    console.log(payload);
     state.todosList = payload;
   },
   addTask(state, payload) {

@@ -16,7 +16,11 @@ const actions = {
     try {
       const { formData, isEditing, taskId, atualDate } = data;
       let response;
-      let taskDate = new Date(formData.date).getTime();
+      let taskDate = new Date(
+        new Date(formData.date).getFullYear(),
+        new Date(formData.date).getMonth(),
+        new Date(formData.date).getDate()
+      ).getTime();
 
       if (isEditing) {
         response = await axios.put(`todos/${taskId}`, formData);

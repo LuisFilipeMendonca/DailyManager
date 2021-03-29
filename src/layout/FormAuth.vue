@@ -63,6 +63,7 @@ export default {
     },
     async submitHandler() {
       const form = new Form(this.inputsData);
+      console.log(this.$route.query);
 
       if (!form.isValid()) return;
       this.isLoading = true;
@@ -77,10 +78,14 @@ export default {
           await this.$store.dispatch("auth/register", formData);
           this.isLoading = false;
           this.toggleFormHandler();
+          this.$store.commit("toasts/addToast", {
+            description: "Your account was successfully added",
+            type: "success",
+          });
         }
       } catch (e) {
         this.isLoading = false;
-        console.log(e);
+        console.log("Component", e);
       }
     },
     changeHandler(target) {

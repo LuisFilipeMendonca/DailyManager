@@ -25,7 +25,6 @@ export default {
   },
   computed: {
     toastDuration() {
-      console.log("ola");
       return this.duration / 100;
     },
     toastTypeClass() {
@@ -36,7 +35,6 @@ export default {
     this.timer = setInterval(() => {
       this.width--;
 
-      console.log(this.width);
       if (this.width === 0) {
         clearInterval(this.timer);
         this.$emit("delete-toast", this.id);

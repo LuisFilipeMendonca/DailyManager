@@ -65,6 +65,10 @@ export default {
 
         this.isLoading = false;
         this.$router.replace("/expenses");
+        this.$store.commit("toasts/addToast", {
+          description: "Your transaction was successfully added",
+          type: "success",
+        });
       } catch (e) {
         this.isLoading = false;
         console.log(e);

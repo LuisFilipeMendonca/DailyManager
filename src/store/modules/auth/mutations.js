@@ -21,10 +21,15 @@ const mutations = {
 
     this.commit("auth/login", userData);
   },
-  logout() {
-    console.log("ola");
+  logout(state) {
     delete axios.defaults.headers.common["Authorization"];
     localStorage.removeItem("daily-manager");
+
+    state.userId = null;
+    state.userToken = null;
+    state.userEmail = null;
+    state.userName = null;
+    state.isLoggedIn = false;
   },
 };
 

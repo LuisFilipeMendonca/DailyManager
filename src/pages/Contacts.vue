@@ -81,7 +81,14 @@ export default {
       try {
         await this.$store.dispatch("contacts/getContacts");
       } catch (e) {
-        console.log(e);
+        console.log("ola");
+        if (e.status === 401) {
+          this.$store.commit("auth/logout");
+          this.$router.push({
+            name: "Authentication",
+            query: { redirect: "/contacts" },
+          });
+        }
       }
       this.isLoading = false;
     },
