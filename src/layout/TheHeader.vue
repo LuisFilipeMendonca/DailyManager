@@ -7,7 +7,9 @@
           <router-link to="/authentication">Authenticate</router-link>
         </li>
         <li class="nav__item" v-if="isLogged">
-          <base-button @click="logout">Logout</base-button>
+          <base-button type="button" mode="primary" :clickHandler="logout"
+            >Logout</base-button
+          >
         </li>
       </ul>
     </nav>
@@ -25,6 +27,7 @@ export default {
   methods: {
     logout() {
       this.$store.commit("auth/logout");
+      this.$router.replace("/");
     },
   },
 };

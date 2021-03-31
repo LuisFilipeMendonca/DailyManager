@@ -8,7 +8,7 @@
             <h2>Total Balance</h2>
             <span>{{ totalBalance }} €</span>
           </div>
-          <base-button :isLink="true" mode="outline" path="/expenses/add"
+          <base-button :isLink="true" mode="primary" path="/expenses/add"
             >Add Transaction</base-button
           >
         </div>
@@ -74,18 +74,18 @@ export default {
   components: {
     chart: Chart,
   },
+  inject: ["errorHandler"],
   methods: {
     async fetchAccountData() {
       try {
         await this.$store.dispatch("account/getAccountData");
       } catch (e) {
-        if (e.status === 401) {
-          this.$store.commit("auth/logout");
-          this.$router.push({
+        this.errorHandler(e, {
+          redirect: {
             name: "Authentication",
             query: { redirect: this.$route.path },
-          });
-        }
+          },
+        });
       }
     },
     buildChartDataset(label, data, isMonthly) {

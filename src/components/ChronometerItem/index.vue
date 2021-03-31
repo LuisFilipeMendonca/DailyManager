@@ -7,8 +7,18 @@
       <h2>{{ time }}</h2>
       <h3 v-if="description">{{ description }}</h3>
       <div class="chronometer__actions">
-        <button @click="selectChronometerHandler">Select</button>
-        <button @click="deleteChronometerHandler">Delete</button>
+        <base-button
+          type="button"
+          :clickHandler="selectChronometerHandler"
+          mode="primary"
+          >Select</base-button
+        >
+        <base-button
+          type="button"
+          :clickHandler="deleteChronometerHandler"
+          mode="danger"
+          >Delete</base-button
+        >
       </div>
     </li>
   </base-card>
@@ -18,13 +28,23 @@
 export default {
   props: ["id", "description", "time", "selectedId"],
   emits: ["select-chronometer", "stop-chronometer"],
+  inject: ["errorHandler"],
   methods: {
     selectChronometerHandler() {
       this.$emit("select-chronometer", this.id);
     },
     deleteChronometerHandler() {
       this.$emit("stop-chronometer");
-      this.$store.dispatch("chronometers/deleteChronometer", this.id);
+      try {
+        this.$store.dispatch("chronometers/deleteChronometer", this.id);
+      } catch (e) {
+        this.errorHandler(e, {
+          redirect: {
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          },
+        });
+      }
     },
   },
   computed: {
@@ -51,5 +71,9 @@ export default {
 
 .chronometer__item > *:not(:last-child) {
   margin-bottom: 8px;
+}
+
+.chronometer__actions > *:not(:last-child) {
+  margin-right: 8px;
 }
 </style>

@@ -28,7 +28,7 @@ export default {
 .btn {
   padding: 8px 16px;
   border-radius: 3px;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease;
   cursor: pointer;
   font-size: 0.8rem;
   position: relative;
@@ -39,45 +39,60 @@ export default {
   transform: translate(0, -200%);
 }
 
-.loader__item {
-  background-color: var(--primary-dark);
-}
-
-.outline {
-  border: 1px solid #d1d1d0;
-  color: #d1d1d0;
-  background-color: transparent;
-}
-
-.outline:hover,
-.outline:focus,
-.outline:active {
-  background-color: #5c5c5b;
-}
-
-.unstyled {
-  color: var(--primary-light);
-  background-color: transparent;
-  border: 1px solid var(--primary-light);
-}
-
-.unstyled:hover,
-.unstyled:focus,
-.unstyled:active {
-  background-color: var(--primary-light);
-  color: var(--primary-dark);
-}
-
-.flatten {
+.primary {
   color: var(--secondary);
   border: 1px solid var(--secondary);
   background-color: transparent;
 }
 
-.flatten:hover,
-.flatten:focus,
-.flatten:active {
+.primary:hover {
   color: var(--primary-dark);
   background-color: var(--secondary);
+}
+
+.primary:focus {
+  box-shadow: 0px 0px 10px var(--secondary);
+}
+
+.primary .loader__item {
+  background-color: var(--secondary);
+}
+
+.secondary {
+  color: var(--primary-light);
+  border: 1px solid var(--primary-light);
+  background-color: transparent;
+}
+
+.secondary:hover {
+  color: var(--primary-dark);
+  background-color: var(--primary-light);
+}
+
+.secondary:focus {
+  box-shadow: 0px 0px 10px var(--primary-light);
+}
+
+.secondary .loader__item {
+  background-color: var(--primary-light);
+}
+
+.danger {
+  color: rgb(255, 122, 122);
+  border: 1px solid rgb(255, 122, 122);
+  background-color: transparent;
+}
+
+.danger:hover {
+  color: var(--primary-dark);
+  background-color: rgb(255, 122, 122);
+}
+
+.danger:focus {
+  box-shadow: 0px 0px 10px rgb(255, 122, 122);
+}
+
+.danger .loader__item {
+  background-color: rgb(255, 122, 122);
 }
 </style>

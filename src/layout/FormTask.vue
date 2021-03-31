@@ -23,7 +23,7 @@
         />
       </template>
       <template v-slot:form-aditional-action>
-        <base-button :isLink="true" path="/tasks" type="button" mode="unstyled"
+        <base-button :isLink="true" path="/tasks" type="button" mode="danger"
           >Cancel</base-button
         >
       </template>
@@ -37,6 +37,7 @@ import Inputs from "../helpers/Inputs";
 import { taskInputs } from "../constants/inputs";
 
 export default {
+  inject: ["errorHandler"],
   data() {
     return {
       inputsData: new Inputs(taskInputs),
@@ -91,13 +92,13 @@ export default {
         });
       } catch (e) {
         this.isLoading = false;
-        if (e.status === 401) {
-          this.$store.commit("auth/logout");
-          this.$router.push({
+        this.errorHandler(e, {
+          inputs: this.inputsData,
+          redirect: {
             name: "Authentication",
             query: { redirect: this.$route.path },
-          });
-        }
+          },
+        });
       }
     },
     changeHandler(target) {

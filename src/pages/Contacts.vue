@@ -4,7 +4,7 @@
     <base-card>
       <header class="contacts-header">
         <h1 class="contacts-header__title">Contacts</h1>
-        <base-button :isLink="true" mode="outline" path="/contacts/add"
+        <base-button :isLink="true" mode="primary" path="/contacts/add"
           >Add Contact</base-button
         >
       </header>
@@ -50,6 +50,7 @@ export default {
   components: {
     "contact-item": ContactItem,
   },
+  inject: ["errorHandler"],
   data() {
     return {
       isLoading: false,
@@ -81,17 +82,12 @@ export default {
       try {
         await this.$store.dispatch("contacts/getContacts");
       } catch (e) {
-        if (e.status === 401) {
-          this.$store.commit("auth/logout");
-          this.$store.commit("toasts/addToast", {
-            description: e.data.errorMsg,
-            type: "error",
-          });
-          this.$router.push({
+        this.errorHandler(e, {
+          redirect: {
             name: "Authentication",
             query: { redirect: this.$route.path },
-          });
-        }
+          },
+        });
       }
       this.isLoading = false;
     },

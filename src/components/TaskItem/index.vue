@@ -7,11 +7,11 @@
       <div class="task__details" :class="{ 'task__details--time': hasTime }">
         <p class="task__description">{{ description }}</p>
         <div class="task__actions" v-if="!checked">
-          <base-button mode="flatten" @click="checkHandler">Check</base-button>
-          <base-button :isLink="true" :path="editPath" mode="flatten"
+          <base-button mode="primary" @click="checkHandler">Check</base-button>
+          <base-button :isLink="true" :path="editPath" mode="secondary"
             >Edit</base-button
           >
-          <base-button @click="deleteTask" mode="flatten">Delete</base-button>
+          <base-button @click="deleteTask" mode="danger">Delete</base-button>
         </div>
       </div>
       <span v-if="time" class="task__time">{{ time }}</span>
@@ -22,6 +22,7 @@
 <script>
 export default {
   props: ["time", "description", "id", "date", "checked", "taskDate"],
+  inject: ["errorHandler"],
   computed: {
     hasTime() {
       return !!this.time;
@@ -35,13 +36,12 @@ export default {
       try {
         await this.$store.dispatch("todos/deleteTask", this.id);
       } catch (e) {
-        if (e.status === 401) {
-          this.$store.commit("auth/logout");
-          this.$router.push({
+        this.errorHandler(e, {
+          redirect: {
             name: "Authentication",
             query: { redirect: this.$route.path },
-          });
-        }
+          },
+        });
       }
     },
     async checkHandler() {
@@ -53,13 +53,12 @@ export default {
           atualDate: new Date(this.date).getTime(),
         });
       } catch (e) {
-        if (e.status === 401) {
-          this.$store.commit("auth/logout");
-          this.$router.push({
+        this.errorHandler(e, {
+          redirect: {
             name: "Authentication",
             query: { redirect: this.$route.path },
-          });
-        }
+          },
+        });
       }
     },
   },

@@ -20,6 +20,32 @@ export default {
       isLoading: true,
     };
   },
+  provide: {
+    errorHandler(error, configErrorHandler) {
+      switch (error.status) {
+        case 400:
+          configErrorHandler.inputs.setDBErrors(error.data, this.$store);
+          break;
+        case 401:
+          this.$store.commit("auth/logout");
+          this.$store.commit("toasts/addToast", {
+            description: error.data.errorMsg,
+            type: "error",
+          });
+          this.$router.push({
+            name: configErrorHandler.redirect.name,
+            query: configErrorHandler.redirect.query,
+          });
+          break;
+        case 500:
+          this.$store.commit("toasts/addToast", {
+            description: error.data.errorMsg,
+            type: "error",
+          });
+          this.$router.push("/");
+      }
+    },
+  },
   async beforeCreate() {
     try {
       await this.$store.commit("auth/getUser");

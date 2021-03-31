@@ -9,6 +9,7 @@
           v-for="input in inputs"
           :key="input.id"
           :id="input.id"
+          :label="input.label"
           :type="input.type"
           :placeholder="input.placeholder"
           :value="input.value"
@@ -17,7 +18,7 @@
         />
       </template>
       <template v-slot:form-aditional-action>
-        <base-button @click="toggleDialog" type="button" mode="unstyled"
+        <base-button @click="toggleDialog" type="button" mode="danger"
           >Cancel</base-button
         >
       </template>
@@ -29,9 +30,24 @@
         <h3 v-if="getInputValue">{{ getInputValue }}</h3>
         <span class="chronometer__time">{{ formatChronometer }}</span>
         <div class="chronometer__actions">
-          <button @click="startChronometer">Start</button>
-          <button @click="pauseChronometer">Pause</button>
-          <button @click="stopChronometer">Stop</button>
+          <base-button
+            type="button"
+            :clickHandler="startChronometer"
+            mode="primary"
+            >Start</base-button
+          >
+          <base-button
+            type="button"
+            :clickHandler="pauseChronometer"
+            mode="secondary"
+            >Pause</base-button
+          >
+          <base-button
+            type="button"
+            :clickHandler="stopChronometer"
+            mode="danger"
+            >Stop</base-button
+          >
         </div>
       </div>
     </base-card>
@@ -60,6 +76,7 @@ export default {
   components: {
     "chronometer-item": ChronometerItem,
   },
+  inject: ["errorHandler"],
   data() {
     return {
       selectedChronometer: null,
@@ -106,8 +123,17 @@ export default {
     changeHandler(target) {
       this.inputsData.changeHandler(target);
     },
-    fetchChronometers() {
-      this.$store.dispatch("chronometers/getChronometers");
+    async fetchChronometers() {
+      try {
+        this.$store.dispatch("chronometers/getChronometers");
+      } catch (e) {
+        this.errorHandler(e, {
+          redirect: {
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          },
+        });
+      }
     },
     convertChronometerFormat(time) {
       const hours = Math.floor(time / 3600);
@@ -128,17 +154,26 @@ export default {
       this.inputsData.setInputsData(chronometerData);
       this.isUpdating = true;
     },
-    addChronometer() {
-      const chronometerData = {
-        time: this.secs,
-        description: this.inputsData.getInputValue("description"),
-      };
+    async addChronometer() {
+      try {
+        const chronometerData = {
+          time: this.secs,
+          description: this.inputsData.getInputValue("description"),
+        };
 
-      this.$store.dispatch("chronometers/storeUpdateChronometer", {
-        chronometerData,
-        isUpdating: this.isUpdating,
-        id: this.selectedChronometer,
-      });
+        this.$store.dispatch("chronometers/storeUpdateChronometer", {
+          chronometerData,
+          isUpdating: this.isUpdating,
+          id: this.selectedChronometer,
+        });
+      } catch (e) {
+        this.errorHandler(e, {
+          redirect: {
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          },
+        });
+      }
     },
   },
   computed: {

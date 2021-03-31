@@ -34,7 +34,7 @@ const actions = {
 
       commit("deleteChronometer", id);
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
 };

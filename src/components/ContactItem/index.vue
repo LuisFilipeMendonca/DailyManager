@@ -19,14 +19,14 @@
         <div class="item__actions">
           <base-button
             class="btn--hide"
-            mode="flatten"
+            mode="primary"
             @click="toggleDetailsHandler"
             >{{ isOpen ? "Hide" : "Show" }}</base-button
           >
-          <base-button mode="flatten" :isLink="true" :path="editLink"
+          <base-button mode="secondary" :isLink="true" :path="editLink"
             >Edit</base-button
           >
-          <base-button mode="unstyled" :clickHandler="deleteContact"
+          <base-button mode="danger" :clickHandler="deleteContact"
             >Delete</base-button
           >
         </div>
@@ -38,6 +38,7 @@
 <script>
 export default {
   props: ["id", "name", "email", "phone", "address", "photo", "photoUrl"],
+  inject: ["errorHandler"],
   data() {
     return {
       isOpen: false,
@@ -56,13 +57,12 @@ export default {
       try {
         await this.$store.dispatch("contacts/deleteContact", this.id);
       } catch (e) {
-        if (e.status === 401) {
-          this.$store.commit("auth/logout");
-          this.$router.push({
+        this.errorHandler(e, {
+          redirect: {
             name: "Authentication",
             query: { redirect: this.$route.path },
-          });
-        }
+          },
+        });
       }
     },
     toggleDetailsHandler() {
@@ -148,8 +148,8 @@ export default {
   .item__img {
     margin-top: 8px;
     margin-right: 0;
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
     font-size: 64px;
   }
 

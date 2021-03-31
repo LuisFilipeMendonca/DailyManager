@@ -5,7 +5,7 @@
       <header class="tasks__header">
         <h1 class="header__title">{{ formatedDate }}</h1>
         <div class="header__actions">
-          <base-button :isLink="true" :path="addTaskUrl" mode="outline"
+          <base-button :isLink="true" :path="addTaskUrl" mode="primary"
             >Add Task</base-button
           >
           <base-input
@@ -50,6 +50,7 @@ export default {
   components: {
     "task-item": TaskItem,
   },
+  inject: ["errorHandler"],
   data() {
     return {
       isLoading: false,
@@ -70,13 +71,12 @@ export default {
       try {
         await this.$store.dispatch("todos/getTodos", this.date.value);
       } catch (e) {
-        if (e.status === 401) {
-          this.$store.commit("auth/logout");
-          this.$router.push({
+        this.errorHandler(e, {
+          redirect: {
             name: "Authentication",
             query: { redirect: this.$route.path },
-          });
-        }
+          },
+        });
       }
       this.isLoading = false;
     },

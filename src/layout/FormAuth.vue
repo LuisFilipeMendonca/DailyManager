@@ -23,7 +23,7 @@
         />
       </template>
       <template v-slot:form-aditional-action>
-        <base-button type="button" mode="unstyled" @click="toggleFormHandler"
+        <base-button type="button" mode="secondary" @click="toggleFormHandler"
           >Change to {{ isLogging ? "Register" : "Login" }}</base-button
         >
       </template>
@@ -43,6 +43,7 @@ const loginInputs = new Inputs(LoginInputs);
 const registerInputs = new Inputs([...RegisterInputs, ...LoginInputs]);
 
 export default {
+  inject: ["errorHandler"],
   data() {
     return {
       isLogging: true,
@@ -89,7 +90,9 @@ export default {
         }
       } catch (e) {
         this.isLoading = false;
-        this.inputsData.setDBErrors(e.data, this.$store);
+        this.errorHandler(e, {
+          inputs: this.inputsData,
+        });
       }
     },
     changeHandler(target) {
