@@ -75,8 +75,18 @@ export default {
     chart: Chart,
   },
   methods: {
-    fetchAccountData() {
-      this.$store.dispatch("account/getAccountData");
+    async fetchAccountData() {
+      try {
+        await this.$store.dispatch("account/getAccountData");
+      } catch (e) {
+        if (e.status === 401) {
+          this.$store.commit("auth/logout");
+          this.$router.push({
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          });
+        }
+      }
     },
     buildChartDataset(label, data, isMonthly) {
       return {

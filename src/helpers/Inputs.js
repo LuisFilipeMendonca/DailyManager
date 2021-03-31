@@ -50,6 +50,16 @@ class Inputs {
       }
     });
   }
+
+  setDBErrors(errors, store) {
+    errors.forEach((error) => {
+      this.isInvalidHandler({ id: error.field });
+      store.commit("toasts/addToast", {
+        description: error.errorMsg,
+        type: "error",
+      });
+    });
+  }
 }
 
 export default Inputs;

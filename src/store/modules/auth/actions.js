@@ -5,7 +5,7 @@ const actions = {
     try {
       await axios.post("/users", data);
     } catch (e) {
-      throw e.response.data;
+      throw e.response;
     }
   },
   async login({ commit }, data) {
@@ -14,7 +14,7 @@ const actions = {
 
       commit("login", { ...response.data, isLogging: true });
     } catch (e) {
-      throw e.response.data;
+      throw e.response;
     }
   },
 };

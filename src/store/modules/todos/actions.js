@@ -9,7 +9,7 @@ const actions = {
 
       commit("addTodos", response.data);
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
   async storeUpdateTask({ commit }, data) {
@@ -34,7 +34,7 @@ const actions = {
         commit("addTask", response.data);
       }
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
   async deleteTask({ commit }, taskId) {
@@ -43,7 +43,7 @@ const actions = {
 
       commit("deleteTask", taskId);
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
 };

@@ -33,7 +33,7 @@ const actions = {
         commit("addContact", response.data);
       }
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
   async deleteContact({ commit }, contactId) {
@@ -42,7 +42,7 @@ const actions = {
 
       commit("deleteContact", contactId);
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
 };

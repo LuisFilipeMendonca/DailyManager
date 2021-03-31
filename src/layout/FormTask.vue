@@ -70,7 +70,7 @@ export default {
     async submitHandler() {
       const form = new Form(this.inputsData);
 
-      if (!form.isValid()) return;
+      if (!form.isValid(this.$store)) return;
 
       this.isLoading = true;
       try {
@@ -91,7 +91,13 @@ export default {
         });
       } catch (e) {
         this.isLoading = false;
-        console.log(e);
+        if (e.status === 401) {
+          this.$store.commit("auth/logout");
+          this.$router.push({
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          });
+        }
       }
     },
     changeHandler(target) {

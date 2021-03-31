@@ -63,9 +63,13 @@ export default {
     },
     async submitHandler() {
       const form = new Form(this.inputsData);
-      console.log(this.$route.query);
+      let redirectUrl = "/";
 
-      if (!form.isValid()) return;
+      if (this.$route.query.redirect) {
+        redirectUrl = this.$route.query.redirect;
+      }
+
+      if (!form.isValid(this.$store)) return;
       this.isLoading = true;
       try {
         const formData = form.buildFormObj();
@@ -73,7 +77,7 @@ export default {
         if (this.isLogging) {
           await this.$store.dispatch("auth/login", formData);
           this.isLoading = false;
-          this.$router.replace("/");
+          this.$router.replace(redirectUrl);
         } else {
           await this.$store.dispatch("auth/register", formData);
           this.isLoading = false;
@@ -85,7 +89,7 @@ export default {
         }
       } catch (e) {
         this.isLoading = false;
-        console.log("Component", e);
+        this.inputsData.setDBErrors(e.data, this.$store);
       }
     },
     changeHandler(target) {

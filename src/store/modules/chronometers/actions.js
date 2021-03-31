@@ -7,7 +7,7 @@ const actions = {
 
       commit("addChronometers", response.data);
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
 
@@ -24,7 +24,7 @@ const actions = {
         commit("addChronometer", response.data);
       }
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
 

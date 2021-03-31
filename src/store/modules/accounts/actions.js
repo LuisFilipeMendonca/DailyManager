@@ -10,9 +10,7 @@ const actions = {
 
       commit("getAccountData", response.data);
     } catch (e) {
-      if (e.response.status === 401) {
-        commit("auth/logout", [], { root: true });
-      }
+      throw e.response;
     }
   },
   async storeTransaction({ commit }, data) {
@@ -24,7 +22,7 @@ const actions = {
         commit("addTransaction", response.data);
       }
     } catch (e) {
-      console.log(e);
+      throw e.response;
     }
   },
 };

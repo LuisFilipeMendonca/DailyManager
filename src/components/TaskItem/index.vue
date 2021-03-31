@@ -31,16 +31,36 @@ export default {
     },
   },
   methods: {
-    deleteTask() {
-      this.$store.dispatch("todos/deleteTask", this.id);
+    async deleteTask() {
+      try {
+        await this.$store.dispatch("todos/deleteTask", this.id);
+      } catch (e) {
+        if (e.status === 401) {
+          this.$store.commit("auth/logout");
+          this.$router.push({
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          });
+        }
+      }
     },
-    checkHandler() {
-      this.$store.dispatch("todos/storeUpdateTask", {
-        formData: { checked: true, date: this.taskDate },
-        isEditing: true,
-        taskId: this.id,
-        atualDate: new Date(this.date).getTime(),
-      });
+    async checkHandler() {
+      try {
+        await this.$store.dispatch("todos/storeUpdateTask", {
+          formData: { checked: true, date: this.taskDate },
+          isEditing: true,
+          taskId: this.id,
+          atualDate: new Date(this.date).getTime(),
+        });
+      } catch (e) {
+        if (e.status === 401) {
+          this.$store.commit("auth/logout");
+          this.$router.push({
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          });
+        }
+      }
     },
   },
 };

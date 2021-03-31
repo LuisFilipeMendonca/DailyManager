@@ -81,12 +81,15 @@ export default {
       try {
         await this.$store.dispatch("contacts/getContacts");
       } catch (e) {
-        console.log("ola");
         if (e.status === 401) {
           this.$store.commit("auth/logout");
+          this.$store.commit("toasts/addToast", {
+            description: e.data.errorMsg,
+            type: "error",
+          });
           this.$router.push({
             name: "Authentication",
-            query: { redirect: "/contacts" },
+            query: { redirect: this.$route.path },
           });
         }
       }

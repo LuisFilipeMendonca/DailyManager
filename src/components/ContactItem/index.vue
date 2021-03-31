@@ -52,8 +52,18 @@ export default {
     },
   },
   methods: {
-    deleteContact() {
-      this.$store.dispatch("contacts/deleteContact", this.id);
+    async deleteContact() {
+      try {
+        await this.$store.dispatch("contacts/deleteContact", this.id);
+      } catch (e) {
+        if (e.status === 401) {
+          this.$store.commit("auth/logout");
+          this.$router.push({
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          });
+        }
+      }
     },
     toggleDetailsHandler() {
       this.isOpen = !this.isOpen;

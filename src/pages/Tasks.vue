@@ -70,7 +70,13 @@ export default {
       try {
         await this.$store.dispatch("todos/getTodos", this.date.value);
       } catch (e) {
-        console.log(e);
+        if (e.status === 401) {
+          this.$store.commit("auth/logout");
+          this.$router.push({
+            name: "Authentication",
+            query: { redirect: this.$route.path },
+          });
+        }
       }
       this.isLoading = false;
     },

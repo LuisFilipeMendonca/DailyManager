@@ -26,7 +26,7 @@ class Form {
     return data;
   }
 
-  isValid() {
+  isValid(store) {
     const inputs = this.formInputs.inputs;
     let isFormValid = true;
 
@@ -39,6 +39,10 @@ class Form {
 
         if (!isInputValid) {
           this.formInputs.isInvalidHandler(input);
+          store.commit("toasts/addToast", {
+            description: input.errorMsg,
+            type: "error",
+          });
           isFormValid = false;
         }
       }
