@@ -5,6 +5,8 @@ const actions = {
     try {
       const dateTimestamps = payload.getTime();
 
+      console.log(payload);
+
       const response = await axios(`todos/${dateTimestamps}`);
 
       commit("addTodos", response.data);

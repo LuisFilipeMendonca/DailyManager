@@ -28,7 +28,10 @@
         </base-card>
       </div>
     </div>
-    <div class="charts">
+    <div class="spinner" v-if="isLoading">
+      <base-spinner />
+    </div>
+    <div class="charts" v-else>
       <chart
         id="monthly-profits"
         type="line"
@@ -75,8 +78,14 @@ export default {
     chart: Chart,
   },
   inject: ["errorHandler"],
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   methods: {
     async fetchAccountData() {
+      this.isLoading = true;
       try {
         await this.$store.dispatch("account/getAccountData");
       } catch (e) {
@@ -87,6 +96,7 @@ export default {
           },
         });
       }
+      this.isLoading = false;
     },
     buildChartDataset(label, data, isMonthly) {
       return {
@@ -241,7 +251,7 @@ export default {
     },
     totalBalance() {
       const totalBalance = this.$store.getters["account/getTotalBalance"];
-      return totalBalance;
+      return totalBalance || 0;
     },
     monthProfitExpenses() {
       const monthProfitExpenses = this.$store.getters[
@@ -257,6 +267,11 @@ export default {
 </script>
 
 <style scoped>
+.spinner {
+  display: flex;
+  justify-content: center;
+}
+
 .section > *:not(:last-child) {
   margin-bottom: 16px;
 }

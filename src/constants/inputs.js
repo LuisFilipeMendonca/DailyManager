@@ -198,7 +198,7 @@ export const transactionInputs = [
     value: "",
     isValid: true,
     isRequired: true,
-    errorMsg: "A date is required",
+    errorMsg: "The date you enter is invalid",
     validator: Validator.isDateBeforeTomorrow,
   },
 ];

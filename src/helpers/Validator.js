@@ -45,13 +45,20 @@ class Validator {
   }
 
   static isDateBeforeTomorrow(target) {
-    const date = new Date(target.value).getTime();
+    const date = new Date(
+      new Date(target.value).getFullYear(),
+      new Date(target.value).getMonth(),
+      new Date(target.value).getDate()
+    ).getTime();
     const atualDate = new Date();
     const atualDateWithoutTime = new Date(
       atualDate.getFullYear(),
       atualDate.getMonth(),
       atualDate.getDate()
     ).getTime();
+
+    console.log(date);
+    console.log(atualDateWithoutTime);
 
     return atualDateWithoutTime >= date;
   }

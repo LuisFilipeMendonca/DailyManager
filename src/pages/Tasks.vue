@@ -82,7 +82,11 @@ export default {
     },
     changeHandler(target) {
       if (target.value.length <= 0) return;
-      this.date.value = new Date(target.value);
+      this.date.value = new Date(
+        new Date(target.value).getFullYear(),
+        new Date(target.value).getMonth(),
+        new Date(target.value).getDate()
+      );
     },
   },
   computed: {

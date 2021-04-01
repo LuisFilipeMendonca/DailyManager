@@ -6,7 +6,14 @@
       and register in our app.
     </h2>
     <h2 class="main__subtitle" v-else>Welcome, {{ getUserName }}</h2>
-    <home-grid v-if="isLoggedIn"></home-grid>
+    <base-button
+      :isLink="true"
+      mode="primary"
+      path="/authentication"
+      v-if="!isLoggedIn"
+      >Authenticate</base-button
+    >
+    <home-grid v-else></home-grid>
   </section>
 </template>
 

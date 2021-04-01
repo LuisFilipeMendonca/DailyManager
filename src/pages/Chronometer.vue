@@ -51,7 +51,13 @@
         </div>
       </div>
     </base-card>
-    <ul class="chronometer__menu">
+    <div class="spinner" v-if="isLoading">
+      <base-spinner />
+    </div>
+    <p class="chronometers__empty" v-else-if="!isLoading && !hasChronometers">
+      You have no contacts yet, start adding them.
+    </p>
+    <ul class="chronometer__menu" v-else>
       <chronometer-item
         v-for="chronometer in chronometerList"
         :key="chronometer.id"
@@ -79,6 +85,7 @@ export default {
   inject: ["errorHandler"],
   data() {
     return {
+      isLoading: false,
       selectedChronometer: null,
       secs: 0,
       timer: null,
@@ -124,8 +131,9 @@ export default {
       this.inputsData.changeHandler(target);
     },
     async fetchChronometers() {
+      this.isLoading = true;
       try {
-        this.$store.dispatch("chronometers/getChronometers");
+        await this.$store.dispatch("chronometers/getChronometers");
       } catch (e) {
         this.errorHandler(e, {
           redirect: {
@@ -134,6 +142,7 @@ export default {
           },
         });
       }
+      this.isLoading = false;
     },
     convertChronometerFormat(time) {
       const hours = Math.floor(time / 3600);
@@ -191,6 +200,10 @@ export default {
     getInputValue() {
       return this.inputsData.getInputValue("description");
     },
+    hasChronometers() {
+      console.log(this.$store.getters["chronometers/hasChronometers"]);
+      return this.$store.getters["chronometers/hasChronometers"];
+    },
   },
   created() {
     this.fetchChronometers();
@@ -201,6 +214,15 @@ export default {
 <style scoped>
 .chronometer {
   padding: 24px 0;
+}
+
+.section > *:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
 }
 
 .chronometer__container {
@@ -220,12 +242,15 @@ export default {
 }
 
 .chronometer__menu {
-  margin-top: 16px;
   display: grid;
 }
 
 .chronometer__menu > *:not(:last-child) {
   margin-bottom: 16px;
+}
+
+.chronometers__empty {
+  text-align: center;
 }
 
 @media screen and (min-width: 768px) {

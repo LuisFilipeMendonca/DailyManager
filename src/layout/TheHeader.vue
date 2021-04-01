@@ -1,11 +1,10 @@
 <template>
   <header class="header">
-    <h1 class="header__title">Daily Manager</h1>
+    <router-link to="/"
+      ><h1 class="header__title">Daily Manager</h1></router-link
+    >
     <nav>
       <ul class="nav__menu">
-        <li class="nav__item" v-if="!isLogged">
-          <router-link to="/authentication">Authenticate</router-link>
-        </li>
         <li class="nav__item" v-if="isLogged">
           <base-button type="button" mode="primary" :clickHandler="logout"
             >Logout</base-button

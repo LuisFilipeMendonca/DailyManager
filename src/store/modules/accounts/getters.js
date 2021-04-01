@@ -8,9 +8,13 @@ const getters = {
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
       return transactionsExpenses;
 
-    const { AccountTransactions } = state.account.AccountMonths.find(
+    const accountTransactions = state.account.AccountMonths.find(
       (accountMonth) => accountMonth.AccountTransactions.length !== 0
     );
+
+    if (!accountTransactions) return transactionsExpenses;
+
+    const { AccountTransactions } = accountTransactions;
 
     AccountTransactions.forEach((transaction) => {
       if (transaction.type === "outcome") {
@@ -38,9 +42,13 @@ const getters = {
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
       return transactionsProfits;
 
-    const { AccountTransactions } = state.account.AccountMonths.find(
+    const accountTransactions = state.account.AccountMonths.find(
       (accountMonth) => accountMonth.AccountTransactions.length !== 0
     );
+
+    if (!accountTransactions) return transactionsProfits;
+
+    const { AccountTransactions } = accountTransactions;
 
     AccountTransactions.forEach((transaction) => {
       if (transaction.type === "income") {
@@ -71,9 +79,11 @@ const getters = {
 
     for (let index of monthProfits.keys()) {
       if (!monthProfits[index]) {
-        monthProfits[index] = monthProfits[index - 1] || 0;
+        monthProfits[index] = 0;
       }
     }
+
+    console.log(monthProfits);
 
     return monthProfits;
   },
@@ -89,7 +99,7 @@ const getters = {
 
     for (let index of monthExpenses.keys()) {
       if (!monthExpenses[index]) {
-        monthExpenses[index] = monthExpenses[index - 1] || 0;
+        monthExpenses[index] = 0;
       }
     }
 
@@ -104,11 +114,16 @@ const getters = {
 
     const month = new Date().getMonth();
 
-    const { profit, expenses } = state.account.AccountMonths.find(
+    const accountMonth = state.account.AccountMonths.find(
       (accountMonth) => accountMonth.month === month
     );
 
-    return { profit: profit.toFixed(2), expenses: expenses.toFixed(2) };
+    if (!accountMonth) return { profit: 0, expenses: 0 };
+
+    return {
+      profit: accountMonth.profit.toFixed(2),
+      expenses: accountMonth.expenses.toFixed(2),
+    };
   },
 };
 
