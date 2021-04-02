@@ -47,6 +47,10 @@ export default {
     },
   },
   async beforeCreate() {
+    this.$store.commit("toasts/addToast", {
+      description: "Hi",
+      type: "success",
+    });
     try {
       await this.$store.commit("auth/getUser");
     } catch (e) {

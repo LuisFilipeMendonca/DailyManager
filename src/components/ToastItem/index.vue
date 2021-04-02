@@ -1,7 +1,14 @@
 <template>
   <div class="toast__item" :class="toastTypeClass">
     <p class="toast__description">{{ description }}</p>
-    <font-awesome-icon icon="times" class="toast__close" />
+    <span
+      class="toast__close"
+      tabindex="1"
+      @click="deleteToast"
+      @keypress="deleteOnKeyPress"
+    >
+      <font-awesome-icon icon="times" />
+    </span>
     <span
       :style="{
         width: `${width}%`,
@@ -20,8 +27,17 @@ export default {
     return {
       timer: null,
       width: 100,
-      duration: 5000,
+      duration: 3000,
     };
+  },
+  methods: {
+    deleteOnKeyPress(e) {
+      if (e.type === "keypress" && e.keyCode !== 13) return;
+      this.deleteToast();
+    },
+    deleteToast() {
+      this.$emit("delete-toast", this.id);
+    },
   },
   computed: {
     toastDuration() {
@@ -37,7 +53,7 @@ export default {
 
       if (this.width === 0) {
         clearInterval(this.timer);
-        this.$emit("delete-toast", this.id);
+        this.deleteToast();
       }
     }, this.toastDuration);
   },
@@ -46,19 +62,18 @@ export default {
 
 <style scoped>
 .toast__item {
-  margin-top: 16px;
-  margin-right: 16px;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   border-radius: 3px;
-  padding: 16px 24px 16px 16px;
-  color: var(--primary-dark);
+  padding: 16px 32px 16px 16px;
+  color: var(--primary-light);
   position: relative;
   pointer-events: all;
   overflow: hidden;
 }
 
 .toast__item--success {
-  background: lightgreen;
+  background: #1fcf3a;
 }
 
 .toast__item--error {
@@ -67,8 +82,14 @@ export default {
 
 .toast__close {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.toast__close:focus {
+  outline: 1px dotted var(--primary-dark);
 }
 
 .toast__description {

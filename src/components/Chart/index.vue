@@ -44,7 +44,7 @@ export default {
       return max;
     },
     getNextIntDivisor(value, divisor) {
-      return value + divisor - ((value + divisor) % 5);
+      return value + divisor - ((value + divisor) % divisor);
     },
     buildChartData(chartDataset) {
       const { labels, dataset } = chartDataset;

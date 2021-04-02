@@ -42,7 +42,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(255, 255, 255, 0.2); */
+  padding: 16px;
   pointer-events: none;
   display: flex;
   flex-direction: column;
@@ -94,12 +94,4 @@ export default {
 .toast-anim-enter-to {
   transform: translateX(0);
 }
-
-/* .toast-anim-leave {
-  transform: translateX(0);
-} */
-
-/* .toast-anim-leave-to {
-  transform: translateX(-30px);
-} */
 </style>
