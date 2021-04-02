@@ -4,8 +4,8 @@
       class="chronometer__item"
       :class="{ 'chronometer__item--selected': isSelected }"
     >
-      <h2>{{ time }}</h2>
-      <h3 v-if="description">{{ description }}</h3>
+      <h3>{{ time }}</h3>
+      <p v-if="description">{{ description }}</p>
       <div class="chronometer__actions">
         <base-button
           type="button"

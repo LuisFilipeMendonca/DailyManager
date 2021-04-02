@@ -7,7 +7,7 @@ export default [
   {
     path: "/notes",
     icon: "stopwatch",
-    description: "Task Chronometer",
+    description: "Chronometer",
   },
   {
     path: "/contacts",

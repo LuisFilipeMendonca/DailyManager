@@ -5,11 +5,11 @@
     :type="type"
     @click="clickHandler"
   >
-    <p class="btn__description"><slot /></p>
+    <span class="btn__description"><slot /></span>
     <base-loader :show="!!btnLoading" />
   </button>
   <router-link v-else :to="path" :class="['btn', mode]">
-    <slot />
+    <span class="btn__description"><slot /></span>
   </router-link>
 </template>
 

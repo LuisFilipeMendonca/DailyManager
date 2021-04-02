@@ -128,8 +128,7 @@ export default {
 <style scoped>
 .tasks__header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   padding: 16px;
 }
 
@@ -142,18 +141,12 @@ export default {
   justify-content: center;
 }
 
-.header__title {
-  flex: 1;
-}
-
 .header__actions {
+  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-}
-
-.header__actions > *:not(:last-child) {
-  margin-bottom: 8px;
+  justify-content: space-between;
+  margin-top: 16px;
 }
 
 .tasks__empty {
@@ -161,14 +154,24 @@ export default {
 }
 
 .tasks__menu > *:not(:last-child) {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 576px) {
+  .tasks__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header__actions {
+    flex-direction: row;
+    width: unset;
+    margin-top: 0;
+  }
 }
 
 @media screen and (min-width: 768px) {
-  .header__actions {
-    flex-direction: row;
-  }
-
   .header__actions > *:not(:last-child) {
     margin-bottom: 0;
     margin-right: 16px;

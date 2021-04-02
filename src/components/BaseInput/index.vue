@@ -112,7 +112,6 @@ export default {
   background-color: var(--primary-light);
   padding: 8px 16px;
   border-radius: 3px;
-  color: var(--primary-light);
   border: 1px solid transparent;
   z-index: 1;
 }
@@ -122,7 +121,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   filter: none;
-  background-color: var(--bg) !important;
+  background-color: var(--primary-light) !important;
 }
 
 .input__elem:focus {
@@ -162,7 +161,7 @@ input:-webkit-autofill:active {
   border: 1px dashed var(--secondary);
   border-radius: 50%;
   margin: 0 auto;
-  background-color: var(--bg);
+  background-color: var(--primary-light);
   position: relative;
 }
 
@@ -185,7 +184,7 @@ input:-webkit-autofill:active {
 }
 
 .radio__container {
-  background-color: var(--bg);
+  background-color: var(--primary-light);
   border-radius: 3px;
   padding: 8px 16px;
 }
@@ -203,10 +202,20 @@ input:-webkit-autofill:active {
 .input__label--radio {
   display: flex;
   align-items: center;
+  font-size: 14px;
+}
+
+.input__label--radio:focus {
+  outline: 1px dotted var(--secondary);
 }
 
 .input__elem--radio {
-  display: none;
+  opacity: 0;
+  margin-left: -8px;
+}
+
+.input__elem--radio:focus + .radio__checkmark {
+  box-shadow: 0 0 5px var(--secondary);
 }
 
 .input__elem--radio:checked + .radio__checkmark:before {

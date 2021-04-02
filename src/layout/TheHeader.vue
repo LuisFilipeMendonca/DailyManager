@@ -6,7 +6,7 @@
     <nav>
       <ul class="nav__menu">
         <li class="nav__item" v-if="isLogged">
-          <base-button type="button" mode="primary" :clickHandler="logout"
+          <base-button type="button" mode="danger" :clickHandler="logout"
             >Logout</base-button
           >
         </li>
@@ -38,7 +38,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: 1rem 2rem;
   position: fixed;
   width: 100%;
   border-bottom: 1px solid var(--secondary);

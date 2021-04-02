@@ -27,7 +27,9 @@
   <section class="section">
     <base-card>
       <div class="chronometer__container">
-        <h3 v-if="getInputValue">{{ getInputValue }}</h3>
+        <h3 v-if="getInputValue" class="chronometer__description">
+          {{ getInputValue }}
+        </h3>
         <span class="chronometer__time">{{ formatChronometer }}</span>
         <div class="chronometer__actions">
           <base-button
@@ -245,8 +247,13 @@ export default {
   align-items: center;
 }
 
+.chronometer__description {
+  margin-bottom: 16px;
+}
+
 .chronometer__time {
   font-size: 3rem;
+  font-weight: 700;
   margin-bottom: 16px;
 }
 
@@ -259,7 +266,7 @@ export default {
 }
 
 .chronometer__menu > *:not(:last-child) {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .chronometers__empty {

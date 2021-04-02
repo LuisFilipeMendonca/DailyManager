@@ -189,7 +189,7 @@ export default {
 @media screen and (min-width: 768px) {
   .balances__monthly {
     display: flex;
-    gap: 16px;
+    gap: 1rem;
   }
 
   .balances__monthly > *:not(:last-child) {

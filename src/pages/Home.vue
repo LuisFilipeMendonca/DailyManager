@@ -45,17 +45,35 @@ export default {
   padding: 24px 0;
 }
 .main__title {
-  font-size: 2.5rem;
+  font-size: 2rem;
+  font-weight: 700;
   padding: 8px;
   border-bottom: 1px solid var(--secondary);
   color: var(--secondary);
-  margin-bottom: 32px;
 }
 
 .main__subtitle {
-  font-size: 1.5rem;
-  line-height: 32px;
+  font-size: 1.3rem;
+}
+
+.main__title,
+.main__subtitle {
+  margin-bottom: 32px;
   text-align: center;
-  margin-bottom: 64px;
+}
+
+@media screen and (min-width: 768px) {
+  .main__title {
+    padding: 8px 16px;
+  }
+
+  .main__subtitle {
+    padding: 0 32px;
+  }
+
+  .main__title,
+  .main__subtitle {
+    margin-bottom: 40px;
+  }
 }
 </style>

@@ -98,4 +98,14 @@ export default {
 .task__actions > *:not(:last-child) {
   margin-right: 8px;
 }
+
+@media screen and (min-width: 768px) {
+  .task {
+    padding: 16px 24px;
+  }
+
+  .task__actions {
+    margin-top: 16px;
+  }
+}
 </style>

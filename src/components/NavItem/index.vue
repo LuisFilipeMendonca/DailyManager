@@ -18,8 +18,8 @@ export default {
 <style scoped>
 .link {
   display: block;
-  width: 150px;
-  height: 150px;
+  width: 125px;
+  height: 125px;
 }
 
 .link__content {
@@ -57,5 +57,13 @@ export default {
   transform: translate(-50%, 16px);
   opacity: 1;
   color: var(--secondary);
+}
+
+@media screen and (min-width: 576px) {
+  .link {
+    display: block;
+    width: 150px;
+    height: 150px;
+  }
 }
 </style>

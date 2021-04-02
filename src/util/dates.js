@@ -45,14 +45,14 @@ export const monthlyChartLabels = () => {
 export const dailyChartLabels = () => {
   const date = new Date();
   const month = date.getMonth();
-  const year = date.getFullYear();
+  // const year = date.getFullYear();
   const labels = [];
   const correctMonth = month + 1;
 
   for (let i = 1; i <= months[month].days; i++) {
     labels.push(
-      `${year}-${correctMonth > 9 ? correctMonth : "0" + correctMonth}-${
-        i > 9 ? i : "0" + i
+      `${i > 9 ? i : "0" + i}-${
+        correctMonth > 9 ? correctMonth : "0" + correctMonth
       }`
     );
   }

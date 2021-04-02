@@ -74,6 +74,10 @@ export default {
   outline: none;
 }
 
+html {
+  font-size: 75%;
+}
+
 html,
 body {
   height: 100%;
@@ -81,13 +85,18 @@ body {
 
 body {
   background-color: var(--primary-light);
+  font-size: 1rem;
+  font-family: "Montserrat";
 }
 
 body,
 input,
 ::placeholder {
   color: var(--light);
-  opacity: 1;
+}
+
+::placeholder {
+  opacity: 0.9;
 }
 
 ul {
@@ -103,13 +112,24 @@ input {
   background: transparent;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 #app {
   height: 100%;
 }
 
 .main {
   height: 100%;
-  padding: 60px 8px 0;
+  padding: 60px 16px 0;
   max-width: 1000px;
   margin: 0 auto;
 }
@@ -119,12 +139,28 @@ input {
 }
 
 @media screen and (min-width: 576px) {
+  html {
+    font-size: 80%;
+  }
+
   .main {
     padding: 60px 16px 0;
   }
 
   .section {
     padding: 16px 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  html {
+    font-size: 100%;
   }
 }
 </style>

@@ -31,6 +31,12 @@ export default {
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+  gap: 16px;
+}
+
+@media screen and (min-width: 576px) {
+  .grid {
+    gap: 32px;
+  }
 }
 </style>

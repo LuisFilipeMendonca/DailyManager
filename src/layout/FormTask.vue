@@ -23,7 +23,7 @@
         />
       </template>
       <template v-slot:form-aditional-action>
-        <base-button :isLink="true" path="/tasks" type="button" mode="danger"
+        <base-button @click="goBackHandler" type="button" mode="danger"
           >Cancel</base-button
         >
       </template>
@@ -119,6 +119,9 @@ export default {
       }
 
       this.inputsData.setInputsData(taskData);
+    },
+    goBackHandler() {
+      this.$router.back();
     },
   },
 };

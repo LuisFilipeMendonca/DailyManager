@@ -23,7 +23,7 @@
         />
       </template>
       <template v-slot:form-aditional-action>
-        <base-button :isLink="true" path="/contacts" type="button" mode="danger"
+        <base-button @click="goBackHandler" type="button" mode="danger"
           >Cancel</base-button
         >
       </template>
@@ -132,6 +132,9 @@ export default {
       }
 
       this.inputsData.setInputsData(contactData);
+    },
+    goBackHandler() {
+      this.$router.back();
     },
   },
 };

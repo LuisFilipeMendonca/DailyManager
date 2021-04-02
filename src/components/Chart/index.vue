@@ -1,7 +1,7 @@
 <template>
   <div class="chart__container">
     <base-card>
-      <canvas :id="id" class="chart"></canvas>
+      <canvas :id="id" :height="200" class="chart"></canvas>
       <p class="chart__msg" v-if="noValue">{{ errorMsg }}</p>
     </base-card>
   </div>
@@ -15,16 +15,22 @@ export default {
   props: ["id", "data", "type", "label", "labels", "noValue", "errorMsg"],
   watch: {
     data() {
+      this.chart.destroy();
       this.createChart();
     },
   },
+  data() {
+    return {
+      chart: null,
+    };
+  },
   methods: {
     createChart() {
-      const ctx = document.getElementById(this.id);
+      const ctx = document.getElementById(this.id).getContext("2d");
       const chartDataset = this.buildChartDataset();
       const chartData = this.buildChartData(chartDataset);
 
-      new Chart(ctx, chartData);
+      this.chart = new Chart(ctx, chartData);
     },
     buildChartDataset() {
       return {
@@ -100,7 +106,7 @@ export default {
 
 .chart {
   border-radius: 3px;
-  height: 200px;
+  /* height: 200px; */
 }
 
 .chart__msg {
