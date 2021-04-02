@@ -73,7 +73,7 @@
   content: "";
   position: absolute;
   display: block;
-  background-color: #ccc;
+  background-color: var(--light);
   height: 7px;
   width: 7px;
   border-radius: 50%;

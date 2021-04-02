@@ -65,7 +65,7 @@ export default {
 }
 
 .chronometer__item--selected {
-  background-color: var(--bg);
+  background-color: var(--primary-light);
   border-radius: 3px;
 }
 

@@ -66,18 +66,22 @@ export default {
   max-width: 300px;
   border-radius: 3px;
   padding: 16px 32px 16px 16px;
-  color: var(--primary-light);
+  color: var(--light);
   position: relative;
   pointer-events: all;
   overflow: hidden;
 }
 
+.toast__item:not(:last-of-type) {
+  margin-bottom: 16px;
+}
+
 .toast__item--success {
-  background: #1fcf3a;
+  background: var(--success);
 }
 
 .toast__item--error {
-  background: rgb(255, 122, 122);
+  background: var(--error);
 }
 
 .toast__close {
@@ -89,7 +93,7 @@ export default {
 }
 
 .toast__close:focus {
-  outline: 1px dotted var(--primary-dark);
+  outline: 1px dotted var(--light);
 }
 
 .toast__description {

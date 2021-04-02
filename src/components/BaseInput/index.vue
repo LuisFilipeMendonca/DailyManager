@@ -109,7 +109,7 @@ export default {
 .input__elem {
   display: block;
   width: 100%;
-  background-color: var(--bg);
+  background-color: var(--primary-light);
   padding: 8px 16px;
   border-radius: 3px;
   color: var(--primary-light);

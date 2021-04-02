@@ -108,7 +108,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--bg);
+  background-color: var(--primary-light);
   padding: 16px;
   border: 2px solid var(--secondary);
   border-radius: 3px;

@@ -59,40 +59,40 @@ export default {
 }
 
 .secondary {
-  color: var(--primary-light);
-  border: 1px solid var(--primary-light);
+  color: var(--light);
+  border: 1px solid var(--light);
   background-color: transparent;
 }
 
 .secondary:hover {
   color: var(--primary-dark);
-  background-color: var(--primary-light);
+  background-color: var(--light);
 }
 
 .secondary:focus {
-  box-shadow: 0px 0px 10px var(--primary-light);
+  box-shadow: 0px 0px 10px var(--light);
 }
 
 .secondary .loader__item {
-  background-color: var(--primary-light);
+  background-color: var(--light);
 }
 
 .danger {
-  color: rgb(255, 122, 122);
-  border: 1px solid rgb(255, 122, 122);
+  color: var(--error);
+  border: 1px solid var(--error);
   background-color: transparent;
 }
 
 .danger:hover {
   color: var(--primary-dark);
-  background-color: rgb(255, 122, 122);
+  background-color: var(--error);
 }
 
 .danger:focus {
-  box-shadow: 0px 0px 10px rgb(255, 122, 122);
+  box-shadow: 0px 0px 10px var(--error);
 }
 
 .danger .loader__item {
-  background-color: rgb(255, 122, 122);
+  background-color: var(--error);
 }
 </style>

@@ -28,7 +28,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--primary-light);
+  color: var(--light);
   position: relative;
 }
 

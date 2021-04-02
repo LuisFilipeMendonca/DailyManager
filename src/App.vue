@@ -47,10 +47,6 @@ export default {
     },
   },
   async beforeCreate() {
-    this.$store.commit("toasts/addToast", {
-      description: "Hi",
-      type: "success",
-    });
     try {
       await this.$store.commit("auth/getUser");
     } catch (e) {
@@ -63,10 +59,12 @@ export default {
 
 <style>
 :root {
-  --bg: #3a4750;
   --primary-dark: #303841;
-  --primary-light: #eee;
+  --primary-light: #3a4750;
   --secondary: #fbe384;
+  --light: #eee;
+  --success: #68cc77;
+  --error: #ff7a7a;
 }
 
 * {
@@ -82,8 +80,14 @@ body {
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--primary-light);
+  background-color: var(--primary-light);
+}
+
+body,
+input,
+::placeholder {
+  color: var(--light);
+  opacity: 1;
 }
 
 ul {
