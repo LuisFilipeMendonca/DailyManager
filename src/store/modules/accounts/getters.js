@@ -1,29 +1,34 @@
 // import { months } from "../../../constants/dates";
 
 const getters = {
-  getTransactionsExpenses(state) {
+  getTransactionsData(state) {
     const currentDay = new Date().getDate();
     const transactionsExpenses = Array(currentDay);
+    const transactionsProfits = Array(currentDay);
 
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
-      return transactionsExpenses;
+      return { transactionsExpenses, transactionsProfits };
 
     const accountTransactions = state.account.AccountMonths.find(
       (accountMonth) => accountMonth.AccountTransactions.length !== 0
     );
 
-    if (!accountTransactions) return transactionsExpenses;
+    if (!accountTransactions)
+      return { transactionsExpenses, transactionsProfits };
 
     const { AccountTransactions } = accountTransactions;
 
     AccountTransactions.forEach((transaction) => {
+      const day =
+        +transaction.transactionDate.slice(
+          transaction.transactionDate.length - 2
+        ) - 1;
       if (transaction.type === "outcome") {
-        const day =
-          +transaction.transactionDate.slice(
-            transaction.transactionDate.length - 2
-          ) - 1;
         transactionsExpenses[day] =
           (transactionsExpenses[day] || 0) + transaction.amount;
+      } else {
+        transactionsProfits[day] =
+          (transactionsProfits[day] || 0) + transaction.amount;
       }
     });
 
@@ -31,79 +36,36 @@ const getters = {
       if (!transactionsExpenses[index]) {
         transactionsExpenses[index] = 0;
       }
-    }
-
-    return transactionsExpenses;
-  },
-  getTransactionsProfits(state) {
-    const currentDay = new Date().getDate();
-    const transactionsProfits = Array(currentDay);
-
-    if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
-      return transactionsProfits;
-
-    const accountTransactions = state.account.AccountMonths.find(
-      (accountMonth) => accountMonth.AccountTransactions.length !== 0
-    );
-
-    if (!accountTransactions) return transactionsProfits;
-
-    const { AccountTransactions } = accountTransactions;
-
-    AccountTransactions.forEach((transaction) => {
-      if (transaction.type === "income") {
-        const day = transaction.transactionDate.slice(
-          transaction.transactionDate.length - 2
-        );
-        transactionsProfits[+day - 1] = transaction.amount;
-      }
-    });
-
-    for (let index of transactionsProfits.keys()) {
       if (!transactionsProfits[index]) {
         transactionsProfits[index] = 0;
       }
     }
 
-    return transactionsProfits;
+    return { transactionsExpenses, transactionsProfits };
   },
-  getMonthlyProfits(state) {
+  getMonthlyData(state) {
     const monthProfits = [];
+    const monthExpenses = [];
 
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
-      return monthProfits;
+      return { monthProfits, monthExpenses };
 
-    state.account.AccountMonths.forEach((month) => {
-      monthProfits[month.month] = month.profit;
+    state.account.AccountMonths.forEach(({ month, profit, expenses }) => {
+      monthProfits[month] = profit;
+      monthExpenses[month] = expenses;
     });
 
     for (let index of monthProfits.keys()) {
       if (!monthProfits[index]) {
         monthProfits[index] = 0;
       }
-    }
 
-    console.log(monthProfits);
-
-    return monthProfits;
-  },
-  getMonthlyExpenses(state) {
-    const monthExpenses = [];
-
-    if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
-      return monthExpenses;
-
-    state.account.AccountMonths.forEach((month) => {
-      monthExpenses[month.month] = month.expenses;
-    });
-
-    for (let index of monthExpenses.keys()) {
       if (!monthExpenses[index]) {
         monthExpenses[index] = 0;
       }
     }
 
-    return monthExpenses;
+    return { monthProfits, monthExpenses };
   },
   getTotalBalance(state) {
     return state.account.balance;
@@ -124,6 +86,9 @@ const getters = {
       profit: accountMonth.profit.toFixed(2),
       expenses: accountMonth.expenses.toFixed(2),
     };
+  },
+  hasAccountData(state) {
+    return !!state.account.AccountMonths;
   },
 };
 

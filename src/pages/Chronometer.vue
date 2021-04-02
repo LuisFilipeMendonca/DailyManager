@@ -32,15 +32,17 @@
         <div class="chronometer__actions">
           <base-button
             type="button"
-            :clickHandler="startChronometer"
+            :clickHandler="
+              status === 'paused' ? addDescription : pauseChronometer
+            "
             mode="primary"
-            >Start</base-button
+            >{{ status === "paused" ? "Start" : "Pause" }}</base-button
           >
           <base-button
             type="button"
-            :clickHandler="pauseChronometer"
+            :clickHandler="addChronometer"
             mode="secondary"
-            >Pause</base-button
+            >Save</base-button
           >
           <base-button
             type="button"
@@ -95,13 +97,23 @@ export default {
       inputsData: new Inputs(chronometerInputs),
     };
   },
+  watch: {
+    isDialogOpen() {
+      if (!this.isDialogOpen) {
+        this.startChronometer();
+      }
+    },
+  },
   methods: {
+    addDescription() {
+      if (!this.selectedChronometer && this.secs === 0) {
+        this.toggleDialog();
+        return;
+      }
+      this.startChronometer();
+    },
     startChronometer() {
       if (this.status === "started") return;
-
-      if (!this.selectedChronometer) {
-        this.toggleDialog();
-      }
 
       this.status = "started";
       this.timer = setInterval(() => {
@@ -110,8 +122,7 @@ export default {
     },
     pauseChronometer() {
       this.status = "paused";
-      this.addChronometer();
-      this.stopChronometer();
+      clearInterval(this.timer);
     },
     stopChronometer() {
       clearInterval(this.timer);
@@ -154,6 +165,7 @@ export default {
       )}`;
     },
     selectChronometer(id) {
+      clearInterval(this.timer);
       const chronometerData = this.$store.getters[
         "chronometers/getChronometer"
       ](id);
@@ -162,6 +174,7 @@ export default {
       this.secs = chronometerData.time;
       this.inputsData.setInputsData(chronometerData);
       this.isUpdating = true;
+      this.status = "paused";
     },
     async addChronometer() {
       try {
@@ -201,11 +214,11 @@ export default {
       return this.inputsData.getInputValue("description");
     },
     hasChronometers() {
-      console.log(this.$store.getters["chronometers/hasChronometers"]);
       return this.$store.getters["chronometers/hasChronometers"];
     },
   },
   created() {
+    if (this.hasChronometers) return;
     this.fetchChronometers();
   },
 };

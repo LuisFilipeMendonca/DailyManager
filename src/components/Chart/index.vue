@@ -9,9 +9,10 @@
 
 <script>
 import Chart from "chart.js";
+import { dataset, chartData } from "../../constants/chartData";
 
 export default {
-  props: ["id", "data", "noValue", "errorMsg"],
+  props: ["id", "data", "type", "label", "labels", "noValue", "errorMsg"],
   watch: {
     data() {
       this.createChart();
@@ -20,7 +21,70 @@ export default {
   methods: {
     createChart() {
       const ctx = document.getElementById(this.id);
-      new Chart(ctx, this.data);
+      const chartDataset = this.buildChartDataset();
+      const chartData = this.buildChartData(chartDataset);
+
+      new Chart(ctx, chartData);
+    },
+    buildChartDataset() {
+      return {
+        labels: this.labels,
+        dataset: {
+          ...dataset,
+          data: this.data,
+          label: this.label,
+        },
+      };
+    },
+    getMaxValue(arr) {
+      let max = 0;
+
+      arr.forEach((item) => (max = Math.max(max, item)));
+
+      return max;
+    },
+    getNextIntDivisor(value, divisor) {
+      return value + divisor - ((value + divisor) % 5);
+    },
+    buildChartData(chartDataset) {
+      const { labels, dataset } = chartDataset;
+
+      const maxDataValue = this.getMaxValue(dataset.data);
+      const yAxesMax = this.getNextIntDivisor(maxDataValue, 5);
+
+      return {
+        ...chartData,
+        type: this.type,
+        data: {
+          ...chartData.data,
+          labels,
+          datasets: [dataset],
+        },
+        options: {
+          ...chartData.options,
+          tooltips: {
+            enabled: true,
+            callbacks: {
+              label: function(tooltipItems) {
+                return `${dataset.data[tooltipItems.index].toFixed(2)}€`;
+              },
+            },
+          },
+          scales: {
+            ...chartData.options.scales,
+            yAxes: [
+              {
+                ...chartData.options.scales.yAxes[0],
+                ticks: {
+                  ...chartData.options.scales.yAxes[0].ticks,
+                  max: yAxesMax,
+                  stepSize: yAxesMax / 5,
+                },
+              },
+            ],
+          },
+        },
+      };
     },
   },
   mounted() {

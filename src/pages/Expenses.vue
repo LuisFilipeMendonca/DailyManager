@@ -35,33 +35,37 @@
       <chart
         id="monthly-profits"
         type="line"
-        v-if="chartMonthtlyProfits"
-        :data="chartMonthtlyProfits.chartData"
-        :noValue="!chartMonthtlyProfits.hasValue"
+        :data="getMonthlyData.profits.data"
+        :noValue="!getMonthlyData.profits.hasValue"
+        label="Monthly Profits"
+        :labels="monthlyChartLabels"
         errorMsg="No data available. Try adding some transactions."
       />
       <chart
-        v-if="chartMonthtlyExpenses"
         id="monthly-expenses"
         type="line"
-        :data="chartMonthtlyExpenses.chartData"
-        :noValue="!chartMonthtlyExpenses.hasValue"
+        :data="getMonthlyData.expenses.data"
+        :noValue="!getMonthlyData.expenses.hasValue"
+        label="Monthly Expenses"
+        :labels="monthlyChartLabels"
         errorMsg="No data available. Try adding some transactions."
       />
       <chart
-        v-if="chartTransactionsProfits"
         id="transactions-profits"
         type="line"
-        :data="chartTransactionsProfits.chartData"
-        :noValue="!chartTransactionsProfits.hasValue"
+        :data="getDailyData.profits.data"
+        :noValue="!getDailyData.profits.hasValue"
+        label="Daily Profits"
+        :labels="dailyChartLabels"
         errorMsg="No profits for the current month"
       />
       <chart
-        v-if="chartTransactionsExpenses"
         id="transactions-expenses"
         type="line"
-        :data="chartTransactionsExpenses.chartData"
-        :noValue="!chartTransactionsExpenses.hasValue"
+        :data="getDailyData.expenses.data"
+        :noValue="!getDailyData.expenses.hasValue"
+        label="Daily Profits"
+        :labels="dailyChartLabels"
         errorMsg="No expenses for the current month"
       />
     </div>
@@ -70,7 +74,6 @@
 
 <script>
 import Chart from "../components/Chart";
-import { dataset, chartData } from "./chart-data";
 import { monthlyChartLabels, dailyChartLabels } from "../util/dates";
 
 export default {
@@ -98,155 +101,39 @@ export default {
       }
       this.isLoading = false;
     },
-    buildChartDataset(label, data, isMonthly) {
-      return {
-        labels: isMonthly ? monthlyChartLabels() : dailyChartLabels(),
-        dataset: {
-          ...dataset,
-          data,
-          label,
-        },
-      };
-    },
-    getMaxValue(arr) {
-      let max = 0;
-
-      arr.forEach((item) => (max = Math.max(max, item)));
-
-      return max;
-    },
-    getNextIntDivisor(value, divisor) {
-      return value + divisor - ((value + divisor) % 5);
-    },
-    buildChartData(type, labels, datasets) {
-      const maxDataValue = this.getMaxValue(datasets.data);
-      const yAxesMax = this.getNextIntDivisor(maxDataValue, 5);
-      return {
-        ...chartData,
-        type,
-        data: {
-          ...chartData.data,
-          labels,
-          datasets: [datasets],
-        },
-        options: {
-          ...chartData.options,
-          tooltips: {
-            enabled: true,
-            callbacks: {
-              label: function(tooltipItems) {
-                return `${datasets.data[tooltipItems.index].toFixed(2)}€`;
-              },
-            },
-          },
-          scales: {
-            ...chartData.options.scales,
-            yAxes: [
-              {
-                ...chartData.options.scales.yAxes[0],
-                ticks: {
-                  ...chartData.options.scales.yAxes[0].ticks,
-                  max: yAxesMax,
-                  stepSize: yAxesMax / 5,
-                },
-              },
-            ],
-          },
-        },
-      };
-    },
   },
   computed: {
-    chartMonthtlyProfits() {
-      const profits = this.$store.getters["account/getMonthlyProfits"];
-
-      if (!profits) return null;
-
-      const transactionsChartData = this.buildChartDataset(
-        "Monthly Profit",
-        profits,
-        true
-      );
-
-      const chartData = this.buildChartData(
-        "line",
-        transactionsChartData.labels,
-        transactionsChartData.dataset
-      );
-
-      return { chartData, hasValue: profits.length > 0 };
+    monthlyChartLabels() {
+      return monthlyChartLabels();
     },
-    chartMonthtlyExpenses() {
-      const expenses = this.$store.getters["account/getMonthlyExpenses"];
-
-      if (!expenses) return null;
-
-      const montlyProfitChartData = this.buildChartDataset(
-        "Monthly Expenses",
-        expenses,
-        true
-      );
-
-      const chartData = this.buildChartData(
-        "line",
-        montlyProfitChartData.labels,
-        montlyProfitChartData.dataset
-      );
-
-      return { chartData, hasValue: expenses.length > 0 };
+    dailyChartLabels() {
+      return dailyChartLabels();
     },
-    chartTransactionsExpenses() {
-      let expenses = this.$store.getters["account/getTransactionsExpenses"];
-
-      if (!expenses) return null;
-
-      const hasValue = expenses.some((expense) => expense > 0);
-
-      if (!hasValue) {
-        expenses = [];
-      }
-
-      const montlyTransactionsChartData = this.buildChartDataset(
-        "Daily Expenses",
-        expenses
-      );
-
-      const chartData = this.buildChartData(
-        "line",
-        montlyTransactionsChartData.labels,
-        montlyTransactionsChartData.dataset
-      );
+    getMonthlyData() {
+      const data = this.$store.getters["account/getMonthlyData"];
+      const { monthProfits, monthExpenses } = data;
 
       return {
-        chartData,
-        hasValue,
+        profits: { data: monthProfits, hasValue: monthProfits.length > 0 },
+        expenses: {
+          data: monthExpenses,
+          hasValue: monthExpenses.length > 0,
+        },
       };
     },
-    chartTransactionsProfits() {
-      let profits = this.$store.getters["account/getTransactionsProfits"];
+    getDailyData() {
+      const data = this.$store.getters["account/getTransactionsData"];
+      let { transactionsExpenses, transactionsProfits } = data;
 
-      if (!profits) return null;
+      const hasExpenses = transactionsExpenses.some((expense) => expense > 0);
+      const hasProfits = transactionsProfits.some((expense) => expense > 0);
 
-      const hasValue = profits.some((profit) => profit > 0);
-
-      if (!hasValue) {
-        profits = [];
-      }
-
-      const montlyTransactionsChartData = this.buildChartDataset(
-        "Daily Profits",
-        profits
-      );
-
-      const chartData = this.buildChartData(
-        "line",
-        montlyTransactionsChartData.labels,
-        montlyTransactionsChartData.dataset
-      );
+      if (!hasExpenses) transactionsExpenses = [];
+      if (!hasProfits) transactionsProfits = [];
 
       return {
-        chartData,
-        hasValue,
+        profits: { data: transactionsProfits, hasValue: hasProfits },
+        expenses: { data: transactionsExpenses, hasValue: hasExpenses },
       };
     },
     totalBalance() {
@@ -259,8 +146,12 @@ export default {
       ];
       return monthProfitExpenses;
     },
+    hasAccountData() {
+      return this.$store.getters["account/hasAccountData"];
+    },
   },
   created() {
+    if (this.hasAccountData) return;
     this.fetchAccountData();
   },
 };
