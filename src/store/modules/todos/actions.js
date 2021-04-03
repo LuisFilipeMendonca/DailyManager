@@ -1,9 +1,10 @@
+import Dates from "../../../helpers/Dates";
 import axios from "../../../util/axios";
 
 const actions = {
   async getTodos({ commit }, payload) {
     try {
-      const dateTimestamps = payload.getTime();
+      const dateTimestamps = payload.getTimestampsWithoutTime();
 
       console.log(payload);
 
@@ -18,20 +19,23 @@ const actions = {
     try {
       const { formData, isEditing, taskId, atualDate } = data;
       let response;
-      let taskDate = new Date(
-        new Date(formData.date).getFullYear(),
-        new Date(formData.date).getMonth(),
-        new Date(formData.date).getDate()
-      ).getTime();
+      let taskDateTimestamps = new Dates(
+        formData.date
+      ).getTimestampsWithoutTime();
+      const atualDateTimestamps = new Dates(
+        atualDate
+      ).getTimestampsWithoutTime();
 
       if (isEditing) {
         response = await axios.put(`todos/${taskId}`, formData);
-        if (atualDate !== taskDate) commit("deleteTask", response.data.id);
+        if (Dates.isSameTimestamps(taskDateTimestamps, atualDateTimestamps))
+          commit("deleteTask", response.data.id);
         else commit("updateTask", response.data);
       } else {
         response = await axios.post("todos", formData);
 
-        if (atualDate !== taskDate) return;
+        if (!Dates.isSameTimestamps(taskDateTimestamps, atualDateTimestamps))
+          return;
 
         commit("addTask", response.data);
       }

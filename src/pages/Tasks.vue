@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import { dateFormated } from "../util/dates";
 import TaskItem from "../components/TaskItem";
+import Dates from "../helpers/Dates";
 
 export default {
   components: {
@@ -56,11 +56,7 @@ export default {
       isLoading: false,
       date: {
         type: "date",
-        value: new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate()
-        ),
+        value: new Dates(),
         isDisabled: false,
       },
     };
@@ -82,11 +78,8 @@ export default {
     },
     changeHandler(target) {
       if (target.value.length <= 0) return;
-      this.date.value = new Date(
-        new Date(target.value).getFullYear(),
-        new Date(target.value).getMonth(),
-        new Date(target.value).getDate()
-      );
+      this.date.value.setDate(target.value);
+      console.log(this.date.value.date);
     },
   },
   computed: {
@@ -94,20 +87,22 @@ export default {
       return this.$store.getters["todos/getTodos"];
     },
     formatedDate() {
-      return dateFormated(this.date.value);
+      return this.date.value.getDateFormated();
     },
     addTaskUrl() {
-      return `/tasks/add?date=${this.date.value.getTime()}`;
+      return `/tasks/add?date=${this.date.value.getTimestampsWithoutTime()}`;
     },
     inputDateFormat() {
-      return dateFormated(this.date.value, true);
+      return this.date.value.getInputDateFormat();
     },
     hasTasks() {
-      return this.$store.getters["todos/hasTasks"](this.date.value);
+      return this.$store.getters["todos/hasTasks"](
+        this.date.value.getTimestampsWithoutTime()
+      );
     },
   },
   watch: {
-    "date.value": function() {
+    "date.value.date": function() {
       this.fetchTodos();
     },
     $route(newValue) {

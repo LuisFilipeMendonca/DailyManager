@@ -1,5 +1,7 @@
 // import { months } from "../../../constants/dates";
 
+import Dates from "../../../helpers/Dates";
+
 const getters = {
   getTransactionsData(state) {
     const currentDay = new Date().getDate();
@@ -67,24 +69,22 @@ const getters = {
 
     return { monthProfits, monthExpenses };
   },
-  getTotalBalance(state) {
-    return state.account.balance;
-  },
-  getMonthProfitExpenses(state) {
+  getAccountValues(state) {
     if (!state.account.AccountMonths || !state.account.AccountMonths.length > 0)
-      return { profit: 0, expenses: 0 };
+      return { profit: 0, expenses: 0, balance: 0 };
 
-    const month = new Date().getMonth();
+    const month = new Dates().getMonth();
 
     const accountMonth = state.account.AccountMonths.find(
       (accountMonth) => accountMonth.month === month
     );
 
-    if (!accountMonth) return { profit: 0, expenses: 0 };
+    if (!accountMonth) return { profit: 0, expenses: 0, balance: 0 };
 
     return {
       profit: accountMonth.profit.toFixed(2),
       expenses: accountMonth.expenses.toFixed(2),
+      balance: state.account.balance.toFixed(2),
     };
   },
   hasAccountData(state) {

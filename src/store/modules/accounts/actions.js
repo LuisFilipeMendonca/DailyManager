@@ -1,10 +1,10 @@
+import Dates from "../../../helpers/Dates";
 import axios from "../../../util/axios";
 
 const actions = {
   async getAccountData({ commit }) {
     try {
-      const date = new Date();
-      const timestamps = date.getTime();
+      const timestamps = new Dates().getTimestampsWithoutTime();
 
       const response = await axios(`/accounts/${timestamps}`);
 
@@ -15,10 +15,10 @@ const actions = {
   },
   async storeTransaction({ commit }, data) {
     try {
-      const currentYear = new Date().getFullYear();
+      const currentYear = new Dates().getYear();
       const response = await axios.post("/accounts", data);
 
-      if (currentYear === +data.transactionDate.slice(0, 4)) {
+      if (Dates.isSameYear(currentYear, data.transactionDate.slice(0, 4))) {
         commit("addTransaction", response.data);
       }
     } catch (e) {

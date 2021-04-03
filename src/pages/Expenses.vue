@@ -137,12 +137,12 @@ export default {
       };
     },
     totalBalance() {
-      const totalBalance = this.$store.getters["account/getTotalBalance"];
-      return totalBalance || 0;
+      const { balance } = this.$store.getters["account/getAccountValues"];
+      return balance;
     },
     monthProfitExpenses() {
       const monthProfitExpenses = this.$store.getters[
-        "account/getMonthProfitExpenses"
+        "account/getAccountValues"
       ];
       return monthProfitExpenses;
     },

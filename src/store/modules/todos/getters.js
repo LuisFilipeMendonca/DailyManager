@@ -1,3 +1,4 @@
+import Dates from "../../../helpers/Dates";
 import { timeWithoutSec } from "../../../util/dates";
 
 const getters = {
@@ -12,14 +13,9 @@ const getters = {
     const task = state.todosList.find((task) => task.id === id);
     return { ...task, time: timeWithoutSec(task.time) };
   },
-  hasTasks: (state) => (date) => {
+  hasTasks: (state) => (timestamps) => {
     return state.todosList.some(
-      (task) =>
-        new Date(
-          new Date(task.date).getFullYear(),
-          new Date(task.date).getMonth(),
-          new Date(task.date).getDate()
-        ).getTime() === date.getTime()
+      (task) => new Dates(task.date).getTimestampsWithoutTime() === timestamps
     );
   },
 };

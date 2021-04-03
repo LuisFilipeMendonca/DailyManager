@@ -98,6 +98,7 @@ export default {
 
 .toast__description {
   text-overflow: clip;
+  line-height: 1.4rem;
 }
 
 .toast__timer {
