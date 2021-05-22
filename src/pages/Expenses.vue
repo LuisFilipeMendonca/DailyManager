@@ -37,7 +37,7 @@
         type="line"
         :data="getMonthlyData.profits.data"
         :noValue="!getMonthlyData.profits.hasValue"
-        label="Monthly Profits"
+        label="Monthly Income"
         :labels="monthlyChartLabels"
         errorMsg="No data available. Try adding some transactions."
       />
@@ -46,7 +46,7 @@
         type="line"
         :data="getMonthlyData.expenses.data"
         :noValue="!getMonthlyData.expenses.hasValue"
-        label="Monthly Expenses"
+        label="Monthly Outcome"
         :labels="monthlyChartLabels"
         errorMsg="No data available. Try adding some transactions."
       />
@@ -55,7 +55,7 @@
         type="line"
         :data="getDailyData.profits.data"
         :noValue="!getDailyData.profits.hasValue"
-        label="Daily Profits"
+        label="Daily Income"
         :labels="dailyChartLabels"
         errorMsg="No profits for the current month"
       />
@@ -64,7 +64,7 @@
         type="line"
         :data="getDailyData.expenses.data"
         :noValue="!getDailyData.expenses.hasValue"
-        label="Daily Profits"
+        label="Daily Outcome"
         :labels="dailyChartLabels"
         errorMsg="No expenses for the current month"
       />

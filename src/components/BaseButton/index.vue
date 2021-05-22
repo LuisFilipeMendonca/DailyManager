@@ -36,7 +36,7 @@ export default {
 }
 
 .btn__description {
-  display: block;
+  display: inline-block;
 }
 
 .btn.loading .btn__description {
