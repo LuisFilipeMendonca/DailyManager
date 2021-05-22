@@ -77,11 +77,11 @@ export default {
 
         if (this.isLogging) {
           await this.$store.dispatch("auth/login", formData);
-          // this.isLoading = false;
+          this.isLoading = false;
           this.$router.replace(redirectUrl);
         } else {
           await this.$store.dispatch("auth/register", formData);
-          // this.isLoading = false;
+          this.isLoading = false;
           this.toggleFormHandler();
           this.$store.commit("toasts/addToast", {
             description: "Your account was successfully added",
@@ -89,7 +89,7 @@ export default {
           });
         }
       } catch (e) {
-        // this.isLoading = false;
+        this.isLoading = false;
         this.errorHandler(e, {
           inputs: this.inputsData,
         });

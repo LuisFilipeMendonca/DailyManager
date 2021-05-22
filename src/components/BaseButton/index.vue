@@ -35,8 +35,12 @@ export default {
   overflow: hidden;
 }
 
+.btn__description {
+  display: block;
+}
+
 .btn.loading .btn__description {
-  opacity: 0;
+  transform: translate(0, -200%);
 }
 
 .primary {
