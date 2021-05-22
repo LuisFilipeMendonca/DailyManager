@@ -45,6 +45,9 @@ export default {
       isLoading: false,
     };
   },
+  created() {
+    this.inputsData.clearValues();
+  },
   computed: {
     isEditing() {
       return !!this.$route.params.id;

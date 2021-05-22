@@ -50,7 +50,7 @@ export default {
           formData: { checked: true, date: this.taskDate },
           isEditing: true,
           taskId: this.id,
-          atualDate: new Date(this.date).getTime(),
+          atualDate: this.date.date,
         });
       } catch (e) {
         this.errorHandler(e, {

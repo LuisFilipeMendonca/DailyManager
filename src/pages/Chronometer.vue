@@ -59,7 +59,7 @@
       <base-spinner />
     </div>
     <p class="chronometers__empty" v-else-if="!isLoading && !hasChronometers">
-      You have no contacts yet, start adding them.
+      You have no chronometers saved
     </p>
     <ul class="chronometer__menu" v-else>
       <chronometer-item

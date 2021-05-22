@@ -36,7 +36,7 @@ export default {
 }
 
 .btn.loading .btn__description {
-  transform: translate(0, -200%);
+  opacity: 0;
 }
 
 .primary {

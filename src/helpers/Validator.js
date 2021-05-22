@@ -57,9 +57,6 @@ class Validator {
       atualDate.getDate()
     ).getTime();
 
-    console.log(date);
-    console.log(atualDateWithoutTime);
-
     return atualDateWithoutTime >= date;
   }
 

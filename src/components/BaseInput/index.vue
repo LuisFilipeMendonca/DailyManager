@@ -48,6 +48,7 @@
   </div>
   <div v-else class="input" :class="classValue">
     <input
+      autocomplete="off"
       class="input__elem"
       :class="{ 'input__elem--invalid': !isValid }"
       :type="type"

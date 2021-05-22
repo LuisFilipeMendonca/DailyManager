@@ -38,7 +38,10 @@ class Inputs {
   }
 
   clearValues() {
-    this._inputs = this.inputs.map((input) => ({ ...input, value: "" }));
+    this._inputs = this.inputs.map((input) => ({
+      ...input,
+      value: input.type === "radio" ? input.value : "",
+    }));
   }
 
   setInputsData(data) {

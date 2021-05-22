@@ -6,8 +6,6 @@ const actions = {
     try {
       const dateTimestamps = payload.getTimestampsWithoutTime();
 
-      console.log(payload);
-
       const response = await axios(`todos/${dateTimestamps}`);
 
       commit("addTodos", response.data);
@@ -29,8 +27,8 @@ const actions = {
       if (isEditing) {
         response = await axios.put(`todos/${taskId}`, formData);
         if (Dates.isSameTimestamps(taskDateTimestamps, atualDateTimestamps))
-          commit("deleteTask", response.data.id);
-        else commit("updateTask", response.data);
+          commit("updateTask", response.data);
+        else commit("deleteTask", response.data.id);
       } else {
         response = await axios.post("todos", formData);
 
