@@ -35,7 +35,7 @@ npm run serve
 
 By default the application will run on [http://localhost:8080](http://localhost:8080).
 
-The application is configured to use the API running on port 3002. If you change that backend port, create a .env file on the project root folder and add the following code with the respective port.
+The application is configured to use the API running on port 3002. If you change that backend port, create a .env file on the project root and add the following code with the respective port.
 ```sh
 BACKEND_PORT=PORT_YOU_DEFINE_BACKEND
 ```
